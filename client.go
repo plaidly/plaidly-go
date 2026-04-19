@@ -15,6 +15,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
 	"strings"
 	"time"
@@ -71,8 +72,31 @@ func NewClient(apiKey string, opts ...Option) *Client {
 	return c
 }
 
-// do executes an HTTP request and decodes the response into result (if non-nil).
+// do executes an HTTP request with up to 3 attempts on transient failures.
 func (c *Client) do(ctx context.Context, method, path string, body, result any) error {
+	var lastErr error
+	for attempt := 0; attempt < 3; attempt++ {
+		if attempt > 0 {
+			select {
+			case <-ctx.Done():
+				return ctx.Err()
+			case <-time.After(time.Duration(1<<attempt) * 500 * time.Millisecond):
+			}
+		}
+		lastErr = c.doOnce(ctx, method, path, body, result)
+		if lastErr == nil {
+			return nil
+		}
+		var apiErr *Error
+		if errors.As(lastErr, &apiErr) && apiErr.StatusCode < 500 {
+			return lastErr // don't retry client errors
+		}
+	}
+	return lastErr
+}
+
+// doOnce executes a single HTTP request and decodes the response into result (if non-nil).
+func (c *Client) doOnce(ctx context.Context, method, path string, body, result any) error {
 	var buf bytes.Buffer
 	if body != nil {
 		if err := json.NewEncoder(&buf).Encode(body); err != nil {
