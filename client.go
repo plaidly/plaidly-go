@@ -92,7 +92,7 @@ func (c *Client) do(ctx context.Context, method, path string, body, result any) 
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close() //nolint:errcheck
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode >= 400 {
 		var apiErr struct {

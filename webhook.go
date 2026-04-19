@@ -31,7 +31,7 @@ func VerifyWebhookSignature(payload []byte, signature, secret string) bool {
 	}
 
 	mac := hmac.New(sha256.New, []byte(secret))
-	mac.Write(payload) //nolint:errcheck // bytes.Buffer.Write never returns an error
+	mac.Write(payload) // hash.Hash.Write never returns an error per the docs
 	expected := mac.Sum(nil)
 
 	return hmac.Equal(sigBytes, expected)
