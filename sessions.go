@@ -3,50 +3,78 @@ package plaidly
 import (
 	"context"
 	"fmt"
+	"io"
 	"net/http"
 )
 
-// SessionsService handles operations on payment sessions.
-type SessionsService struct {
-	client *Client
-}
-
-// Create creates a new payment session.
+// CreatePaymentSession creates a new payment session.
 //
-// See: POST /v1/sessions
-func (s *SessionsService) Create(ctx context.Context, req CreateSessionRequest) (*Session, error) {
-	var session Session
-	if err := s.client.do(ctx, http.MethodPost, "/v1/sessions", req, &session); err != nil {
+// POST /v1/payment_sessions
+func (c *Client) CreatePaymentSession(ctx context.Context, req CreatePaymentSessionRequest) (*PaymentSession, error) {
+	var out PaymentSession
+	err := c.doJSON(ctx, func(ctx context.Context) (*http.Response, error) {
+		return c.raw.CreatePaymentSession(ctx, req)
+	}, &out)
+	if err != nil {
 		return nil, err
 	}
-	return &session, nil
+	return &out, nil
 }
 
-// Get fetches a payment session by ID.
+// CreateDemoPaymentSession creates a sandbox-only demo payment session.
 //
-// See: GET /v1/sessions/{id}
-func (s *SessionsService) Get(ctx context.Context, id string) (*Session, error) {
-	var session Session
-	if err := s.client.do(ctx, http.MethodGet, fmt.Sprintf("/v1/sessions/%s", id), nil, &session); err != nil {
+// POST /v1/payment_sessions/demo
+func (c *Client) CreateDemoPaymentSession(ctx context.Context) (*PaymentSession, error) {
+	var out PaymentSession
+	err := c.doJSON(ctx, func(ctx context.Context) (*http.Response, error) {
+		return c.raw.CreateDemoPaymentSession(ctx)
+	}, &out)
+	if err != nil {
 		return nil, err
 	}
-	return &session, nil
+	return &out, nil
 }
 
-// List returns all sessions for the authenticated merchant.
+// GetPaymentSession fetches a payment session by ID.
 //
-// See: GET /v1/sessions
-func (s *SessionsService) List(ctx context.Context) (*ListSessionsResponse, error) {
-	var resp ListSessionsResponse
-	if err := s.client.do(ctx, http.MethodGet, "/v1/sessions", nil, &resp); err != nil {
+// GET /v1/payment_sessions/{session_id}
+func (c *Client) GetPaymentSession(ctx context.Context, sessionID string) (*PaymentSession, error) {
+	var out PaymentSession
+	err := c.doJSON(ctx, func(ctx context.Context) (*http.Response, error) {
+		return c.raw.GetPaymentSession(ctx, sessionID)
+	}, &out)
+	if err != nil {
 		return nil, err
 	}
-	return &resp, nil
+	return &out, nil
 }
 
-// Simulate triggers a simulated payment for a sandbox session.
+// FulfillDemoPaymentSession fulfils a demo payment session (sandbox only).
 //
-// See: POST /v1/sessions/{id}/simulate
-func (s *SessionsService) Simulate(ctx context.Context, id string, req SimulatePaymentRequest) error {
-	return s.client.do(ctx, http.MethodPost, fmt.Sprintf("/v1/sessions/%s/simulate", id), req, nil)
+// POST /v1/payment_sessions/{session_id}/fulfill
+func (c *Client) FulfillDemoPaymentSession(ctx context.Context, sessionID string) error {
+	return c.doJSON(ctx, func(ctx context.Context) (*http.Response, error) {
+		return c.raw.FulfillDemoPaymentSession(ctx, sessionID)
+	}, nil)
+}
+
+// GetReceiptPDF fetches the PDF receipt for a session and returns the raw
+// body. The endpoint returns application/pdf, not JSON, so the generated
+// client's raw response is returned directly.
+//
+// GET /v1/payment_sessions/{session_id}/receipt
+func (c *Client) GetReceiptPDF(ctx context.Context, sessionID string) ([]byte, error) {
+	resp, err := c.raw.GetReceiptBySessionID(ctx, sessionID)
+	if err != nil {
+		return nil, err
+	}
+	defer func() { _ = resp.Body.Close() }()
+	if resp.StatusCode >= 400 {
+		return nil, &Error{
+			StatusCode: resp.StatusCode,
+			Code:       "RECEIPT_FETCH_FAILED",
+			Message:    fmt.Sprintf("HTTP %d", resp.StatusCode),
+		}
+	}
+	return io.ReadAll(resp.Body)
 }

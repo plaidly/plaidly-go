@@ -5,29 +5,30 @@ import (
 	"net/http"
 )
 
-// MerchantsService handles operations on merchant accounts.
-type MerchantsService struct {
-	client *Client
-}
-
-// Register creates a new merchant account.
+// RegisterMerchant creates a new merchant account.
 //
-// See: POST /v1/merchants
-func (s *MerchantsService) Register(ctx context.Context, req CreateMerchantRequest) (*Merchant, error) {
-	var merchant Merchant
-	if err := s.client.do(ctx, http.MethodPost, "/v1/merchants", req, &merchant); err != nil {
+// POST /v1/merchants
+func (c *Client) RegisterMerchant(ctx context.Context, req RegisterMerchantRequest) (*Merchant, error) {
+	var out Merchant
+	err := c.doJSON(ctx, func(ctx context.Context) (*http.Response, error) {
+		return c.raw.RegisterMerchant(ctx, req)
+	}, &out)
+	if err != nil {
 		return nil, err
 	}
-	return &merchant, nil
+	return &out, nil
 }
 
-// Me returns the authenticated merchant's profile.
+// GetMe returns the authenticated merchant's profile.
 //
-// See: GET /v1/me
-func (s *MerchantsService) Me(ctx context.Context) (*Merchant, error) {
-	var merchant Merchant
-	if err := s.client.do(ctx, http.MethodGet, "/v1/me", nil, &merchant); err != nil {
+// GET /v1/me
+func (c *Client) GetMe(ctx context.Context) (*Merchant, error) {
+	var out Merchant
+	err := c.doJSON(ctx, func(ctx context.Context) (*http.Response, error) {
+		return c.raw.GetMe(ctx)
+	}, &out)
+	if err != nil {
 		return nil, err
 	}
-	return &merchant, nil
+	return &out, nil
 }

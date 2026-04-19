@@ -1,0 +1,814 @@
+openapi: "3.1.0"
+info:
+  title: plaidly API
+  description: >
+    The plaidly API provides a set of endpoints for managing information within
+    the plaidly backend system.
+  version: "1.0"
+servers:
+  - url: /
+
+security:
+  - bearerAuth: []
+
+paths:
+  /v1/merchants:
+    post:
+      tags: [Merchants]
+      operationId: registerMerchant
+      summary: Register a new merchant and receive an API key
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterMerchantRequest'
+      responses:
+        '201':
+          description: Merchant registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Merchant'
+        default:
+          description: Error registering merchant
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/me:
+    get:
+      tags: [Merchants]
+      operationId: getMe
+      summary: Get the currently authenticated merchant's info
+      responses:
+        '200':
+          description: Current merchant details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Merchant'
+        default:
+          description: Error fetching merchant info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/me/login:
+    post:
+      tags: [Me]
+      security: []
+      operationId: userLogin
+      summary: Logs in a user and returns user details
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [token]
+              properties:
+                token:
+                  type: string
+                  description: "User auth token"
+      responses:
+        '200':
+          description: Successful login response with user details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          description: Login error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/me/register:
+    post:
+      tags: [Me]
+      security: []
+      operationId: userRegister
+      summary: Registers a new user
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+          description: "Bearer JWT token"
+      responses:
+        '201':
+          description: Successful registration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          description: Registration error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/wallets:
+    post:
+      tags: [Wallets]
+      operationId: createWallet
+      summary: Create a new wallet for a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateWalletRequest'
+      responses:
+        '201':
+          description: Created wallet
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+        default:
+          description: Error creating wallet
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      tags: [Wallets]
+      operationId: listWallets
+      summary: List all wallets
+      responses:
+        '200':
+          description: List of wallets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Wallet'
+        default:
+          description: Error fetching wallets
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/wallets/{wallet_id}:
+    get:
+      tags: [Wallets]
+      operationId: getWallet
+      summary: Get wallet info by ID
+      parameters:
+        - name: wallet_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Wallet ID
+      responses:
+        '200':
+          description: Wallet details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+        default:
+          description: Error fetching wallet
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/wallets/{wallet_id}/transactions:
+    get:
+      tags: [Transactions]
+      operationId: listTransactions
+      summary: List transactions for a wallet
+      parameters:
+        - name: wallet_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Wallet ID
+      responses:
+        '200':
+          description: List of transactions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transaction'
+        default:
+          description: Error fetching transactions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/payouts:
+    post:
+      tags: [Payouts]
+      operationId: requestPayout
+      summary: Request a new payout
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestPayoutRequest'
+      responses:
+        '201':
+          description: Payout requested
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payout'
+        default:
+          description: Error requesting payout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/payouts/{payout_id}:
+    get:
+      tags: [Payouts]
+      operationId: getPayout
+      summary: Get payout status
+      parameters:
+        - name: payout_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Payout ID
+      responses:
+        '200':
+          description: Payout details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payout'
+        default:
+          description: Error fetching payout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/payment_sessions:
+    post:
+      tags: [PaymentSessions]
+      operationId: createPaymentSession
+      summary: Create a new payment session (deposit)
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePaymentSessionRequest'
+      responses:
+        '201':
+          description: Created payment session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentSession'
+        default:
+          description: Error creating payment session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/payment_sessions/demo:
+    post:
+      tags: [PaymentSessions]
+      operationId: createDemoPaymentSession
+      summary: Create a new demo payment session (deposit)
+      responses:
+        '201':
+          description: Created payment session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentSession'
+        default:
+          description: Error creating payment session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/payment_sessions/{session_id}/fulfill:
+    post:
+      tags: [PaymentSessions]
+      summary: Fulfill a demo payment session (simulate payment)
+      operationId: fulfillDemoPaymentSession
+      parameters:
+        - name: session_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Demo session ID
+      responses:
+        '200':
+          description: Demo session fulfilled successfully
+        '404':
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Error fulfilling session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/payment_sessions/{session_id}/provide_wallet:
+    post:
+      tags: [PaymentSessions]
+      summary: Provide a funded dev wallet for the demo session
+      operationId: provideDevWalletForDemo
+      parameters:
+        - name: session_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Demo session ID
+      responses:
+        '200':
+          description: Dev wallet created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  wallet:
+                    type: object
+                    required: [publicKey, privateKey, explorerURL]
+                    properties:
+                      publicKey:
+                        type: string
+                      privateKey:
+                        type: string
+                      explorerURL:
+                        type: string
+        '404':
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Error creating dev wallet
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/payment_sessions/{session_id}:
+    get:
+      tags: [PaymentSessions]
+      operationId: getPaymentSession
+      summary: Get payment session details
+      parameters:
+        - name: session_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Payment session ID
+      responses:
+        '200':
+          description: Payment session details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentSession'
+        default:
+          description: Error fetching payment session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/payment_sessions/{session_id}/receipt:
+    get:
+      tags: [Receipts]
+      operationId: getReceiptBySessionID
+      summary: Get receipt by session ID
+      parameters:
+        - name: session_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Receipt PDF
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        default:
+          description: Error fetching receipt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "JWT or API key in the format: 'Bearer <token>'"
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: "Merchant API key for server-to-server authentication"
+
+  schemas:
+    User:
+      type: object
+      description: User model containing essential user details
+      required:
+        - id
+        - personal_wallet_address
+        - created_wallet_address
+        - last_login_at
+      properties:
+        id:
+          type: string
+          description: "User's ID"
+        personal_wallet_address:
+          type: string
+          description: "The user's personal wallet address"
+        created_wallet_address:
+          type: string
+          description: "The address of the wallet created for the user"
+        last_login_at:
+          type: string
+          description: "The last login timestamp in Unix format"
+          example: "1672531200"
+
+    Error:
+      type: object
+      description: General error model
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int64
+          description: "Error code"
+        message:
+          type: string
+          description: "Error message"
+
+    CreateWalletRequest:
+      type: object
+      required:
+        - user_id
+        - chain
+        - token
+      properties:
+        user_id:
+          type: string
+        chain:
+          type: string
+        token:
+          type: string
+
+    Wallet:
+      type: object
+      required:
+        - id
+        - network
+        - address
+        - private_key_encrypted
+        - type
+        - created_at
+      properties:
+        id:
+          type: string
+        network:
+          type: string
+        address:
+          type: string
+        private_key_encrypted:
+          type: string
+        type:
+          type: string
+          description: "session, cold, or hot"
+        assigned_session_id:
+          type: string
+        created_at:
+          type: string
+
+    Transaction:
+      type: object
+      required:
+        - id
+        - tx_hash
+        - session_id
+        - network
+        - token_symbol
+        - amount
+        - detected_at
+        - confirmed
+      properties:
+        id:
+          type: string
+        tx_hash:
+          type: string
+        session_id:
+          type: string
+        network:
+          type: string
+        token_symbol:
+          type: string
+        from_address:
+          type: string
+        to_address:
+          type: string
+        amount:
+          type: number
+          format: double
+        detected_at:
+          type: string
+        confirmed:
+          type: boolean
+        block_number:
+          type: integer
+          format: int64
+
+    CreatePaymentSessionRequest:
+      type: object
+      required:
+        - amount
+        - expires_in
+        - paymentMethod
+      properties:
+        amount:
+          type: number
+          format: double
+          description: "Expected amount to be paid"
+        expires_in:
+          type: string
+          description: "Duration until session expires (e.g. 15m, 1h)"
+        paymentMethod:
+          $ref: '#/components/schemas/PaymentMethod'
+        metadata:
+          type: object
+          description: "Optional key-value metadata (max 4KB)"
+          additionalProperties: true
+
+    PaymentMethod:
+      type: object
+      required:
+        - chain
+        - methodID
+        - token
+        - network
+      properties:
+        methodID:
+          type: integer
+          format: int64
+          enum: [0, 1]
+          description: "0 = crypto, 1 = fiat"
+        chain:
+          type: string
+        token:
+          type: string
+        network:
+          type: string
+
+    PaymentSession:
+      type: object
+      required:
+        - session_id
+        - merchant_id
+        - expected_amount
+        - received_amount
+        - address
+        - status
+        - metadata
+        - expires_at
+        - created_at
+        - updated_at
+        - paymentMethod
+        - demo
+      properties:
+        session_id:
+          type: string
+        merchant_id:
+          type: string
+        expected_amount:
+          type: number
+          format: double
+        received_amount:
+          type: number
+          format: double
+        address:
+          type: string
+        status:
+          type: string
+        metadata:
+          type: object
+          additionalProperties: true
+        expires_at:
+          type: string
+        completed_at:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        demo:
+          type: boolean
+        paymentMethod:
+          $ref: '#/components/schemas/PaymentMethod'
+
+    Receipt:
+      type: object
+      required:
+        - id
+        - session_id
+        - merchant_id
+        - issued_at
+        - amount
+        - currency
+      properties:
+        id:
+          type: string
+        session_id:
+          type: string
+        merchant_id:
+          type: string
+        issued_at:
+          type: string
+          format: date-time
+        amount:
+          type: number
+          format: double
+        currency:
+          type: string
+
+    SweepResponse:
+      type: object
+      required:
+        - success
+        - sweep_tx_hash
+      properties:
+        success:
+          type: boolean
+        sweep_tx_hash:
+          type: string
+
+    RequestPayoutRequest:
+      type: object
+      required:
+        - destination_address
+        - amount
+        - token_symbol
+        - network
+      properties:
+        destination_address:
+          type: string
+          description: "Blockchain address to send the payout to"
+        amount:
+          type: number
+          format: double
+          description: "Amount to pay out"
+        token_symbol:
+          type: string
+          description: "Token symbol (e.g. SOL, ETH)"
+        network:
+          type: string
+          description: "Blockchain network (e.g. solana, ethereum)"
+
+    Payout:
+      type: object
+      required:
+        - id
+        - merchant_id
+        - destination_address
+        - amount
+        - token_symbol
+        - network
+        - status
+        - requested_at
+      properties:
+        id:
+          type: string
+        merchant_id:
+          type: string
+        destination_address:
+          type: string
+        amount:
+          type: number
+          format: double
+        token_symbol:
+          type: string
+        network:
+          type: string
+        tx_hash:
+          type: string
+        status:
+          type: string
+        requested_at:
+          type: string
+        sent_at:
+          type: string
+
+    RegisterMerchantRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: "Merchant display name"
+        webhook_url:
+          type: string
+          description: "Optional webhook URL for payment notifications"
+
+    Merchant:
+      type: object
+      required:
+        - id
+        - name
+        - api_key
+        - created_at
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        api_key:
+          type: string
+          description: "API key for authenticating requests"
+        webhook_url:
+          type: string
+        rate_limit_per_minute:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+
+    SendRequest:
+      type: object
+      required:
+        - to_address
+        - amount
+        - token
+      properties:
+        to_address:
+          type: string
+        amount:
+          type: number
+          format: double
+        token:
+          type: string
+
+    SendResponse:
+      type: object
+      required:
+        - success
+        - tx_hash
+      properties:
+        success:
+          type: boolean
+        tx_hash:
+          type: string
+
+tags:
+  - name: Merchants
+  - name: Receipts
+  - name: Me
+  - name: Wallets
+  - name: Transactions
+  - name: PaymentSessions
+  - name: Payouts

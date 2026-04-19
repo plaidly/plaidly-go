@@ -2,6 +2,12 @@
 
 Official Go SDK for the [Plaidly](https://plaidly.io) cryptocurrency payment API.
 
+Types and the underlying HTTP client are auto-generated from the Plaidly
+OpenAPI 3.1 spec with [`oapi-codegen`](https://github.com/oapi-codegen/oapi-codegen).
+The `Client` type in this package is a hand-written wrapper that adds the
+`X-API-Key` header, retries on transient 5xx failures, and surfaces typed
+`*plaidly.Error` values.
+
 ## Installation
 
 ```bash
@@ -22,20 +28,26 @@ import (
 )
 
 func main() {
-    client := plaidly.NewClient("pk_live_...")
+    client, err := plaidly.NewClient("pk_live_...")
+    if err != nil {
+        log.Fatal(err)
+    }
 
-    session, err := client.Sessions.Create(context.Background(), plaidly.CreateSessionRequest{
-        Amount:      "10.00",
-        Currency:    "USDC",
-        Chain:       "solana",
-        Network:     "mainnet",
-        CallbackURL: "https://yoursite.com/webhook",
+    session, err := client.CreatePaymentSession(context.Background(), plaidly.CreatePaymentSessionRequest{
+        Amount:    10.0,
+        ExpiresIn: "15m",
+        PaymentMethod: plaidly.PaymentMethod{
+            MethodID: 0,
+            Chain:    "solana",
+            Token:    "USDC",
+            Network:  "mainnet",
+        },
     })
     if err != nil {
         log.Fatal(err)
     }
 
-    fmt.Println("Send funds to:", session.WalletAddress)
+    fmt.Println("Send funds to:", session.Address)
 }
 ```
 
@@ -60,12 +72,34 @@ http.HandleFunc("/webhook", func(w http.ResponseWriter, r *http.Request) {
 ## Configuration
 
 ```go
-client := plaidly.NewClient(
+client, _ := plaidly.NewClient(
     "pk_live_...",
     plaidly.WithBaseURL("https://sandbox.api.plaidly.io"),
     plaidly.WithHTTPClient(myHTTPClient),
 )
 ```
+
+## Escape hatch — generated client
+
+```go
+resp, err := client.Raw().GetMe(ctx)
+```
+
+## Regenerating from the spec
+
+The committed copy of the Plaidly spec lives at `spec/openapi.yaml`.
+
+```bash
+make generate              # default
+make generate SPEC=path/to/openapi.yaml
+make generate OAPI_CODEGEN_VERSION=v2.4.1
+```
+
+Generated output: `generated/plaidlyapi/plaidlyapi.gen.go`. Do not edit by hand.
+
+Pinned versions:
+
+- `oapi-codegen` — `v2.4.1` (same as plaidly-api)
 
 ## API Reference
 

@@ -1,0 +1,8 @@
+package: plaidlyapi
+generate:
+  models: true
+  client: true
+  embedded-spec: true
+output: generated/plaidlyapi/plaidlyapi.gen.go
+output-options:
+  skip-prune: true

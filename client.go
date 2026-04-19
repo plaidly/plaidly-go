@@ -1,13 +1,21 @@
 // Package plaidly provides a Go client for the Plaidly cryptocurrency payment API.
 //
+// All API types and the raw HTTP client are generated from the Plaidly
+// OpenAPI 3.1 specification (see spec/openapi.yaml, regenerate with `make
+// generate`). The Client type in this file is a hand-written wrapper that
+// adds the X-API-Key header, retries on transient 5xx failures, and
+// translates non-2xx responses into a typed *Error.
+//
 // Usage:
 //
-//	client := plaidly.NewClient("pk_live_...")
-//	session, err := client.Sessions.Create(ctx, plaidly.CreateSessionRequest{
-//	    Amount:   "100.00",
-//	    Currency: "USDC",
-//	    Chain:    "solana",
-//	    Network:  "mainnet",
+//	client, err := plaidly.NewClient("pk_live_...")
+//	if err != nil { /* ... */ }
+//	session, err := client.CreatePaymentSession(ctx, plaidlyapi.CreatePaymentSessionRequest{
+//	    Amount:     100.00,
+//	    ExpiresIn:  "15m",
+//	    PaymentMethod: plaidlyapi.PaymentMethod{
+//	        MethodID: 0, Chain: "solana", Token: "USDC", Network: "mainnet",
+//	    },
 //	})
 package plaidly
 
@@ -16,33 +24,47 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
+	"io"
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/plaidly/plaidly-go/generated/plaidlyapi"
 )
 
 const defaultBaseURL = "https://api.plaidly.io"
 
-// Client is the Plaidly API client.
+// Re-export generated types so callers only need to import this package.
+type (
+	CreatePaymentSessionRequest = plaidlyapi.CreatePaymentSessionRequest
+	CreateWalletRequest         = plaidlyapi.CreateWalletRequest
+	Merchant                    = plaidlyapi.Merchant
+	PaymentMethod               = plaidlyapi.PaymentMethod
+	PaymentSession              = plaidlyapi.PaymentSession
+	Payout                      = plaidlyapi.Payout
+	Receipt                     = plaidlyapi.Receipt
+	RegisterMerchantRequest     = plaidlyapi.RegisterMerchantRequest
+	RequestPayoutRequest        = plaidlyapi.RequestPayoutRequest
+	Transaction                 = plaidlyapi.Transaction
+	User                        = plaidlyapi.User
+	Wallet                      = plaidlyapi.Wallet
+)
+
+// Client is the high-level Plaidly API client.
+// Methods on Client are wrappers around the generated plaidlyapi.Client that
+// decode responses into typed values and surface API errors as *Error.
 type Client struct {
 	apiKey  string
 	baseURL string
 	http    *http.Client
-
-	// Sessions provides operations on payment sessions.
-	Sessions *SessionsService
-	// Merchants provides operations on merchant accounts.
-	Merchants *MerchantsService
-	// Payouts provides operations on payouts.
-	Payouts *PayoutsService
-	// Sandbox provides sandbox-only helpers.
-	Sandbox *SandboxService
+	raw     *plaidlyapi.Client
 }
 
 // Option is a functional option for configuring a Client.
 type Option func(*Client)
 
-// WithBaseURL overrides the API base URL (useful for testing against a mock server).
+// WithBaseURL overrides the API base URL (useful for testing).
 func WithBaseURL(url string) Option {
 	return func(c *Client) { c.baseURL = strings.TrimRight(url, "/") }
 }
@@ -53,10 +75,10 @@ func WithHTTPClient(h *http.Client) Option {
 }
 
 // NewClient creates a new Plaidly API client.
-//
-// apiKey is your merchant API key (passed as the X-API-Key header).
-// Use Option functions to override defaults.
-func NewClient(apiKey string, opts ...Option) *Client {
+func NewClient(apiKey string, opts ...Option) (*Client, error) {
+	if apiKey == "" {
+		return nil, errors.New("plaidly: apiKey is required")
+	}
 	c := &Client{
 		apiKey:  apiKey,
 		baseURL: defaultBaseURL,
@@ -65,15 +87,30 @@ func NewClient(apiKey string, opts ...Option) *Client {
 	for _, opt := range opts {
 		opt(c)
 	}
-	c.Sessions = &SessionsService{client: c}
-	c.Merchants = &MerchantsService{client: c}
-	c.Payouts = &PayoutsService{client: c}
-	c.Sandbox = &SandboxService{client: c}
-	return c
+	raw, err := plaidlyapi.NewClient(
+		c.baseURL,
+		plaidlyapi.WithHTTPClient(c.http),
+		plaidlyapi.WithRequestEditorFn(func(_ context.Context, req *http.Request) error {
+			req.Header.Set("X-API-Key", c.apiKey)
+			req.Header.Set("Accept", "application/json")
+			return nil
+		}),
+	)
+	if err != nil {
+		return nil, err
+	}
+	c.raw = raw
+	return c, nil
 }
 
-// do executes an HTTP request with up to 3 attempts on transient failures.
-func (c *Client) do(ctx context.Context, method, path string, body, result any) error {
+// Raw returns the underlying generated client. Use this to call endpoints
+// that are not yet exposed by the higher-level Client methods.
+func (c *Client) Raw() *plaidlyapi.Client { return c.raw }
+
+// doJSON executes fn (a generated client call) with up to 3 attempts on
+// transient 5xx failures, decodes the 2xx JSON body into out (if non-nil),
+// and returns a typed *Error on non-2xx responses.
+func (c *Client) doJSON(ctx context.Context, fn func(context.Context) (*http.Response, error), out any) error {
 	var lastErr error
 	for attempt := 0; attempt < 3; attempt++ {
 		if attempt > 0 {
@@ -83,56 +120,68 @@ func (c *Client) do(ctx context.Context, method, path string, body, result any) 
 			case <-time.After(time.Duration(1<<attempt) * 500 * time.Millisecond):
 			}
 		}
-		lastErr = c.doOnce(ctx, method, path, body, result)
-		if lastErr == nil {
-			return nil
+		resp, err := fn(ctx)
+		if err != nil {
+			lastErr = err
+			continue
 		}
-		var apiErr *Error
-		if errors.As(lastErr, &apiErr) && apiErr.StatusCode < 500 {
-			return lastErr // don't retry client errors
+		apiErr, decoded, decodeErr := decodeResponse(resp, out)
+		if apiErr != nil && apiErr.StatusCode >= 500 {
+			lastErr = apiErr
+			continue
 		}
+		if apiErr != nil {
+			return apiErr
+		}
+		if decodeErr != nil {
+			return decodeErr
+		}
+		_ = decoded
+		return nil
 	}
 	return lastErr
 }
 
-// doOnce executes a single HTTP request and decodes the response into result (if non-nil).
-func (c *Client) doOnce(ctx context.Context, method, path string, body, result any) error {
-	var buf bytes.Buffer
-	if body != nil {
-		if err := json.NewEncoder(&buf).Encode(body); err != nil {
-			return err
-		}
-	}
-
-	req, err := http.NewRequestWithContext(ctx, method, c.baseURL+path, &buf)
-	if err != nil {
-		return err
-	}
-	req.Header.Set("X-API-Key", c.apiKey)
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Accept", "application/json")
-
-	resp, err := c.http.Do(req)
-	if err != nil {
-		return err
-	}
+// decodeResponse inspects an HTTP response; returns a non-nil *Error for
+// non-2xx, or decodes the body into out for 2xx JSON responses.
+func decodeResponse(resp *http.Response, out any) (*Error, bool, error) {
 	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode >= 400 {
+		body, _ := io.ReadAll(resp.Body)
 		var apiErr struct {
 			Message string `json:"message"`
 			Code    string `json:"code"`
 		}
-		_ = json.NewDecoder(resp.Body).Decode(&apiErr)
+		_ = json.Unmarshal(body, &apiErr)
 		return &Error{
 			StatusCode: resp.StatusCode,
 			Message:    apiErr.Message,
 			Code:       apiErr.Code,
-		}
+		}, false, nil
 	}
 
-	if result != nil && resp.StatusCode != http.StatusNoContent {
-		return json.NewDecoder(resp.Body).Decode(result)
+	if out == nil || resp.StatusCode == http.StatusNoContent {
+		// Drain body to allow connection reuse.
+		_, _ = io.Copy(io.Discard, resp.Body)
+		return nil, false, nil
 	}
-	return nil
+	if err := json.NewDecoder(resp.Body).Decode(out); err != nil {
+		return nil, false, fmt.Errorf("plaidly: decode response: %w", err)
+	}
+	return nil, true, nil
 }
+
+// readAllBody drains resp.Body and returns a fresh reader, so the retry
+// loop can re-inspect a body without double-closing the response.
+func readAllBody(resp *http.Response) []byte {
+	if resp == nil || resp.Body == nil {
+		return nil
+	}
+	b, _ := io.ReadAll(resp.Body)
+	_ = resp.Body.Close()
+	resp.Body = io.NopCloser(bytes.NewReader(b))
+	return b
+}
+
+var _ = readAllBody // kept for future streaming helpers
