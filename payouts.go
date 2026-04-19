@@ -2,33 +2,33 @@ package plaidly
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 )
 
-// PayoutsService handles payout operations.
-type PayoutsService struct {
-	client *Client
-}
-
-// Create requests a new payout.
+// RequestPayout requests a new payout.
 //
-// See: POST /v1/payouts
-func (s *PayoutsService) Create(ctx context.Context, req CreatePayoutRequest) (*Payout, error) {
-	var payout Payout
-	if err := s.client.do(ctx, http.MethodPost, "/v1/payouts", req, &payout); err != nil {
+// POST /v1/payouts
+func (c *Client) RequestPayout(ctx context.Context, req RequestPayoutRequest) (*Payout, error) {
+	var out Payout
+	err := c.doJSON(ctx, func(ctx context.Context) (*http.Response, error) {
+		return c.raw.RequestPayout(ctx, req)
+	}, &out)
+	if err != nil {
 		return nil, err
 	}
-	return &payout, nil
+	return &out, nil
 }
 
-// Get fetches a payout by ID.
+// GetPayout fetches a payout by ID.
 //
-// See: GET /v1/payouts/{id}
-func (s *PayoutsService) Get(ctx context.Context, id string) (*Payout, error) {
-	var payout Payout
-	if err := s.client.do(ctx, http.MethodGet, fmt.Sprintf("/v1/payouts/%s", id), nil, &payout); err != nil {
+// GET /v1/payouts/{payout_id}
+func (c *Client) GetPayout(ctx context.Context, payoutID string) (*Payout, error) {
+	var out Payout
+	err := c.doJSON(ctx, func(ctx context.Context) (*http.Response, error) {
+		return c.raw.GetPayout(ctx, payoutID)
+	}, &out)
+	if err != nil {
 		return nil, err
 	}
-	return &payout, nil
+	return &out, nil
 }
