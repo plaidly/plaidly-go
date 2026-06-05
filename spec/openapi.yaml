@@ -407,6 +407,118 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /v1/payment_methods:
+    get:
+      tags: [PaymentSessions]
+      operationId: listPaymentMethods
+      summary: List enabled payment methods (chain/token combinations)
+      security: []
+      responses:
+        '200':
+          description: List of available payment methods
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PaymentMethodInfo'
+        default:
+          description: Error fetching payment methods
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/rates:
+    get:
+      tags: [PaymentSessions]
+      operationId: getRates
+      summary: Get USD spot rates for supported assets
+      security: []
+      parameters:
+        - name: symbols
+          in: query
+          required: false
+          schema:
+            type: string
+          description: "Comma-separated symbols (e.g. ETH,SOL,USDC). Omit for all."
+      responses:
+        '200':
+          description: List of rates
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RateInfo'
+        default:
+          description: Rates temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/sandbox/faucets:
+    get:
+      tags: [PaymentSessions]
+      operationId: listSandboxFaucets
+      summary: List testnet faucet URLs per chain
+      security: []
+      responses:
+        '200':
+          description: Map of chain:network to faucet URL
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        default:
+          description: Error fetching faucets
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/payment_sessions/{session_id}/simulate:
+    post:
+      tags: [PaymentSessions]
+      operationId: simulatePayment
+      summary: Simulate a payment for a demo/sandbox session
+      security: []
+      parameters:
+        - name: session_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Payment session ID
+      responses:
+        '200':
+          description: Simulated payment session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentSession'
+        '404':
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Session is not pending or is not a demo/sandbox session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Error simulating payment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /v1/payment_sessions/{session_id}/receipt:
     get:
       tags: [Receipts]
@@ -633,6 +745,18 @@ components:
           type: string
         status:
           type: string
+        currency:
+          type: string
+          description: "Token symbol the session is denominated in"
+        payment_url:
+          type: string
+          description: "Hosted checkout URL for the payer"
+        qr_data:
+          type: string
+          description: "Payer payment URI for QR encoding"
+        explorer_url:
+          type: string
+          description: "Block explorer URL for the deposit address"
         metadata:
           type: object
           additionalProperties: true
@@ -772,10 +896,56 @@ components:
           description: "API key for authenticating requests"
         webhook_url:
           type: string
+        webhook_secret:
+          type: string
+          description: "HMAC secret used to sign webhook deliveries (response only)"
         rate_limit_per_minute:
           type: integer
           format: int64
         created_at:
+          type: string
+
+    PaymentMethodInfo:
+      type: object
+      required:
+        - chain
+        - network
+        - token
+        - display_name
+        - decimals
+        - kind
+      properties:
+        chain:
+          type: string
+        network:
+          type: string
+        token:
+          type: string
+        display_name:
+          type: string
+        decimals:
+          type: integer
+          format: int64
+        kind:
+          type: string
+          description: "native, erc20, trc20, spl, jetton"
+        min_amount:
+          type: number
+          format: double
+
+    RateInfo:
+      type: object
+      required:
+        - symbol
+        - usd
+        - updated_at
+      properties:
+        symbol:
+          type: string
+        usd:
+          type: number
+          format: double
+        updated_at:
           type: string
 
     SendRequest:
