@@ -70,7 +70,10 @@ type Merchant struct {
 	Id                 string  `json:"id"`
 	Name               string  `json:"name"`
 	RateLimitPerMinute *int64  `json:"rate_limit_per_minute,omitempty"`
-	WebhookUrl         *string `json:"webhook_url,omitempty"`
+
+	// WebhookSecret HMAC secret used to sign webhook deliveries (response only)
+	WebhookSecret *string `json:"webhook_secret,omitempty"`
+	WebhookUrl    *string `json:"webhook_url,omitempty"`
 }
 
 // PaymentMethod defines model for PaymentMethod.
@@ -86,21 +89,46 @@ type PaymentMethod struct {
 // PaymentMethodMethodID 0 = crypto, 1 = fiat
 type PaymentMethodMethodID int64
 
+// PaymentMethodInfo defines model for PaymentMethodInfo.
+type PaymentMethodInfo struct {
+	Chain       string `json:"chain"`
+	Decimals    int64  `json:"decimals"`
+	DisplayName string `json:"display_name"`
+
+	// Kind native, erc20, trc20, spl, jetton
+	Kind      string   `json:"kind"`
+	MinAmount *float64 `json:"min_amount,omitempty"`
+	Network   string   `json:"network"`
+	Token     string   `json:"token"`
+}
+
 // PaymentSession defines model for PaymentSession.
 type PaymentSession struct {
-	Address        string                 `json:"address"`
-	CompletedAt    *string                `json:"completed_at,omitempty"`
-	CreatedAt      string                 `json:"created_at"`
-	Demo           bool                   `json:"demo"`
-	ExpectedAmount float64                `json:"expected_amount"`
-	ExpiresAt      string                 `json:"expires_at"`
-	MerchantId     string                 `json:"merchant_id"`
-	Metadata       map[string]interface{} `json:"metadata"`
-	PaymentMethod  PaymentMethod          `json:"paymentMethod"`
-	ReceivedAmount float64                `json:"received_amount"`
-	SessionId      string                 `json:"session_id"`
-	Status         string                 `json:"status"`
-	UpdatedAt      string                 `json:"updated_at"`
+	Address     string  `json:"address"`
+	CompletedAt *string `json:"completed_at,omitempty"`
+	CreatedAt   string  `json:"created_at"`
+
+	// Currency Token symbol the session is denominated in
+	Currency       *string `json:"currency,omitempty"`
+	Demo           bool    `json:"demo"`
+	ExpectedAmount float64 `json:"expected_amount"`
+	ExpiresAt      string  `json:"expires_at"`
+
+	// ExplorerUrl Block explorer URL for the deposit address
+	ExplorerUrl   *string                `json:"explorer_url,omitempty"`
+	MerchantId    string                 `json:"merchant_id"`
+	Metadata      map[string]interface{} `json:"metadata"`
+	PaymentMethod PaymentMethod          `json:"paymentMethod"`
+
+	// PaymentUrl Hosted checkout URL for the payer
+	PaymentUrl *string `json:"payment_url,omitempty"`
+
+	// QrData Payer payment URI for QR encoding
+	QrData         *string `json:"qr_data,omitempty"`
+	ReceivedAmount float64 `json:"received_amount"`
+	SessionId      string  `json:"session_id"`
+	Status         string  `json:"status"`
+	UpdatedAt      string  `json:"updated_at"`
 }
 
 // Payout defines model for Payout.
@@ -115,6 +143,13 @@ type Payout struct {
 	Status             string  `json:"status"`
 	TokenSymbol        string  `json:"token_symbol"`
 	TxHash             *string `json:"tx_hash,omitempty"`
+}
+
+// RateInfo defines model for RateInfo.
+type RateInfo struct {
+	Symbol    string  `json:"symbol"`
+	UpdatedAt string  `json:"updated_at"`
+	Usd       float64 `json:"usd"`
 }
 
 // Receipt defines model for Receipt.
@@ -225,6 +260,12 @@ type UserRegisterParams struct {
 	Authorization string `json:"Authorization"`
 }
 
+// GetRatesParams defines parameters for GetRates.
+type GetRatesParams struct {
+	// Symbols Comma-separated symbols (e.g. ETH,SOL,USDC). Omit for all.
+	Symbols *string `form:"symbols,omitempty" json:"symbols,omitempty"`
+}
+
 // UserLoginJSONRequestBody defines body for UserLogin for application/json ContentType.
 type UserLoginJSONRequestBody UserLoginJSONBody
 
@@ -329,6 +370,9 @@ type ClientInterface interface {
 
 	RegisterMerchant(ctx context.Context, body RegisterMerchantJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ListPaymentMethods request
+	ListPaymentMethods(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// CreatePaymentSessionWithBody request with any body
 	CreatePaymentSessionWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -349,6 +393,9 @@ type ClientInterface interface {
 	// GetReceiptBySessionID request
 	GetReceiptBySessionID(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// SimulatePayment request
+	SimulatePayment(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// RequestPayoutWithBody request with any body
 	RequestPayoutWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -356,6 +403,12 @@ type ClientInterface interface {
 
 	// GetPayout request
 	GetPayout(ctx context.Context, payoutId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetRates request
+	GetRates(ctx context.Context, params *GetRatesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListSandboxFaucets request
+	ListSandboxFaucets(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListWallets request
 	ListWallets(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -434,6 +487,18 @@ func (c *Client) RegisterMerchantWithBody(ctx context.Context, contentType strin
 
 func (c *Client) RegisterMerchant(ctx context.Context, body RegisterMerchantJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewRegisterMerchantRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListPaymentMethods(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListPaymentMethodsRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -528,6 +593,18 @@ func (c *Client) GetReceiptBySessionID(ctx context.Context, sessionId string, re
 	return c.Client.Do(req)
 }
 
+func (c *Client) SimulatePayment(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSimulatePaymentRequest(c.Server, sessionId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) RequestPayoutWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewRequestPayoutRequestWithBody(c.Server, contentType, body)
 	if err != nil {
@@ -554,6 +631,30 @@ func (c *Client) RequestPayout(ctx context.Context, body RequestPayoutJSONReques
 
 func (c *Client) GetPayout(ctx context.Context, payoutId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetPayoutRequest(c.Server, payoutId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetRates(ctx context.Context, params *GetRatesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetRatesRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListSandboxFaucets(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListSandboxFaucetsRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -771,6 +872,33 @@ func NewRegisterMerchantRequestWithBody(server string, contentType string, body 
 	return req, nil
 }
 
+// NewListPaymentMethodsRequest generates requests for ListPaymentMethods
+func NewListPaymentMethodsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/payment_methods")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewCreatePaymentSessionRequest calls the generic CreatePaymentSession builder with application/json body
 func NewCreatePaymentSessionRequest(server string, body CreatePaymentSessionJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -974,6 +1102,40 @@ func NewGetReceiptBySessionIDRequest(server string, sessionId string) (*http.Req
 	return req, nil
 }
 
+// NewSimulatePaymentRequest generates requests for SimulatePayment
+func NewSimulatePaymentRequest(server string, sessionId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "session_id", runtime.ParamLocationPath, sessionId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/payment_sessions/%s/simulate", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewRequestPayoutRequest calls the generic RequestPayout builder with application/json body
 func NewRequestPayoutRequest(server string, body RequestPayoutJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -1031,6 +1193,82 @@ func NewGetPayoutRequest(server string, payoutId string) (*http.Request, error) 
 	}
 
 	operationPath := fmt.Sprintf("/v1/payouts/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetRatesRequest generates requests for GetRates
+func NewGetRatesRequest(server string, params *GetRatesParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/rates")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Symbols != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "symbols", runtime.ParamLocationQuery, *params.Symbols); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewListSandboxFaucetsRequest generates requests for ListSandboxFaucets
+func NewListSandboxFaucetsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/sandbox/faucets")
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -1242,6 +1480,9 @@ type ClientWithResponsesInterface interface {
 
 	RegisterMerchantWithResponse(ctx context.Context, body RegisterMerchantJSONRequestBody, reqEditors ...RequestEditorFn) (*RegisterMerchantResponse, error)
 
+	// ListPaymentMethodsWithResponse request
+	ListPaymentMethodsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListPaymentMethodsResponse, error)
+
 	// CreatePaymentSessionWithBodyWithResponse request with any body
 	CreatePaymentSessionWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreatePaymentSessionResponse, error)
 
@@ -1262,6 +1503,9 @@ type ClientWithResponsesInterface interface {
 	// GetReceiptBySessionIDWithResponse request
 	GetReceiptBySessionIDWithResponse(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*GetReceiptBySessionIDResponse, error)
 
+	// SimulatePaymentWithResponse request
+	SimulatePaymentWithResponse(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*SimulatePaymentResponse, error)
+
 	// RequestPayoutWithBodyWithResponse request with any body
 	RequestPayoutWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RequestPayoutResponse, error)
 
@@ -1269,6 +1513,12 @@ type ClientWithResponsesInterface interface {
 
 	// GetPayoutWithResponse request
 	GetPayoutWithResponse(ctx context.Context, payoutId string, reqEditors ...RequestEditorFn) (*GetPayoutResponse, error)
+
+	// GetRatesWithResponse request
+	GetRatesWithResponse(ctx context.Context, params *GetRatesParams, reqEditors ...RequestEditorFn) (*GetRatesResponse, error)
+
+	// ListSandboxFaucetsWithResponse request
+	ListSandboxFaucetsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListSandboxFaucetsResponse, error)
 
 	// ListWalletsWithResponse request
 	ListWalletsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListWalletsResponse, error)
@@ -1371,6 +1621,29 @@ func (r RegisterMerchantResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r RegisterMerchantResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListPaymentMethodsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]PaymentMethodInfo
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r ListPaymentMethodsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListPaymentMethodsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1521,6 +1794,31 @@ func (r GetReceiptBySessionIDResponse) StatusCode() int {
 	return 0
 }
 
+type SimulatePaymentResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *PaymentSession
+	JSON404      *Error
+	JSON409      *Error
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r SimulatePaymentResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r SimulatePaymentResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type RequestPayoutResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -1561,6 +1859,52 @@ func (r GetPayoutResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r GetPayoutResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetRatesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]RateInfo
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r GetRatesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetRatesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListSandboxFaucetsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *map[string]string
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r ListSandboxFaucetsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListSandboxFaucetsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1711,6 +2055,15 @@ func (c *ClientWithResponses) RegisterMerchantWithResponse(ctx context.Context, 
 	return ParseRegisterMerchantResponse(rsp)
 }
 
+// ListPaymentMethodsWithResponse request returning *ListPaymentMethodsResponse
+func (c *ClientWithResponses) ListPaymentMethodsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListPaymentMethodsResponse, error) {
+	rsp, err := c.ListPaymentMethods(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListPaymentMethodsResponse(rsp)
+}
+
 // CreatePaymentSessionWithBodyWithResponse request with arbitrary body returning *CreatePaymentSessionResponse
 func (c *ClientWithResponses) CreatePaymentSessionWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreatePaymentSessionResponse, error) {
 	rsp, err := c.CreatePaymentSessionWithBody(ctx, contentType, body, reqEditors...)
@@ -1773,6 +2126,15 @@ func (c *ClientWithResponses) GetReceiptBySessionIDWithResponse(ctx context.Cont
 	return ParseGetReceiptBySessionIDResponse(rsp)
 }
 
+// SimulatePaymentWithResponse request returning *SimulatePaymentResponse
+func (c *ClientWithResponses) SimulatePaymentWithResponse(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*SimulatePaymentResponse, error) {
+	rsp, err := c.SimulatePayment(ctx, sessionId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSimulatePaymentResponse(rsp)
+}
+
 // RequestPayoutWithBodyWithResponse request with arbitrary body returning *RequestPayoutResponse
 func (c *ClientWithResponses) RequestPayoutWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RequestPayoutResponse, error) {
 	rsp, err := c.RequestPayoutWithBody(ctx, contentType, body, reqEditors...)
@@ -1797,6 +2159,24 @@ func (c *ClientWithResponses) GetPayoutWithResponse(ctx context.Context, payoutI
 		return nil, err
 	}
 	return ParseGetPayoutResponse(rsp)
+}
+
+// GetRatesWithResponse request returning *GetRatesResponse
+func (c *ClientWithResponses) GetRatesWithResponse(ctx context.Context, params *GetRatesParams, reqEditors ...RequestEditorFn) (*GetRatesResponse, error) {
+	rsp, err := c.GetRates(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetRatesResponse(rsp)
+}
+
+// ListSandboxFaucetsWithResponse request returning *ListSandboxFaucetsResponse
+func (c *ClientWithResponses) ListSandboxFaucetsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListSandboxFaucetsResponse, error) {
+	rsp, err := c.ListSandboxFaucets(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListSandboxFaucetsResponse(rsp)
 }
 
 // ListWalletsWithResponse request returning *ListWalletsResponse
@@ -1962,6 +2342,39 @@ func ParseRegisterMerchantResponse(rsp *http.Response) (*RegisterMerchantRespons
 			return nil, err
 		}
 		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListPaymentMethodsResponse parses an HTTP response from a ListPaymentMethodsWithResponse call
+func ParseListPaymentMethodsResponse(rsp *http.Response) (*ListPaymentMethodsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListPaymentMethodsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []PaymentMethodInfo
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
 		var dest Error
@@ -2179,6 +2592,53 @@ func ParseGetReceiptBySessionIDResponse(rsp *http.Response) (*GetReceiptBySessio
 	return response, nil
 }
 
+// ParseSimulatePaymentResponse parses an HTTP response from a SimulatePaymentWithResponse call
+func ParseSimulatePaymentResponse(rsp *http.Response) (*SimulatePaymentResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &SimulatePaymentResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PaymentSession
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseRequestPayoutResponse parses an HTTP response from a RequestPayoutWithResponse call
 func ParseRequestPayoutResponse(rsp *http.Response) (*RequestPayoutResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -2228,6 +2688,72 @@ func ParseGetPayoutResponse(rsp *http.Response) (*GetPayoutResponse, error) {
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest Payout
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetRatesResponse parses an HTTP response from a GetRatesWithResponse call
+func ParseGetRatesResponse(rsp *http.Response) (*GetRatesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetRatesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []RateInfo
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListSandboxFaucetsResponse parses an HTTP response from a ListSandboxFaucetsWithResponse call
+func ParseListSandboxFaucetsResponse(rsp *http.Response) (*ListSandboxFaucetsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListSandboxFaucetsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest map[string]string
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -2380,50 +2906,60 @@ func ParseListTransactionsResponse(rsp *http.Response) (*ListTransactionsRespons
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
+	"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",
+	"rf4TAAD//0Y+dQaASAAA",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file
