@@ -41,8 +41,10 @@ type (
 	CreateWalletRequest         = plaidlyapi.CreateWalletRequest
 	Merchant                    = plaidlyapi.Merchant
 	PaymentMethod               = plaidlyapi.PaymentMethod
+	PaymentMethodInfo           = plaidlyapi.PaymentMethodInfo
 	PaymentSession              = plaidlyapi.PaymentSession
 	Payout                      = plaidlyapi.Payout
+	RateInfo                    = plaidlyapi.RateInfo
 	Receipt                     = plaidlyapi.Receipt
 	RegisterMerchantRequest     = plaidlyapi.RegisterMerchantRequest
 	RequestPayoutRequest        = plaidlyapi.RequestPayoutRequest
@@ -50,6 +52,40 @@ type (
 	User                        = plaidlyapi.User
 	Wallet                      = plaidlyapi.Wallet
 )
+
+// MethodID values for PaymentMethod.MethodID.
+const (
+	MethodIDCrypto plaidlyapi.PaymentMethodMethodID = 0
+	MethodIDFiat   plaidlyapi.PaymentMethodMethodID = 1
+)
+
+// Payment session statuses. completed and confirmed both indicate success.
+const (
+	StatusPending     = "pending"
+	StatusPartialPaid = "partial_paid"
+	StatusPaid        = "paid"
+	StatusFinalizing  = "finalizing"
+	StatusConfirmed   = "confirmed"
+	StatusCompleted   = "completed"
+	StatusExpired     = "expired"
+	StatusFailed      = "failed"
+)
+
+// IsSuccess reports whether a session status represents a successfully settled
+// payment. Both confirmed and completed are treated as success.
+func IsSuccess(status string) bool {
+	return status == StatusConfirmed || status == StatusCompleted
+}
+
+// IsTerminal reports whether a session status is final (no further transitions).
+func IsTerminal(status string) bool {
+	switch status {
+	case StatusCompleted, StatusConfirmed, StatusExpired, StatusFailed:
+		return true
+	default:
+		return false
+	}
+}
 
 // Client is the high-level Plaidly API client.
 // Methods on Client are wrappers around the generated plaidlyapi.Client that
