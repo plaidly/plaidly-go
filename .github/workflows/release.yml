@@ -1,0 +1,38 @@
+name: Release
+
+# A Go module is "published" by pushing a semver tag; the public module
+# proxy then serves it. This workflow gates that tag on a green test run and
+# warms proxy.golang.org so `go get` resolves the new version immediately.
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.24'
+
+      - name: Verify tag is semantic version
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          echo "$TAG" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$' || {
+            echo "Tag '$TAG' is not vMAJOR.MINOR.PATCH"; exit 1; }
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Test
+        run: go test ./...
+
+      - name: Warm the Go module proxy
+        run: |
+          MODULE=$(go list -m)
+          echo "Requesting ${MODULE}@${GITHUB_REF_NAME} from proxy.golang.org"
+          curl -fsS "https://proxy.golang.org/${MODULE}/@v/${GITHUB_REF_NAME}.info" \
+            && echo "proxy now serves ${GITHUB_REF_NAME}" \
+            || echo "proxy fetch returned non-200 (it will pick the tag up shortly)"
