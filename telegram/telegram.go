@@ -57,7 +57,8 @@ type InvoiceOptions struct {
 	// Metadata is attached to the session and echoed back in webhooks.
 	Metadata map[string]any
 	// ButtonText is the label for the pay URL button. Defaults to "Pay now".
-	ButtonText string
+	ButtonText     string
+	IdempotencyKey string
 }
 
 // Invoice is the result of CreateInvoice: a created session plus everything a
@@ -136,7 +137,11 @@ func (h *Helper) CreateInvoiceWithOptions(ctx context.Context, opts InvoiceOptio
 		req.Metadata = &md
 	}
 
-	session, err := h.client.CreatePaymentSession(ctx, req)
+	var callOpts []plaidly.RequestOption
+	if opts.IdempotencyKey != "" {
+		callOpts = append(callOpts, plaidly.WithIdempotencyKey(opts.IdempotencyKey))
+	}
+	session, err := h.client.CreatePaymentSession(ctx, req, callOpts...)
 	if err != nil {
 		return nil, err
 	}

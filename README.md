@@ -51,6 +51,23 @@ func main() {
 }
 ```
 
+## Idempotency
+
+`CreatePaymentSession` and `RequestPayout` accept `plaidly.WithIdempotencyKey`,
+matching the live `Idempotency-Key` header contract on
+`POST /v1/payment_sessions` and `POST /v1/payouts` (merchant-scoped, 24h TTL,
+payload-fingerprinted). Replaying the same key with an identical payload
+returns the original resource; replaying it with a different payload fails
+with a `409` whose `*plaidly.Error.Code` is `plaidly.ErrorCodeConflict`
+(`IsIdempotencyConflict(err)` checks this in one call).
+
+```go
+session, err := client.CreatePaymentSession(ctx, req, plaidly.WithIdempotencyKey(componoPaymentUUID))
+if plaidly.IsIdempotencyConflict(err) {
+    // componoPaymentUUID was already used with a different payload
+}
+```
+
 ## Demo & sandbox
 
 ```go
@@ -138,6 +155,14 @@ if err != nil {
 //     }},
 // })
 
+// Use CreateInvoiceWithOptions + InvoiceOptions.IdempotencyKey to make a
+// button tap (or Telegram's own delivery retries) safe to fire twice for the
+// same order:
+//   tg.CreateInvoiceWithOptions(ctx, telegram.InvoiceOptions{
+//       Amount: 12.50, Token: "USDC", Chain: "solana", Network: "mainnet",
+//       IdempotencyKey: fmt.Sprintf("tg-%d-%s", chatID, orderID),
+//   })
+
 // 2a. Confirm payment via webhook.
 http.HandleFunc("/plaidly/webhook", func(w http.ResponseWriter, r *http.Request) {
     event, err := telegram.VerifyWebhook(r, webhookSecret, plaidly.DefaultWebhookTolerance)
@@ -156,6 +181,34 @@ session, err := tg.PollSession(ctx, inv.Session.SessionId, 3*time.Second)
 if err == nil && plaidly.IsSuccess(session.Status) {
     // payment settled
 }
+```
+
+## Multi-method checkout intents (experimental — not deployed)
+
+`CreateCheckoutIntent`, `GetCheckoutIntent`, and `SelectCheckoutMethod` are
+built against the BDT-541 phase-1 checkout-intent contract (a session that
+carries a *set* of merchant-approved payment methods plus a policy version,
+rather than one fixed chain/token), so the SDK is ready the moment the
+server side (BDT-528/BDT-529) ships. **As of this SDK version, the
+`/v1/checkout_intents*` endpoints do not exist on any deployed Plaidly API**
+— calling these methods against `api.plaidly.io` today returns 404. They are
+covered by mock-transport tests only; do not use them in production code
+until this note is removed. See `CHANGELOG.md`.
+
+```go
+intent, err := client.CreateCheckoutIntent(ctx, plaidly.CreateCheckoutIntentRequest{
+    Amount:   50,
+    Currency: "USDC",
+    Methods: []plaidly.CheckoutMethodOption{
+        {Chain: "solana", Network: "mainnet", Token: "USDC"},
+        {Chain: "ethereum", Network: "mainnet", Token: "USDC"},
+    },
+}, plaidly.WithIdempotencyKey(componoPaymentUUID))
+
+selected, err := client.SelectCheckoutMethod(ctx, intent.IntentID, plaidly.SelectCheckoutMethodRequest{
+    Chain: "solana", Network: "mainnet", Token: "USDC",
+})
+// selected.DepositAddress / selected.PaymentURL / selected.QRCodeURL / selected.DeepLink
 ```
 
 ## Agent integrations
