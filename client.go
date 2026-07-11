@@ -143,6 +143,32 @@ func NewClient(apiKey string, opts ...Option) (*Client, error) {
 // that are not yet exposed by the higher-level Client methods.
 func (c *Client) Raw() *plaidlyapi.Client { return c.raw }
 
+func (c *Client) doRequest(ctx context.Context, method, path string, body any, ro *requestOptions) (*http.Response, error) {
+	var reader io.Reader
+	if body != nil {
+		b, err := json.Marshal(body)
+		if err != nil {
+			return nil, err
+		}
+		reader = bytes.NewReader(b)
+	}
+	req, err := http.NewRequestWithContext(ctx, method, c.baseURL+path, reader)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("X-API-Key", c.apiKey)
+	req.Header.Set("Accept", "application/json")
+	if body != nil {
+		req.Header.Set("Content-Type", "application/json")
+	}
+	for _, editor := range ro.toEditors() {
+		if err := editor(ctx, req); err != nil {
+			return nil, err
+		}
+	}
+	return c.http.Do(req)
+}
+
 // doJSON executes fn (a generated client call) with up to 3 attempts on
 // transient 5xx failures, decodes the 2xx JSON body into out (if non-nil),
 // and returns a typed *Error on non-2xx responses.
@@ -187,7 +213,7 @@ func decodeResponse(resp *http.Response, out any) (*Error, bool, error) {
 		body, _ := io.ReadAll(resp.Body)
 		var apiErr struct {
 			Message string `json:"message"`
-			Code    string `json:"code"`
+			Code    int64  `json:"code"`
 		}
 		_ = json.Unmarshal(body, &apiErr)
 		return &Error{

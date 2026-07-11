@@ -13,10 +13,11 @@ import (
 // CreatePaymentSession creates a new payment session.
 //
 // POST /v1/payment_sessions
-func (c *Client) CreatePaymentSession(ctx context.Context, req CreatePaymentSessionRequest) (*PaymentSession, error) {
+func (c *Client) CreatePaymentSession(ctx context.Context, req CreatePaymentSessionRequest, opts ...RequestOption) (*PaymentSession, error) {
+	ro := buildRequestOptions(opts)
 	var out PaymentSession
 	err := c.doJSON(ctx, func(ctx context.Context) (*http.Response, error) {
-		return c.raw.CreatePaymentSession(ctx, req)
+		return c.raw.CreatePaymentSession(ctx, req, ro.toEditors()...)
 	}, &out)
 	if err != nil {
 		return nil, err
@@ -138,7 +139,7 @@ func (c *Client) GetReceiptPDF(ctx context.Context, sessionID string) ([]byte, e
 	if resp.StatusCode >= 400 {
 		return nil, &Error{
 			StatusCode: resp.StatusCode,
-			Code:       "RECEIPT_FETCH_FAILED",
+			Code:       ErrorCodeInternal,
 			Message:    fmt.Sprintf("HTTP %d", resp.StatusCode),
 		}
 	}

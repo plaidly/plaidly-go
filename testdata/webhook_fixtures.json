@@ -1,0 +1,86 @@
+{
+	"valid": [
+		{
+			"name": "golden_basic_completed",
+			"secret": "whsec_test_51a1c1e6b2f34a",
+			"timestamp": 1752000000,
+			"body": "{\"event_type\":\"payment_session.completed\",\"session_id\":\"ps_test_001\",\"status\":\"completed\",\"amount\":42.5,\"currency\":\"USDC\",\"chain\":\"solana\",\"network\":\"mainnet\",\"timestamp\":\"2026-07-11T20:00:00Z\"}",
+			"signature": "t=1752000000,v1=35681b9a79ad99137bbf3bd387736a809efaa3c5a63520e590ed4171225fc8f1",
+			"verify_at": 1752000010,
+			"expected_event_type": "payment_session.completed",
+			"expected_session_id": "ps_test_001"
+		},
+		{
+			"name": "golden_partial_paid",
+			"secret": "whsec_test_51a1c1e6b2f34a",
+			"timestamp": 1752000300,
+			"body": "{\"event_type\":\"payment_session.partial_paid\",\"session_id\":\"ps_test_002\",\"status\":\"partial_paid\",\"amount\":10,\"currency\":\"USDT\",\"chain\":\"ethereum\",\"network\":\"testnet\",\"timestamp\":\"2026-07-11T20:05:00Z\"}",
+			"signature": "t=1752000300,v1=830ac497841302145010a7a66e25919cc1abf7dd0a55807af5bf017688df875e",
+			"verify_at": 1752000305,
+			"expected_event_type": "payment_session.partial_paid",
+			"expected_session_id": "ps_test_002"
+		},
+		{
+			"name": "golden_rotated_secret_old_key_still_valid",
+			"secret": "whsec_test_old_rotated_out",
+			"timestamp": 1752000600,
+			"body": "{\"event_type\":\"payment_session.expired\",\"session_id\":\"ps_test_003\",\"status\":\"expired\",\"amount\":5,\"currency\":\"USDC\",\"chain\":\"solana\",\"network\":\"mainnet\",\"timestamp\":\"2026-07-11T20:10:00Z\"}",
+			"signature": "t=1752000600,v1=3de82b29e511d23e42f7ff78ad2b3879120218e1cd64f49b01daf58cc38801e4",
+			"verify_at": 1752000610,
+			"expected_event_type": "payment_session.expired",
+			"expected_session_id": "ps_test_003"
+		}
+	],
+	"invalid": [
+		{
+			"name": "tampered_payload",
+			"reason": "body byte changed after signing; HMAC no longer matches",
+			"secret": "whsec_test_51a1c1e6b2f34a",
+			"timestamp": 1752000000,
+			"body": "{\"event_type\":\"payment_session.completed\",\"session_id\":\"ps_test_999\",\"status\":\"completed\",\"amount\":42.5,\"currency\":\"USDC\",\"chain\":\"solana\",\"network\":\"mainnet\",\"timestamp\":\"2026-07-11T20:00:00Z\"}",
+			"signature": "t=1752000000,v1=35681b9a79ad99137bbf3bd387736a809efaa3c5a63520e590ed4171225fc8f1",
+			"verify_at": 1752000010,
+			"expected_error": "ErrInvalidSignature"
+		},
+		{
+			"name": "wrong_secret",
+			"reason": "verifier given a secret that never signed this payload",
+			"secret": "whsec_test_completely_different",
+			"timestamp": 1752000000,
+			"body": "{\"event_type\":\"payment_session.completed\",\"session_id\":\"ps_test_001\",\"status\":\"completed\",\"amount\":42.5,\"currency\":\"USDC\",\"chain\":\"solana\",\"network\":\"mainnet\",\"timestamp\":\"2026-07-11T20:00:00Z\"}",
+			"signature": "t=1752000000,v1=35681b9a79ad99137bbf3bd387736a809efaa3c5a63520e590ed4171225fc8f1",
+			"verify_at": 1752000010,
+			"expected_error": "ErrInvalidSignature"
+		},
+		{
+			"name": "expired_timestamp",
+			"reason": "signature itself is valid but verify_at is outside the 5-minute default tolerance",
+			"secret": "whsec_test_51a1c1e6b2f34a",
+			"timestamp": 1752000000,
+			"body": "{\"event_type\":\"payment_session.completed\",\"session_id\":\"ps_test_001\",\"status\":\"completed\",\"amount\":42.5,\"currency\":\"USDC\",\"chain\":\"solana\",\"network\":\"mainnet\",\"timestamp\":\"2026-07-11T20:00:00Z\"}",
+			"signature": "t=1752000000,v1=35681b9a79ad99137bbf3bd387736a809efaa3c5a63520e590ed4171225fc8f1",
+			"verify_at": 1752001000,
+			"expected_error": "ErrSignatureExpired"
+		},
+		{
+			"name": "malformed_header_missing_v1",
+			"reason": "header has t= but no v1= component",
+			"secret": "whsec_test_51a1c1e6b2f34a",
+			"timestamp": 1752000000,
+			"body": "{\"event_type\":\"payment_session.completed\",\"session_id\":\"ps_test_001\",\"status\":\"completed\",\"amount\":42.5,\"currency\":\"USDC\",\"chain\":\"solana\",\"network\":\"mainnet\",\"timestamp\":\"2026-07-11T20:00:00Z\"}",
+			"signature": "t=1752000000",
+			"verify_at": 1752000010,
+			"expected_error": "ErrInvalidSignature"
+		},
+		{
+			"name": "empty_signature_header",
+			"reason": "no signature header sent at all",
+			"secret": "whsec_test_51a1c1e6b2f34a",
+			"timestamp": 1752000000,
+			"body": "{\"event_type\":\"payment_session.completed\",\"session_id\":\"ps_test_001\",\"status\":\"completed\",\"amount\":42.5,\"currency\":\"USDC\",\"chain\":\"solana\",\"network\":\"mainnet\",\"timestamp\":\"2026-07-11T20:00:00Z\"}",
+			"signature": "",
+			"verify_at": 1752000010,
+			"expected_error": "ErrMissingSignature"
+		}
+	]
+}

@@ -8,10 +8,11 @@ import (
 // RequestPayout requests a new payout.
 //
 // POST /v1/payouts
-func (c *Client) RequestPayout(ctx context.Context, req RequestPayoutRequest) (*Payout, error) {
+func (c *Client) RequestPayout(ctx context.Context, req RequestPayoutRequest, opts ...RequestOption) (*Payout, error) {
+	ro := buildRequestOptions(opts)
 	var out Payout
 	err := c.doJSON(ctx, func(ctx context.Context) (*http.Response, error) {
-		return c.raw.RequestPayout(ctx, req)
+		return c.raw.RequestPayout(ctx, req, ro.toEditors()...)
 	}, &out)
 	if err != nil {
 		return nil, err
