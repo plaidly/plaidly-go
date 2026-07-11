@@ -91,6 +91,52 @@ func TestVerifyWebhook_ExpiredTimestamp(t *testing.T) {
 	}
 }
 
+func TestVerifyWebhook_MultipleCandidates(t *testing.T) {
+	timestamp := time.Now().Unix()
+	valid := signWebhook([]byte(goldenBody), goldenSecret, timestamp)
+	badHex := "t=" + fmt.Sprintf("%d", timestamp) + ",v1=zzzz"
+	sig := badHex + "," + valid
+	if err := verifySignature(
+		[]byte(goldenBody),
+		sig,
+		goldenSecret,
+		DefaultWebhookTolerance,
+		time.Unix(timestamp, 0),
+	); err != nil {
+		t.Fatalf("verifySignature with mixed candidates: %v", err)
+	}
+}
+
+func TestVerifyWebhookAt_InjectedTimestamp(t *testing.T) {
+	timestamp := time.Now().Unix()
+	sig := signWebhook([]byte(goldenBody), goldenSecret, timestamp)
+	ev, err := VerifyWebhookAt([]byte(goldenBody), sig, goldenSecret, DefaultWebhookTolerance, time.Unix(timestamp, 0))
+	if err != nil {
+		t.Fatalf("verify: %v", err)
+	}
+	if ev.EventType != EventPaymentCompleted {
+		t.Errorf("event_type = %q", ev.EventType)
+	}
+}
+
+func TestVerifyWebhook_MissingSecret(t *testing.T) {
+	_, err := VerifyWebhookAt([]byte(goldenBody), goldenHeader, "", DefaultWebhookTolerance, time.Unix(goldenTimestamp, 0))
+	if !errors.Is(err, ErrMissingSecret) {
+		t.Fatalf("err = %v, want ErrMissingSecret", err)
+	}
+}
+
+func TestVerifyWebhookSignatureAt_Bool(t *testing.T) {
+	timestamp := time.Now().Unix()
+	sig := signWebhook([]byte(goldenBody), goldenSecret, timestamp)
+	if !VerifyWebhookSignatureAt([]byte(goldenBody), sig, goldenSecret, DefaultWebhookTolerance, time.Unix(timestamp, 0)) {
+		t.Fatal("expected true")
+	}
+	if VerifyWebhookSignatureAt([]byte(goldenBody), sig, "wrong", DefaultWebhookTolerance, time.Unix(timestamp, 0)) {
+		t.Fatal("expected false for wrong secret")
+	}
+}
+
 func TestVerifyWebhook_FutureTimestampWithinTolerance(t *testing.T) {
 	payload := []byte(goldenBody)
 	future := time.Now().Add(2 * time.Minute).Unix()
@@ -101,7 +147,8 @@ func TestVerifyWebhook_FutureTimestampWithinTolerance(t *testing.T) {
 }
 
 func TestVerifyWebhook_MalformedHeader(t *testing.T) {
-	for _, h := range []string{"v1=abcd", "t=123", "garbage", "t=123,v1=zzzz"} {
+	nowTs := time.Now().Unix()
+	for _, h := range []string{"v1=abcd", "t=123", "garbage", fmt.Sprintf("t=%d,v1=zzzz", nowTs)} {
 		if _, err := VerifyWebhook([]byte(goldenBody), h, goldenSecret, DefaultWebhookTolerance); !errors.Is(err, ErrInvalidSignature) {
 			t.Errorf("header %q: err = %v, want ErrInvalidSignature", h, err)
 		}
@@ -116,5 +163,30 @@ func TestVerifyWebhookSignature_Bool(t *testing.T) {
 	}
 	if VerifyWebhookSignature(payload, sig, "whsec_wrong") {
 		t.Error("expected false for wrong secret")
+	}
+}
+
+func TestVerifyWebhookSignatureAny_RotationWindow(t *testing.T) {
+	payload := []byte(goldenBody)
+	ts := time.Now().Unix()
+	sig := signWebhook(payload, "whsec_old", ts)
+	if !VerifyWebhookSignatureAny(payload, sig, []string{"whsec_new", "whsec_old"}, DefaultWebhookTolerance, time.Unix(ts, 0)) {
+		t.Fatal("expected old secret to pass during rotation window")
+	}
+	if VerifyWebhookSignatureAny(payload, sig, []string{"whsec_new"}, DefaultWebhookTolerance, time.Unix(ts, 0)) {
+		t.Fatal("expected new secret only to fail")
+	}
+}
+
+func TestVerifyWebhookAny_RotationWindow(t *testing.T) {
+	payload := []byte(goldenBody)
+	ts := time.Now().Unix()
+	sig := signWebhook(payload, "whsec_old", ts)
+	ev, err := VerifyWebhookAny(payload, sig, []string{"whsec_new", "whsec_old"}, DefaultWebhookTolerance, time.Unix(ts, 0))
+	if err != nil {
+		t.Fatalf("verify: %v", err)
+	}
+	if ev.SessionID != "ps_abc123" {
+		t.Fatalf("session_id = %q", ev.SessionID)
 	}
 }

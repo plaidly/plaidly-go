@@ -91,6 +91,22 @@ http.HandleFunc("/webhook", func(w http.ResponseWriter, r *http.Request) {
 })
 ```
 
+During webhook-secret rotation, accept the new and previous secret for a short
+window:
+
+```go
+event, err := plaidly.VerifyWebhookAny(
+    body,
+    sig,
+    []string{
+        os.Getenv("PLAIDLY_WEBHOOK_SECRET_NEW"),
+        os.Getenv("PLAIDLY_WEBHOOK_SECRET_OLD"),
+    },
+    plaidly.DefaultWebhookTolerance,
+    time.Now(),
+)
+```
+
 ## Telegram bots
 
 The `telegram` subpackage renders bot-ready invoices and waits for payment via
@@ -141,6 +157,11 @@ if err == nil && plaidly.IsSuccess(session.Status) {
     // payment settled
 }
 ```
+
+## Agent integrations
+
+The same payment-session and webhook primitives are used by the agent docs.
+See `examples/README.md` for a runnable onboarding and verification example.
 
 ## Configuration
 

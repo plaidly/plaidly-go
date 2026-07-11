@@ -32,6 +32,7 @@ const (
 // Errors returned by the webhook verifier.
 var (
 	ErrMissingSignature = errors.New("plaidly: missing signature header")
+	ErrMissingSecret    = errors.New("plaidly: missing webhook secret")
 	ErrInvalidSignature = errors.New("plaidly: signature mismatch")
 	ErrSignatureExpired = errors.New("plaidly: signature timestamp outside tolerance")
 )
@@ -58,7 +59,19 @@ type WebhookEvent struct {
 // It returns a typed error: ErrMissingSignature, ErrInvalidSignature, or
 // ErrSignatureExpired.
 func VerifyWebhook(payload []byte, signature, secret string, tolerance time.Duration) (*WebhookEvent, error) {
-	if err := verifySignature(payload, signature, secret, tolerance, time.Now()); err != nil {
+	return VerifyWebhookAt(payload, signature, secret, tolerance, time.Now())
+}
+
+// VerifyWebhookAt validates the signature at a specific instant. This is useful
+// for tests and replay verification when the exact webhook timestamp is known.
+func VerifyWebhookAt(
+	payload []byte,
+	signature,
+	secret string,
+	tolerance time.Duration,
+	now time.Time,
+) (*WebhookEvent, error) {
+	if err := verifySignature(payload, signature, secret, tolerance, now); err != nil {
 		return nil, err
 	}
 	var ev WebhookEvent
@@ -72,24 +85,51 @@ func VerifyWebhook(payload []byte, signature, secret string, tolerance time.Dura
 // for payload under secret, using DefaultWebhookTolerance. It does not decode
 // the body. Use VerifyWebhook for the typed event and error.
 func VerifyWebhookSignature(payload []byte, signature, secret string) bool {
-	return verifySignature(payload, signature, secret, DefaultWebhookTolerance, time.Now()) == nil
+	return VerifyWebhookSignatureAt(payload, signature, secret, DefaultWebhookTolerance, time.Now())
+}
+
+// VerifyWebhookSignatureAt validates a signature against payload using a fixed
+// reference timestamp. Returns true if any v1 signature matches.
+func VerifyWebhookSignatureAt(payload []byte, signature, secret string, tolerance time.Duration, now time.Time) bool {
+	return verifySignature(payload, signature, secret, tolerance, now) == nil
+}
+
+// VerifyWebhookSignatureAny validates a signature against an old/new
+// signing-key rotation window. Pass secrets in preferred order, e.g. new then old.
+func VerifyWebhookSignatureAny(payload []byte, signature string, secrets []string, tolerance time.Duration, now time.Time) bool {
+	for _, secret := range secrets {
+		if VerifyWebhookSignatureAt(payload, signature, secret, tolerance, now) {
+			return true
+		}
+	}
+	return false
+}
+
+// VerifyWebhookAny validates and decodes a webhook against an old/new
+// signing-key rotation window. Pass secrets in preferred order, e.g. new then old.
+func VerifyWebhookAny(payload []byte, signature string, secrets []string, tolerance time.Duration, now time.Time) (*WebhookEvent, error) {
+	for _, secret := range secrets {
+		ev, err := VerifyWebhookAt(payload, signature, secret, tolerance, now)
+		if err == nil {
+			return ev, nil
+		}
+	}
+	return nil, ErrInvalidSignature
 }
 
 func verifySignature(payload []byte, signature, secret string, tolerance time.Duration, now time.Time) error {
 	if signature == "" {
 		return ErrMissingSignature
 	}
+	if secret == "" {
+		return ErrMissingSecret
+	}
 	if tolerance <= 0 {
 		tolerance = DefaultWebhookTolerance
 	}
 
-	ts, sig, ok := parseSignatureHeader(signature)
+	ts, sigs, ok := parseSignatureHeader(signature)
 	if !ok {
-		return ErrInvalidSignature
-	}
-
-	sigBytes, err := hex.DecodeString(sig)
-	if err != nil {
 		return ErrInvalidSignature
 	}
 
@@ -97,6 +137,7 @@ func verifySignature(payload []byte, signature, secret string, tolerance time.Du
 	if err != nil {
 		return ErrInvalidSignature
 	}
+
 	age := now.Sub(time.Unix(tsInt, 0))
 	if age < 0 {
 		age = -age
@@ -111,13 +152,21 @@ func verifySignature(payload []byte, signature, secret string, tolerance time.Du
 	mac.Write(payload)
 	expected := mac.Sum(nil)
 
-	if !hmac.Equal(sigBytes, expected) {
-		return ErrInvalidSignature
+	for _, sig := range sigs {
+		sigBytes, err := hex.DecodeString(sig)
+		if err != nil || len(sigBytes) == 0 {
+			continue
+		}
+		if hmac.Equal(sigBytes, expected) {
+			return nil
+		}
 	}
-	return nil
+
+	return ErrInvalidSignature
 }
 
-func parseSignatureHeader(header string) (ts, v1 string, ok bool) {
+func parseSignatureHeader(header string) (ts string, v1 []string, ok bool) {
+	var signatures []string
 	for _, part := range strings.Split(header, ",") {
 		k, v, found := strings.Cut(strings.TrimSpace(part), "=")
 		if !found {
@@ -127,11 +176,13 @@ func parseSignatureHeader(header string) (ts, v1 string, ok bool) {
 		case "t":
 			ts = v
 		case "v1":
-			v1 = v
+			if v != "" {
+				signatures = append(signatures, v)
+			}
 		}
 	}
-	if ts == "" || v1 == "" {
-		return "", "", false
+	if ts == "" || len(signatures) == 0 {
+		return "", nil, false
 	}
-	return ts, v1, true
+	return ts, signatures, true
 }
