@@ -26,13 +26,409 @@ const (
 	BearerAuthScopes = "bearerAuth.Scopes"
 )
 
+// Defines values for AgentSpendAttemptStatus.
+const (
+	AgentSpendAttemptStatusApprovalRequired AgentSpendAttemptStatus = "approval_required"
+	AgentSpendAttemptStatusDenied           AgentSpendAttemptStatus = "denied"
+	AgentSpendAttemptStatusPending          AgentSpendAttemptStatus = "pending"
+)
+
+// Defines values for CatalogDiscoveryPlanStatus.
+const (
+	CatalogDiscoveryPlanStatusArchived  CatalogDiscoveryPlanStatus = "archived"
+	CatalogDiscoveryPlanStatusDraft     CatalogDiscoveryPlanStatus = "draft"
+	CatalogDiscoveryPlanStatusPublished CatalogDiscoveryPlanStatus = "published"
+)
+
+// Defines values for CatalogDiscoveryProductFulfillmentType.
+const (
+	CatalogDiscoveryProductFulfillmentTypeMetered      CatalogDiscoveryProductFulfillmentType = "metered"
+	CatalogDiscoveryProductFulfillmentTypeOneTime      CatalogDiscoveryProductFulfillmentType = "one_time"
+	CatalogDiscoveryProductFulfillmentTypeService      CatalogDiscoveryProductFulfillmentType = "service"
+	CatalogDiscoveryProductFulfillmentTypeSubscription CatalogDiscoveryProductFulfillmentType = "subscription"
+)
+
+// Defines values for CatalogDiscoveryProductStatus.
+const (
+	CatalogDiscoveryProductStatusArchived  CatalogDiscoveryProductStatus = "archived"
+	CatalogDiscoveryProductStatusDraft     CatalogDiscoveryProductStatus = "draft"
+	CatalogDiscoveryProductStatusPublished CatalogDiscoveryProductStatus = "published"
+)
+
+// Defines values for CatalogPlanStatus.
+const (
+	CatalogPlanStatusArchived  CatalogPlanStatus = "archived"
+	CatalogPlanStatusDraft     CatalogPlanStatus = "draft"
+	CatalogPlanStatusPublished CatalogPlanStatus = "published"
+)
+
+// Defines values for CatalogPriceStatus.
+const (
+	CatalogPriceStatusArchived  CatalogPriceStatus = "archived"
+	CatalogPriceStatusDraft     CatalogPriceStatus = "draft"
+	CatalogPriceStatusPublished CatalogPriceStatus = "published"
+)
+
+// Defines values for CatalogProductFulfillmentType.
+const (
+	CatalogProductFulfillmentTypeMetered      CatalogProductFulfillmentType = "metered"
+	CatalogProductFulfillmentTypeOneTime      CatalogProductFulfillmentType = "one_time"
+	CatalogProductFulfillmentTypeService      CatalogProductFulfillmentType = "service"
+	CatalogProductFulfillmentTypeSubscription CatalogProductFulfillmentType = "subscription"
+)
+
+// Defines values for CatalogProductStatus.
+const (
+	CatalogProductStatusArchived  CatalogProductStatus = "archived"
+	CatalogProductStatusDraft     CatalogProductStatus = "draft"
+	CatalogProductStatusPublished CatalogProductStatus = "published"
+)
+
+// Defines values for CatalogStoreStatus.
+const (
+	CatalogStoreStatusArchived  CatalogStoreStatus = "archived"
+	CatalogStoreStatusDraft     CatalogStoreStatus = "draft"
+	CatalogStoreStatusPublished CatalogStoreStatus = "published"
+)
+
+// Defines values for CreateProductRequestFulfillmentType.
+const (
+	CreateProductRequestFulfillmentTypeMetered      CreateProductRequestFulfillmentType = "metered"
+	CreateProductRequestFulfillmentTypeOneTime      CreateProductRequestFulfillmentType = "one_time"
+	CreateProductRequestFulfillmentTypeService      CreateProductRequestFulfillmentType = "service"
+	CreateProductRequestFulfillmentTypeSubscription CreateProductRequestFulfillmentType = "subscription"
+)
+
+// Defines values for MerchantCredentialOperationRequestCredentialType.
+const (
+	ApiKey        MerchantCredentialOperationRequestCredentialType = "api_key"
+	WebhookSecret MerchantCredentialOperationRequestCredentialType = "webhook_secret"
+)
+
+// Defines values for PatchProductRequestFulfillmentType.
+const (
+	PatchProductRequestFulfillmentTypeMetered      PatchProductRequestFulfillmentType = "metered"
+	PatchProductRequestFulfillmentTypeOneTime      PatchProductRequestFulfillmentType = "one_time"
+	PatchProductRequestFulfillmentTypeService      PatchProductRequestFulfillmentType = "service"
+	PatchProductRequestFulfillmentTypeSubscription PatchProductRequestFulfillmentType = "subscription"
+)
+
 // Defines values for PaymentMethodMethodID.
 const (
 	N0 PaymentMethodMethodID = 0
 	N1 PaymentMethodMethodID = 1
 )
 
-// CreatePaymentSessionRequest defines model for CreatePaymentSessionRequest.
+// Defines values for PaymentSessionDiagnosticSignalCode.
+const (
+	ExpiredSession       PaymentSessionDiagnosticSignalCode = "expired_session"
+	MissingConfirmations PaymentSessionDiagnosticSignalCode = "missing_confirmations"
+	Overpayment          PaymentSessionDiagnosticSignalCode = "overpayment"
+	StuckSession         PaymentSessionDiagnosticSignalCode = "stuck_session"
+	Underpayment         PaymentSessionDiagnosticSignalCode = "underpayment"
+	WrongChain           PaymentSessionDiagnosticSignalCode = "wrong_chain"
+	WrongToken           PaymentSessionDiagnosticSignalCode = "wrong_token"
+)
+
+// Defines values for PaymentSessionDiagnosticSignalSeverity.
+const (
+	PaymentSessionDiagnosticSignalSeverityCritical PaymentSessionDiagnosticSignalSeverity = "critical"
+	PaymentSessionDiagnosticSignalSeverityInfo     PaymentSessionDiagnosticSignalSeverity = "info"
+	PaymentSessionDiagnosticSignalSeverityWarning  PaymentSessionDiagnosticSignalSeverity = "warning"
+)
+
+// Defines values for PaymentSessionDiagnosticsRiskLevel.
+const (
+	PaymentSessionDiagnosticsRiskLevelCritical PaymentSessionDiagnosticsRiskLevel = "critical"
+	PaymentSessionDiagnosticsRiskLevelOk       PaymentSessionDiagnosticsRiskLevel = "ok"
+	PaymentSessionDiagnosticsRiskLevelWarning  PaymentSessionDiagnosticsRiskLevel = "warning"
+)
+
+// Defines values for WebhookDeliveryStatusStatus.
+const (
+	WebhookDeliveryStatusStatusDelivered WebhookDeliveryStatusStatus = "delivered"
+	WebhookDeliveryStatusStatusFailed    WebhookDeliveryStatusStatus = "failed"
+	WebhookDeliveryStatusStatusPending   WebhookDeliveryStatusStatus = "pending"
+	WebhookDeliveryStatusStatusSkipped   WebhookDeliveryStatusStatus = "skipped"
+)
+
+// Defines values for X402ValidationResultOutcome.
+const (
+	Retryable X402ValidationResultOutcome = "retryable"
+	Terminal  X402ValidationResultOutcome = "terminal"
+)
+
+// Defines values for ListPlansParamsStatus.
+const (
+	ListPlansParamsStatusArchived  ListPlansParamsStatus = "archived"
+	ListPlansParamsStatusDraft     ListPlansParamsStatus = "draft"
+	ListPlansParamsStatusPublished ListPlansParamsStatus = "published"
+)
+
+// Defines values for ListPricesParamsStatus.
+const (
+	ListPricesParamsStatusArchived  ListPricesParamsStatus = "archived"
+	ListPricesParamsStatusDraft     ListPricesParamsStatus = "draft"
+	ListPricesParamsStatusPublished ListPricesParamsStatus = "published"
+)
+
+// Defines values for ListProductsParamsStatus.
+const (
+	ListProductsParamsStatusArchived  ListProductsParamsStatus = "archived"
+	ListProductsParamsStatusDraft     ListProductsParamsStatus = "draft"
+	ListProductsParamsStatusPublished ListProductsParamsStatus = "published"
+)
+
+// Defines values for ListStoresParamsStatus.
+const (
+	ListStoresParamsStatusArchived  ListStoresParamsStatus = "archived"
+	ListStoresParamsStatusDraft     ListStoresParamsStatus = "draft"
+	ListStoresParamsStatusPublished ListStoresParamsStatus = "published"
+)
+
+// AgentSpendAttempt defines model for AgentSpendAttempt.
+type AgentSpendAttempt struct {
+	AgentWalletId  string    `json:"agent_wallet_id"`
+	Amount         float64   `json:"amount"`
+	AmountSubunits string    `json:"amount_subunits"`
+	ApiDomain      *string   `json:"api_domain,omitempty"`
+	Chain          string    `json:"chain"`
+	CreatedAt      time.Time `json:"created_at"`
+
+	// Id Trace identifier for the evaluated attempt
+	Id string `json:"id"`
+
+	// LedgerEntryId Ledger row created for pending or approval-required attempts
+	LedgerEntryId *string                 `json:"ledger_entry_id,omitempty"`
+	Metadata      *map[string]interface{} `json:"metadata,omitempty"`
+	Network       string                  `json:"network"`
+
+	// PolicyId Spend policy that determined the outcome when present
+	PolicyId       *string                 `json:"policy_id,omitempty"`
+	Reason         string                  `json:"reason"`
+	SpendReference string                  `json:"spend_reference"`
+	Status         AgentSpendAttemptStatus `json:"status"`
+	Target         string                  `json:"target"`
+	TokenSymbol    string                  `json:"token_symbol"`
+}
+
+// AgentSpendAttemptStatus defines model for AgentSpendAttempt.Status.
+type AgentSpendAttemptStatus string
+
+// AgentSpendAttemptRequest defines model for AgentSpendAttemptRequest.
+type AgentSpendAttemptRequest struct {
+	// Amount Human-readable spend amount
+	Amount float64 `json:"amount"`
+
+	// AmountSubunits Integer amount in token subunits
+	AmountSubunits string `json:"amount_subunits"`
+
+	// ApiDomain API domain that originated the spend request
+	ApiDomain *string `json:"api_domain,omitempty"`
+
+	// Chain Target blockchain family
+	Chain string `json:"chain"`
+
+	// Metadata Opaque caller metadata for audit and policy context
+	Metadata *map[string]interface{} `json:"metadata,omitempty"`
+
+	// Network Target network such as mainnet or devnet
+	Network string `json:"network"`
+
+	// Reference Caller-provided reference for tracing the attempt; printable without whitespace
+	Reference *string `json:"reference,omitempty"`
+
+	// Target Destination address or outbound spend target
+	Target string `json:"target"`
+
+	// TokenSymbol Token symbol (for example USDC)
+	TokenSymbol string `json:"token_symbol"`
+}
+
+// CatalogCheckoutIntent Result of resolving a published price for checkout. A buyer agent uses these fields to build a POST /v1/payment_sessions request, placing checkout_reference_id into that request's free-form metadata object.
+type CatalogCheckoutIntent struct {
+	AllowedPaymentMethods *[]string `json:"allowed_payment_methods,omitempty"`
+	AmountSubunits        string    `json:"amount_subunits"`
+	CheckoutReferenceId   string    `json:"checkout_reference_id"`
+	CurrencyOrToken       string    `json:"currency_or_token"`
+	ExpiresAt             time.Time `json:"expires_at"`
+	MerchantId            string    `json:"merchant_id"`
+	PlanId                string    `json:"plan_id"`
+	PriceId               string    `json:"price_id"`
+	ProductId             string    `json:"product_id"`
+	StoreId               string    `json:"store_id"`
+}
+
+// CatalogDiscoveryPlan A published plan nested inside a discovery product response, with its published prices inlined.
+type CatalogDiscoveryPlan struct {
+	CreatedAt   time.Time                  `json:"created_at"`
+	Entitlement *map[string]interface{}    `json:"entitlement,omitempty"`
+	Id          string                     `json:"id"`
+	MerchantId  string                     `json:"merchant_id"`
+	Metadata    map[string]interface{}     `json:"metadata"`
+	Name        string                     `json:"name"`
+	Prices      []CatalogPrice             `json:"prices"`
+	ProductId   string                     `json:"product_id"`
+	PublishedAt *time.Time                 `json:"published_at,omitempty"`
+	Sandbox     bool                       `json:"sandbox"`
+	Slug        string                     `json:"slug"`
+	Status      CatalogDiscoveryPlanStatus `json:"status"`
+	UpdatedAt   time.Time                  `json:"updated_at"`
+	Version     int64                      `json:"version"`
+}
+
+// CatalogDiscoveryPlanStatus defines model for CatalogDiscoveryPlan.Status.
+type CatalogDiscoveryPlanStatus string
+
+// CatalogDiscoveryProduct A published product returned by buyer-agent discovery, with its published plans (and their published prices) inlined so a buyer agent needs only one round trip.
+type CatalogDiscoveryProduct struct {
+	CreatedAt       time.Time                              `json:"created_at"`
+	Description     *string                                `json:"description,omitempty"`
+	FulfillmentType CatalogDiscoveryProductFulfillmentType `json:"fulfillment_type"`
+	Id              string                                 `json:"id"`
+	MerchantId      string                                 `json:"merchant_id"`
+	Metadata        map[string]interface{}                 `json:"metadata"`
+	Name            string                                 `json:"name"`
+	Plans           []CatalogDiscoveryPlan                 `json:"plans"`
+	PublishedAt     *time.Time                             `json:"published_at,omitempty"`
+	Sandbox         bool                                   `json:"sandbox"`
+	Slug            string                                 `json:"slug"`
+	Status          CatalogDiscoveryProductStatus          `json:"status"`
+	StoreId         string                                 `json:"store_id"`
+	UpdatedAt       time.Time                              `json:"updated_at"`
+	Version         int64                                  `json:"version"`
+}
+
+// CatalogDiscoveryProductFulfillmentType defines model for CatalogDiscoveryProduct.FulfillmentType.
+type CatalogDiscoveryProductFulfillmentType string
+
+// CatalogDiscoveryProductStatus defines model for CatalogDiscoveryProduct.Status.
+type CatalogDiscoveryProductStatus string
+
+// CatalogPlan A purchasable variant of a product (e.g. "monthly"). Immutable once published or checkout-referenced (directly, or transitively via one of its prices).
+type CatalogPlan struct {
+	ArchivedAt *time.Time `json:"archived_at,omitempty"`
+	CreatedAt  time.Time  `json:"created_at"`
+
+	// Entitlement Freeform catalog metadata describing what the buyer gets (quota/seats/duration etc). Not a runtime entitlement-tracking system.
+	Entitlement      *map[string]interface{} `json:"entitlement,omitempty"`
+	Id               string                  `json:"id"`
+	MerchantId       string                  `json:"merchant_id"`
+	Metadata         map[string]interface{}  `json:"metadata"`
+	Name             string                  `json:"name"`
+	ProductId        string                  `json:"product_id"`
+	PublishedAt      *time.Time              `json:"published_at,omitempty"`
+	Sandbox          bool                    `json:"sandbox"`
+	Slug             string                  `json:"slug"`
+	Status           CatalogPlanStatus       `json:"status"`
+	SupersedesPlanId *string                 `json:"supersedes_plan_id,omitempty"`
+	UpdatedAt        time.Time               `json:"updated_at"`
+	Version          int64                   `json:"version"`
+}
+
+// CatalogPlanStatus defines model for CatalogPlan.Status.
+type CatalogPlanStatus string
+
+// CatalogPrice A price belonging to a plan. Immutable once published or checkout-referenced.
+type CatalogPrice struct {
+	// AllowedPaymentMethods Canonical chain:network:token identity strings (e.g. solana:mainnet:USDC). Null/absent means no restriction; defer to merchant-wide payment policy.
+	AllowedPaymentMethods *[]string `json:"allowed_payment_methods,omitempty"`
+
+	// AmountSubunits Integer amount in smallest token/currency subunits
+	AmountSubunits string     `json:"amount_subunits"`
+	ArchivedAt     *time.Time `json:"archived_at,omitempty"`
+	CreatedAt      time.Time  `json:"created_at"`
+
+	// CurrencyOrToken The token/currency symbol this price is denominated in, e.g. USDC
+	CurrencyOrToken   string                 `json:"currency_or_token"`
+	Id                string                 `json:"id"`
+	MerchantId        string                 `json:"merchant_id"`
+	Metadata          map[string]interface{} `json:"metadata"`
+	PlanId            string                 `json:"plan_id"`
+	PublishedAt       *time.Time             `json:"published_at,omitempty"`
+	Sandbox           bool                   `json:"sandbox"`
+	Status            CatalogPriceStatus     `json:"status"`
+	SupersedesPriceId *string                `json:"supersedes_price_id,omitempty"`
+	UpdatedAt         time.Time              `json:"updated_at"`
+	Version           int64                  `json:"version"`
+}
+
+// CatalogPriceStatus defines model for CatalogPrice.Status.
+type CatalogPriceStatus string
+
+// CatalogProduct A product belonging to a store. Immutable once published or checkout-referenced (directly, or transitively via one of its plans/prices).
+type CatalogProduct struct {
+	ArchivedAt          *time.Time                    `json:"archived_at,omitempty"`
+	CreatedAt           time.Time                     `json:"created_at"`
+	Description         *string                       `json:"description,omitempty"`
+	FulfillmentType     CatalogProductFulfillmentType `json:"fulfillment_type"`
+	Id                  string                        `json:"id"`
+	MerchantId          string                        `json:"merchant_id"`
+	Metadata            map[string]interface{}        `json:"metadata"`
+	Name                string                        `json:"name"`
+	PublishedAt         *time.Time                    `json:"published_at,omitempty"`
+	Sandbox             bool                          `json:"sandbox"`
+	Slug                string                        `json:"slug"`
+	Status              CatalogProductStatus          `json:"status"`
+	StoreId             string                        `json:"store_id"`
+	SupersedesProductId *string                       `json:"supersedes_product_id,omitempty"`
+	UpdatedAt           time.Time                     `json:"updated_at"`
+	Version             int64                         `json:"version"`
+}
+
+// CatalogProductFulfillmentType defines model for CatalogProduct.FulfillmentType.
+type CatalogProductFulfillmentType string
+
+// CatalogProductStatus defines model for CatalogProduct.Status.
+type CatalogProductStatus string
+
+// CatalogProductListResponse defines model for CatalogProductListResponse.
+type CatalogProductListResponse struct {
+	Data       []CatalogDiscoveryProduct `json:"data"`
+	NextCursor *string                   `json:"next_cursor,omitempty"`
+}
+
+// CatalogStore A merchant's storefront/business profile. Does not version; mutates in place regardless of status.
+type CatalogStore struct {
+	ArchivedAt  *time.Time             `json:"archived_at,omitempty"`
+	CreatedAt   time.Time              `json:"created_at"`
+	Description *string                `json:"description,omitempty"`
+	Id          string                 `json:"id"`
+	MerchantId  string                 `json:"merchant_id"`
+	Metadata    map[string]interface{} `json:"metadata"`
+	Name        string                 `json:"name"`
+	PublishedAt *time.Time             `json:"published_at,omitempty"`
+	Sandbox     bool                   `json:"sandbox"`
+	Slug        string                 `json:"slug"`
+	Status      CatalogStoreStatus     `json:"status"`
+	UpdatedAt   time.Time              `json:"updated_at"`
+}
+
+// CatalogStoreStatus defines model for CatalogStore.Status.
+type CatalogStoreStatus string
+
+// ConfirmEmailVerificationRequest defines model for ConfirmEmailVerificationRequest.
+type ConfirmEmailVerificationRequest struct {
+	// Code The one-time verification code delivered to the email address
+	Code                 string `json:"code"`
+	RegistrationIntentId string `json:"registration_intent_id"`
+}
+
+// ConfirmEmailVerificationResponse defines model for ConfirmEmailVerificationResponse.
+type ConfirmEmailVerificationResponse struct {
+	RegistrationIntentId string `json:"registration_intent_id"`
+	Verified             bool   `json:"verified"`
+}
+
+// CreateDemoSessionRequest Optional overrides for a demo session; all fields default when omitted (solana/USDC/testnet). Demo sessions are testnet-only; mainnet is rejected.
+type CreateDemoSessionRequest struct {
+	Amount  *float64 `json:"amount,omitempty"`
+	Chain   *string  `json:"chain,omitempty"`
+	Network *string  `json:"network,omitempty"`
+	Token   *string  `json:"token,omitempty"`
+}
+
+// CreatePaymentSessionRequest Provide exactly one of paymentMethod (legacy: a single, immediately bound method) or paymentMethods (a candidate set: the server intersects it with merchant policy, environment restriction, and currently enabled/certified rails, then returns a checkout intent for the payer to select from via POST /v1/payment_sessions/{session_id}/select_method). Supplying both, or neither, is a 400.
 type CreatePaymentSessionRequest struct {
 	// Amount Expected amount to be paid
 	Amount float64 `json:"amount"`
@@ -42,7 +438,52 @@ type CreatePaymentSessionRequest struct {
 
 	// Metadata Optional key-value metadata (max 4KB)
 	Metadata      *map[string]interface{} `json:"metadata,omitempty"`
-	PaymentMethod PaymentMethod           `json:"paymentMethod"`
+	PaymentMethod *PaymentMethod          `json:"paymentMethod,omitempty"`
+
+	// PaymentMethods Candidate method set for a payer-selects-one checkout. Mutually exclusive with paymentMethod.
+	PaymentMethods *[]PaymentMethod `json:"paymentMethods,omitempty"`
+
+	// ReturnUrl URL to redirect the payer to after checkout completes. Must be an absolute https:// URL (http:// is allowed only for localhost, for merchant dev).
+	ReturnUrl *string `json:"return_url,omitempty"`
+}
+
+// CreatePlanRequest defines model for CreatePlanRequest.
+type CreatePlanRequest struct {
+	Entitlement *map[string]interface{} `json:"entitlement,omitempty"`
+	Metadata    *map[string]interface{} `json:"metadata,omitempty"`
+	Name        string                  `json:"name"`
+	ProductId   string                  `json:"product_id"`
+	Slug        string                  `json:"slug"`
+}
+
+// CreatePriceRequest defines model for CreatePriceRequest.
+type CreatePriceRequest struct {
+	AllowedPaymentMethods *[]string               `json:"allowed_payment_methods,omitempty"`
+	AmountSubunits        string                  `json:"amount_subunits"`
+	CurrencyOrToken       string                  `json:"currency_or_token"`
+	Metadata              *map[string]interface{} `json:"metadata,omitempty"`
+	PlanId                string                  `json:"plan_id"`
+}
+
+// CreateProductRequest defines model for CreateProductRequest.
+type CreateProductRequest struct {
+	Description     *string                             `json:"description,omitempty"`
+	FulfillmentType CreateProductRequestFulfillmentType `json:"fulfillment_type"`
+	Metadata        *map[string]interface{}             `json:"metadata,omitempty"`
+	Name            string                              `json:"name"`
+	Slug            string                              `json:"slug"`
+	StoreId         string                              `json:"store_id"`
+}
+
+// CreateProductRequestFulfillmentType defines model for CreateProductRequest.FulfillmentType.
+type CreateProductRequestFulfillmentType string
+
+// CreateStoreRequest defines model for CreateStoreRequest.
+type CreateStoreRequest struct {
+	Description *string                 `json:"description,omitempty"`
+	Metadata    *map[string]interface{} `json:"metadata,omitempty"`
+	Name        string                  `json:"name"`
+	Slug        string                  `json:"slug"`
 }
 
 // CreateWalletRequest defines model for CreateWalletRequest.
@@ -57,23 +498,142 @@ type Error struct {
 	// Code Error code
 	Code int64 `json:"code"`
 
+	// Field Optional: name of the request field that caused the error
+	Field *string `json:"field,omitempty"`
+
 	// Message Error message
 	Message string `json:"message"`
+
+	// Remediation Optional: human-readable suggestion for how to resolve the error
+	Remediation *string `json:"remediation,omitempty"`
+
+	// RequestId Optional: identifier for correlating this error with server-side logs
+	RequestId *string `json:"request_id,omitempty"`
+
+	// RetryAfterSeconds Optional: seconds to wait before retrying, present on rate-limit errors
+	RetryAfterSeconds *int64 `json:"retry_after_seconds,omitempty"`
+
+	// Retryable Optional: whether retrying the same request may succeed
+	Retryable *bool `json:"retryable,omitempty"`
+}
+
+// FundSepoliaFaucetRequest defines model for FundSepoliaFaucetRequest.
+type FundSepoliaFaucetRequest struct {
+	// Address Recipient EVM address on Sepolia testnet
+	Address string `json:"address"`
+
+	// Chain Only "ethereum" is accepted
+	Chain string `json:"chain"`
+}
+
+// FundSepoliaFaucetResponse defines model for FundSepoliaFaucetResponse.
+type FundSepoliaFaucetResponse struct {
+	Amount      string `json:"amount"`
+	Chain       string `json:"chain"`
+	ExplorerUrl string `json:"explorer_url"`
+	Network     string `json:"network"`
+	TokenSymbol string `json:"token_symbol"`
+	TxHash      string `json:"tx_hash"`
 }
 
 // Merchant defines model for Merchant.
 type Merchant struct {
 	// ApiKey API key for authenticating requests
-	ApiKey             string  `json:"api_key"`
-	CreatedAt          string  `json:"created_at"`
-	Email              *string `json:"email,omitempty"`
-	Id                 string  `json:"id"`
-	Name               string  `json:"name"`
-	RateLimitPerMinute *int64  `json:"rate_limit_per_minute,omitempty"`
+	ApiKey    string  `json:"api_key"`
+	CreatedAt string  `json:"created_at"`
+	Email     *string `json:"email,omitempty"`
+	Id        string  `json:"id"`
+	Name      string  `json:"name"`
+
+	// PreviousApiKeyExpiresAt When the previous API key stops authenticating after a rotation overlap
+	PreviousApiKeyExpiresAt *time.Time `json:"previous_api_key_expires_at,omitempty"`
+
+	// PreviousWebhookSecretExpiresAt When the previous webhook secret stops being included in signatures after a rotation overlap
+	PreviousWebhookSecretExpiresAt *time.Time `json:"previous_webhook_secret_expires_at,omitempty"`
+	RateLimitPerMinute             *int64     `json:"rate_limit_per_minute,omitempty"`
+
+	// Sandbox Whether this merchant is currently sandbox-only
+	Sandbox *bool `json:"sandbox,omitempty"`
 
 	// WebhookSecret HMAC secret used to sign webhook deliveries (response only)
 	WebhookSecret *string `json:"webhook_secret,omitempty"`
 	WebhookUrl    *string `json:"webhook_url,omitempty"`
+}
+
+// MerchantCredentialOperationRequest defines model for MerchantCredentialOperationRequest.
+type MerchantCredentialOperationRequest struct {
+	// CredentialType Credential kind to rotate or revoke
+	CredentialType MerchantCredentialOperationRequestCredentialType `json:"credential_type"`
+}
+
+// MerchantCredentialOperationRequestCredentialType Credential kind to rotate or revoke
+type MerchantCredentialOperationRequestCredentialType string
+
+// MerchantCredentialStatus defines model for MerchantCredentialStatus.
+type MerchantCredentialStatus struct {
+	// ApiKeyCreatedAt When the merchant (and its initial API key) was created
+	ApiKeyCreatedAt *time.Time `json:"api_key_created_at,omitempty"`
+
+	// ApiKeyLastRotatedAt When the API key was last rotated, absent if never rotated
+	ApiKeyLastRotatedAt *time.Time `json:"api_key_last_rotated_at,omitempty"`
+
+	// ApiKeyPrefix Masked API key, e.g. plaidly_sk_live_...a1b2
+	ApiKeyPrefix string    `json:"api_key_prefix"`
+	CreatedAt    time.Time `json:"created_at"`
+
+	// PreviousApiKeyExpiresAt Present only while a previous API key is still valid in its rotation-overlap grace period
+	PreviousApiKeyExpiresAt *time.Time `json:"previous_api_key_expires_at,omitempty"`
+
+	// PreviousWebhookSecretExpiresAt Present only while a previous webhook secret is still valid in its rotation-overlap grace period
+	PreviousWebhookSecretExpiresAt *time.Time `json:"previous_webhook_secret_expires_at,omitempty"`
+
+	// Sandbox Whether this merchant is currently sandbox-only
+	Sandbox bool `json:"sandbox"`
+
+	// WebhookSecretConfigured Whether a webhook secret has been generated for this merchant
+	WebhookSecretConfigured bool `json:"webhook_secret_configured"`
+
+	// WebhookSecretLastRotatedAt When the webhook secret was last rotated, absent if never rotated
+	WebhookSecretLastRotatedAt *time.Time `json:"webhook_secret_last_rotated_at,omitempty"`
+
+	// WebhookSecretMask Masked webhook secret, e.g. plaidly_whsec_...a1b2. Absent if no webhook secret is configured
+	WebhookSecretMask *string `json:"webhook_secret_mask,omitempty"`
+}
+
+// PatchPlanRequest All fields optional; only fields present are applied. The product_id relationship cannot be changed via PATCH.
+type PatchPlanRequest struct {
+	Entitlement *map[string]interface{} `json:"entitlement,omitempty"`
+	Metadata    *map[string]interface{} `json:"metadata,omitempty"`
+	Name        *string                 `json:"name,omitempty"`
+	Slug        *string                 `json:"slug,omitempty"`
+}
+
+// PatchPriceRequest All fields optional; only fields present are applied. The plan_id relationship cannot be changed via PATCH.
+type PatchPriceRequest struct {
+	AllowedPaymentMethods *[]string               `json:"allowed_payment_methods,omitempty"`
+	AmountSubunits        *string                 `json:"amount_subunits,omitempty"`
+	CurrencyOrToken       *string                 `json:"currency_or_token,omitempty"`
+	Metadata              *map[string]interface{} `json:"metadata,omitempty"`
+}
+
+// PatchProductRequest All fields optional; only fields present are applied. The store_id relationship cannot be changed via PATCH.
+type PatchProductRequest struct {
+	Description     *string                             `json:"description,omitempty"`
+	FulfillmentType *PatchProductRequestFulfillmentType `json:"fulfillment_type,omitempty"`
+	Metadata        *map[string]interface{}             `json:"metadata,omitempty"`
+	Name            *string                             `json:"name,omitempty"`
+	Slug            *string                             `json:"slug,omitempty"`
+}
+
+// PatchProductRequestFulfillmentType defines model for PatchProductRequest.FulfillmentType.
+type PatchProductRequestFulfillmentType string
+
+// PatchStoreRequest All fields optional; only fields present are applied.
+type PatchStoreRequest struct {
+	Description *string                 `json:"description,omitempty"`
+	Metadata    *map[string]interface{} `json:"metadata,omitempty"`
+	Name        *string                 `json:"name,omitempty"`
+	Slug        *string                 `json:"slug,omitempty"`
 }
 
 // PaymentMethod defines model for PaymentMethod.
@@ -102,6 +662,53 @@ type PaymentMethodInfo struct {
 	Token     string   `json:"token"`
 }
 
+// PaymentMethodPolicyEntry defines model for PaymentMethodPolicyEntry.
+type PaymentMethodPolicyEntry struct {
+	Chain string `json:"chain"`
+
+	// Contract Contract or mint address, resolved from the canonical registry. Absent for native tokens.
+	Contract *string `json:"contract,omitempty"`
+	Decimals *int64  `json:"decimals,omitempty"`
+
+	// Effective enabled && eligible, recomputed live. This is what checkout session creation will see.
+	Effective bool `json:"effective"`
+
+	// EligibilityReason Present when eligible is false; explains why the dashboard should grey this option out
+	EligibilityReason *string `json:"eligibility_reason,omitempty"`
+
+	// Eligible Whether this identity currently passes registry/settlement/environment/certification eligibility
+	Eligible bool `json:"eligible"`
+
+	// Enabled The merchant's raw declared intent from the current policy version
+	Enabled bool `json:"enabled"`
+
+	// Kind native, erc20, trc20, spl, jetton
+	Kind    string `json:"kind"`
+	Network string `json:"network"`
+	Token   string `json:"token"`
+}
+
+// PaymentMethodPolicyIdentity defines model for PaymentMethodPolicyIdentity.
+type PaymentMethodPolicyIdentity struct {
+	Chain   string `json:"chain"`
+	Network string `json:"network"`
+
+	// Token Canonical token symbol, resolved server-side against the registry entry for this chain/network
+	Token string `json:"token"`
+}
+
+// PaymentMethodPolicyState defines model for PaymentMethodPolicyState.
+type PaymentMethodPolicyState struct {
+	Entries []PaymentMethodPolicyEntry `json:"entries"`
+
+	// Environment live or sandbox, derived from the merchant's own sandbox flag
+	Environment string     `json:"environment"`
+	UpdatedAt   *time.Time `json:"updated_at,omitempty"`
+
+	// Version 0 when the merchant has never written a policy version
+	Version int64 `json:"version"`
+}
+
 // PaymentSession defines model for PaymentSession.
 type PaymentSession struct {
 	Address     string  `json:"address"`
@@ -109,31 +716,133 @@ type PaymentSession struct {
 	CreatedAt   string  `json:"created_at"`
 
 	// Currency Token symbol the session is denominated in
-	Currency       *string `json:"currency,omitempty"`
-	Demo           bool    `json:"demo"`
-	ExpectedAmount float64 `json:"expected_amount"`
-	ExpiresAt      string  `json:"expires_at"`
+	Currency       *string                    `json:"currency,omitempty"`
+	Demo           bool                       `json:"demo"`
+	Diagnostics    *PaymentSessionDiagnostics `json:"diagnostics,omitempty"`
+	ExpectedAmount float64                    `json:"expected_amount"`
+	ExpiresAt      string                     `json:"expires_at"`
 
 	// ExplorerUrl Block explorer URL for the deposit address
-	ExplorerUrl   *string                `json:"explorer_url,omitempty"`
-	MerchantId    string                 `json:"merchant_id"`
-	Metadata      map[string]interface{} `json:"metadata"`
-	PaymentMethod PaymentMethod          `json:"paymentMethod"`
+	ExplorerUrl *string                `json:"explorer_url,omitempty"`
+	MerchantId  string                 `json:"merchant_id"`
+	Metadata    map[string]interface{} `json:"metadata"`
+
+	// MethodSelectedAt Set only when the session was materialized via POST .../select_method.
+	MethodSelectedAt *string       `json:"method_selected_at,omitempty"`
+	PaymentMethod    PaymentMethod `json:"paymentMethod"`
 
 	// PaymentUrl Hosted checkout URL for the payer
 	PaymentUrl *string `json:"payment_url,omitempty"`
 
+	// PolicyVersion Merchant payment-method policy snapshot version this session was evaluated against.
+	PolicyVersion *string `json:"policy_version,omitempty"`
+
 	// QrData Payer payment URI for QR encoding
 	QrData         *string `json:"qr_data,omitempty"`
 	ReceivedAmount float64 `json:"received_amount"`
-	SessionId      string  `json:"session_id"`
-	Status         string  `json:"status"`
-	UpdatedAt      string  `json:"updated_at"`
+
+	// ReturnUrl URL to redirect the payer to after checkout completes
+	ReturnUrl *string `json:"return_url,omitempty"`
+	SessionId string  `json:"session_id"`
+
+	// Simulated true when the session was settled synthetically via /simulate; no on-chain transaction exists
+	Simulated *bool `json:"simulated,omitempty"`
+
+	// Status Lifecycle status of the session. The terminal settled status is "completed" (emitted alongside the payment_session.completed webhook). The legacy value "confirmed" is an accepted alias for the same terminal state.
+	Status string `json:"status"`
+
+	// TxHash settlement transaction hash; present only after a real on-chain settlement
+	TxHash          *string                `json:"tx_hash"`
+	UpdatedAt       string                 `json:"updated_at"`
+	WebhookDelivery *WebhookDeliveryStatus `json:"webhook_delivery,omitempty"`
+}
+
+// PaymentSessionDiagnosticSignal defines model for PaymentSessionDiagnosticSignal.
+type PaymentSessionDiagnosticSignal struct {
+	Code                  PaymentSessionDiagnosticSignalCode     `json:"code"`
+	Detail                string                                 `json:"detail"`
+	ObservedAt            *time.Time                             `json:"observed_at,omitempty"`
+	ObservedConfirmations *int64                                 `json:"observed_confirmations,omitempty"`
+	ObservedNetwork       *string                                `json:"observed_network,omitempty"`
+	ObservedToken         *string                                `json:"observed_token,omitempty"`
+	RecommendedAction     string                                 `json:"recommended_action"`
+	RequiredConfirmations *int64                                 `json:"required_confirmations,omitempty"`
+	Severity              PaymentSessionDiagnosticSignalSeverity `json:"severity"`
+	Title                 string                                 `json:"title"`
+}
+
+// PaymentSessionDiagnosticSignalCode defines model for PaymentSessionDiagnosticSignal.Code.
+type PaymentSessionDiagnosticSignalCode string
+
+// PaymentSessionDiagnosticSignalSeverity defines model for PaymentSessionDiagnosticSignal.Severity.
+type PaymentSessionDiagnosticSignalSeverity string
+
+// PaymentSessionDiagnostics defines model for PaymentSessionDiagnostics.
+type PaymentSessionDiagnostics struct {
+	RecommendedAction string                             `json:"recommended_action"`
+	RiskLevel         PaymentSessionDiagnosticsRiskLevel `json:"risk_level"`
+	Signals           []PaymentSessionDiagnosticSignal   `json:"signals"`
+	Summary           string                             `json:"summary"`
+}
+
+// PaymentSessionDiagnosticsRiskLevel defines model for PaymentSessionDiagnostics.RiskLevel.
+type PaymentSessionDiagnosticsRiskLevel string
+
+// PaymentSessionOrIntent Same shape as PaymentSession, except address and paymentMethod are absent while status is awaiting_method_selection (a checkout intent that has not had a method selected yet). Returned only by createPaymentSession and getPaymentSession, the two operations whose response can genuinely be either a materialized session or a pre-selection intent; every other operation always returns a fully materialized PaymentSession.
+type PaymentSessionOrIntent struct {
+	Address *string `json:"address,omitempty"`
+
+	// CandidatePaymentMethods The merchant-policy / environment / enabled-rails intersection offered to the payer. Present only while status is awaiting_method_selection; the immutable snapshot computed at intent-creation time, never recomputed.
+	CandidatePaymentMethods *[]PaymentMethod `json:"candidate_payment_methods,omitempty"`
+	CompletedAt             *string          `json:"completed_at,omitempty"`
+	CreatedAt               string           `json:"created_at"`
+
+	// Currency Token symbol the session is denominated in
+	Currency       *string                    `json:"currency,omitempty"`
+	Demo           bool                       `json:"demo"`
+	Diagnostics    *PaymentSessionDiagnostics `json:"diagnostics,omitempty"`
+	ExpectedAmount float64                    `json:"expected_amount"`
+	ExpiresAt      string                     `json:"expires_at"`
+
+	// ExplorerUrl Block explorer URL for the deposit address
+	ExplorerUrl *string                `json:"explorer_url,omitempty"`
+	MerchantId  string                 `json:"merchant_id"`
+	Metadata    map[string]interface{} `json:"metadata"`
+
+	// MethodSelectedAt Set only when the session was materialized via POST .../select_method.
+	MethodSelectedAt *string        `json:"method_selected_at,omitempty"`
+	PaymentMethod    *PaymentMethod `json:"paymentMethod,omitempty"`
+
+	// PaymentUrl Hosted checkout URL for the payer
+	PaymentUrl *string `json:"payment_url,omitempty"`
+
+	// PolicyVersion Merchant payment-method policy snapshot version this session (or intent) was evaluated against.
+	PolicyVersion *string `json:"policy_version,omitempty"`
+
+	// QrData Payer payment URI for QR encoding
+	QrData         *string `json:"qr_data,omitempty"`
+	ReceivedAmount float64 `json:"received_amount"`
+
+	// ReturnUrl URL to redirect the payer to after checkout completes
+	ReturnUrl *string `json:"return_url,omitempty"`
+	SessionId string  `json:"session_id"`
+
+	// Simulated true when the session was settled synthetically via /simulate; no on-chain transaction exists
+	Simulated *bool `json:"simulated,omitempty"`
+
+	// Status Lifecycle status of the session/intent. The terminal settled status is "completed" (emitted alongside the payment_session.completed webhook). The legacy value "confirmed" is an accepted alias for the same terminal state.
+	Status string `json:"status"`
+
+	// TxHash settlement transaction hash; present only after a real on-chain settlement
+	TxHash          *string                `json:"tx_hash"`
+	UpdatedAt       string                 `json:"updated_at"`
+	WebhookDelivery *WebhookDeliveryStatus `json:"webhook_delivery,omitempty"`
 }
 
 // Payout defines model for Payout.
 type Payout struct {
 	Amount             float64 `json:"amount"`
+	Chain              string  `json:"chain"`
 	DestinationAddress string  `json:"destination_address"`
 	Id                 string  `json:"id"`
 	MerchantId         string  `json:"merchant_id"`
@@ -143,6 +852,24 @@ type Payout struct {
 	Status             string  `json:"status"`
 	TokenSymbol        string  `json:"token_symbol"`
 	TxHash             *string `json:"tx_hash,omitempty"`
+}
+
+// PlanListResponse defines model for PlanListResponse.
+type PlanListResponse struct {
+	Data       []CatalogPlan `json:"data"`
+	NextCursor *string       `json:"next_cursor,omitempty"`
+}
+
+// PriceListResponse defines model for PriceListResponse.
+type PriceListResponse struct {
+	Data       []CatalogPrice `json:"data"`
+	NextCursor *string        `json:"next_cursor,omitempty"`
+}
+
+// ProductListResponse defines model for ProductListResponse.
+type ProductListResponse struct {
+	Data       []CatalogProduct `json:"data"`
+	NextCursor *string          `json:"next_cursor,omitempty"`
 }
 
 // RateInfo defines model for RateInfo.
@@ -164,11 +891,44 @@ type Receipt struct {
 
 // RegisterMerchantRequest defines model for RegisterMerchantRequest.
 type RegisterMerchantRequest struct {
+	// IdempotencyKey Idempotency key for replay-safe onboarding retries
+	IdempotencyKey *string `json:"idempotency_key,omitempty"`
+
 	// Name Merchant display name
 	Name string `json:"name"`
 
+	// ProofOfWorkChallengeId Required for public/sandbox registration unless the registration intent carries a valid invitation token: the challenge_id from POST /v1/merchants/registration-proof-of-work
+	ProofOfWorkChallengeId *string `json:"proof_of_work_challenge_id,omitempty"`
+
+	// ProofOfWorkNonce The nonce solving the proof-of-work challenge
+	ProofOfWorkNonce *string `json:"proof_of_work_nonce,omitempty"`
+
+	// RegistrationIntentId Required for public/sandbox registration: the id returned by POST /v1/merchants/email-verification, after email verification and (unless invitation-exempt) proof-of-work are complete. Not used for bearer-authenticated live merchant creation.
+	RegistrationIntentId *string `json:"registration_intent_id,omitempty"`
+
+	// Sandbox Create this merchant in sandbox mode (testnet-only sessions). Defaults to false.
+	Sandbox *bool `json:"sandbox,omitempty"`
+
 	// WebhookUrl Optional webhook URL for payment notifications
 	WebhookUrl *string `json:"webhook_url,omitempty"`
+}
+
+// RequestEmailVerificationRequest defines model for RequestEmailVerificationRequest.
+type RequestEmailVerificationRequest struct {
+	// Email Email address to verify; must not belong to a disposable/temporary provider
+	Email string `json:"email"`
+
+	// InvitationToken Optional time-limited invitation/enrollment token that satisfies the trusted-email policy on its own
+	InvitationToken *string `json:"invitation_token,omitempty"`
+}
+
+// RequestEmailVerificationResponse defines model for RequestEmailVerificationResponse.
+type RequestEmailVerificationResponse struct {
+	// ExpiresAt When this registration intent (and everything bound to it) expires
+	ExpiresAt time.Time `json:"expires_at"`
+
+	// RegistrationIntentId Opaque id binding this verification, the subsequent proof-of-work challenge, and the final registration call together. Returned identically regardless of whether the email satisfies the trusted-email policy.
+	RegistrationIntentId string `json:"registration_intent_id"`
 }
 
 // RequestPayoutRequest defines model for RequestPayoutRequest.
@@ -176,14 +936,44 @@ type RequestPayoutRequest struct {
 	// Amount Amount to pay out
 	Amount float64 `json:"amount"`
 
+	// Chain Canonical payout chain (e.g. solana, ethereum, tron). Optional for legacy clients; omitted value is inferred from token where unambiguous enough for backward compatibility.
+	Chain *string `json:"chain,omitempty"`
+
 	// DestinationAddress Blockchain address to send the payout to
 	DestinationAddress string `json:"destination_address"`
 
-	// Network Blockchain network (e.g. solana, ethereum)
+	// Network Settlement environment. Use mainnet or testnet; legacy aliases such as devnet/solana map to testnet and ethereum maps to mainnet.
 	Network string `json:"network"`
 
 	// TokenSymbol Token symbol (e.g. SOL, ETH)
 	TokenSymbol string `json:"token_symbol"`
+}
+
+// RequestRegistrationProofOfWorkRequest defines model for RequestRegistrationProofOfWorkRequest.
+type RequestRegistrationProofOfWorkRequest struct {
+	RegistrationIntentId string `json:"registration_intent_id"`
+}
+
+// RequestRegistrationProofOfWorkResponse defines model for RequestRegistrationProofOfWorkResponse.
+type RequestRegistrationProofOfWorkResponse struct {
+	// AlgorithmVersion Versioned proof-of-work algorithm identifier, e.g. sha256-leading-zero-bits-v1
+	AlgorithmVersion *string `json:"algorithm_version,omitempty"`
+
+	// Challenge Random server-issued input the client must find a nonce for
+	Challenge   *string `json:"challenge,omitempty"`
+	ChallengeId *string `json:"challenge_id,omitempty"`
+
+	// Difficulty Required number of leading zero bits in sha256(challenge:nonce)
+	Difficulty *int64     `json:"difficulty,omitempty"`
+	ExpiresAt  *time.Time `json:"expires_at,omitempty"`
+
+	// Required Whether a proof-of-work solution must be submitted with POST /v1/merchants. False only when the registration intent carries a valid invitation token.
+	Required bool `json:"required"`
+}
+
+// SelectPaymentMethodRequest defines model for SelectPaymentMethodRequest.
+type SelectPaymentMethodRequest struct {
+	PaymentMethod PaymentMethod `json:"paymentMethod"`
 }
 
 // SendRequest defines model for SendRequest.
@@ -197,6 +987,14 @@ type SendRequest struct {
 type SendResponse struct {
 	Success bool   `json:"success"`
 	TxHash  string `json:"tx_hash"`
+}
+
+// StoreListResponse defines model for StoreListResponse.
+type StoreListResponse struct {
+	Data []CatalogStore `json:"data"`
+
+	// NextCursor Opaque cursor for the next page. Absent when there is no further page.
+	NextCursor *string `json:"next_cursor,omitempty"`
 }
 
 // SweepResponse defines model for SweepResponse.
@@ -218,6 +1016,18 @@ type Transaction struct {
 	ToAddress   *string `json:"to_address,omitempty"`
 	TokenSymbol string  `json:"token_symbol"`
 	TxHash      string  `json:"tx_hash"`
+}
+
+// UpdateMerchantWebhookRequest defines model for UpdateMerchantWebhookRequest.
+type UpdateMerchantWebhookRequest struct {
+	// WebhookUrl New webhook URL. Validated against the same SSRF rules enforced at merchant registration.
+	WebhookUrl string `json:"webhook_url"`
+}
+
+// UpdatePaymentMethodPolicyRequest defines model for UpdatePaymentMethodPolicyRequest.
+type UpdatePaymentMethodPolicyRequest struct {
+	// Enabled The merchant's full desired set of enabled identities. Identities not listed are disabled. An empty array disables every method.
+	Enabled []PaymentMethodPolicyIdentity `json:"enabled"`
 }
 
 // User User model containing essential user details
@@ -248,10 +1058,78 @@ type Wallet struct {
 	Type string `json:"type"`
 }
 
+// WebhookDeliveryStatus defines model for WebhookDeliveryStatus.
+type WebhookDeliveryStatus struct {
+	Attempts         int64                       `json:"attempts"`
+	DeliveredAt      *time.Time                  `json:"delivered_at,omitempty"`
+	EventType        *string                     `json:"event_type,omitempty"`
+	LastAttemptAt    *time.Time                  `json:"last_attempt_at,omitempty"`
+	LastError        *string                     `json:"last_error,omitempty"`
+	LastHttpStatus   *int64                      `json:"last_http_status,omitempty"`
+	LatencyMs        *int64                      `json:"latency_ms,omitempty"`
+	ManualRetryCount int64                       `json:"manual_retry_count"`
+	NextRetryAt      *time.Time                  `json:"next_retry_at,omitempty"`
+	Status           WebhookDeliveryStatusStatus `json:"status"`
+}
+
+// WebhookDeliveryStatusStatus defines model for WebhookDeliveryStatus.Status.
+type WebhookDeliveryStatusStatus string
+
+// WebhookTestDeliveryResult defines model for WebhookTestDeliveryResult.
+type WebhookTestDeliveryResult struct {
+	Delivered  bool    `json:"delivered"`
+	Message    *string `json:"message,omitempty"`
+	StatusCode *int64  `json:"status_code,omitempty"`
+}
+
+// X402PaymentPayload defines model for X402PaymentPayload.
+type X402PaymentPayload struct {
+	// Chain Payment chain slug (e.g. solana, ethereum)
+	Chain string `json:"chain"`
+
+	// Network Network alias (e.g. testnet, mainnet, sepolia, holesky)
+	Network string `json:"network"`
+
+	// Token Token symbol (e.g. USDC, USDT)
+	Token string `json:"token"`
+}
+
+// X402ValidationResult defines model for X402ValidationResult.
+type X402ValidationResult struct {
+	// Outcome Classifier for downstream handling: terminal for hard/definitive result, retryable for transient issues.
+	Outcome X402ValidationResultOutcome `json:"outcome"`
+
+	// Reason Human-readable reason for the outcome
+	Reason *string `json:"reason,omitempty"`
+
+	// Supported Whether the payload is supported for payment
+	Supported bool `json:"supported"`
+}
+
+// X402ValidationResultOutcome Classifier for downstream handling: terminal for hard/definitive result, retryable for transient issues.
+type X402ValidationResultOutcome string
+
+// ListCatalogProductsParams defines parameters for ListCatalogProducts.
+type ListCatalogProductsParams struct {
+	MerchantId string `form:"merchant_id" json:"merchant_id"`
+	Sandbox    *bool  `form:"sandbox,omitempty" json:"sandbox,omitempty"`
+
+	// Q Free-text search over product name/description (simple ILIKE match)
+	Q      *string `form:"q,omitempty" json:"q,omitempty"`
+	Cursor *string `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Limit  *int64  `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
 // UserLoginJSONBody defines parameters for UserLogin.
 type UserLoginJSONBody struct {
 	// Token User auth token
 	Token string `json:"token"`
+}
+
+// UserLoginParams defines parameters for UserLogin.
+type UserLoginParams struct {
+	// Authorization Bearer Firebase ID token. May be used instead of the JSON body token.
+	Authorization *string `json:"Authorization,omitempty"`
 }
 
 // UserRegisterParams defines parameters for UserRegister.
@@ -260,26 +1138,165 @@ type UserRegisterParams struct {
 	Authorization string `json:"Authorization"`
 }
 
+// CreatePaymentSessionParams defines parameters for CreatePaymentSession.
+type CreatePaymentSessionParams struct {
+	// IdempotencyKey Unique key for replay-safe session creation. Retrying with the same key and an identical payload within 24 hours returns the original session (same session_id and deposit address) with status 201; the same key with a different payload returns 409. Keys are scoped per merchant.
+	IdempotencyKey *string `json:"Idempotency-Key,omitempty"`
+}
+
+// RequestPayoutParams defines parameters for RequestPayout.
+type RequestPayoutParams struct {
+	// IdempotencyKey Unique key for replay-safe payout creation. Retrying with the same key and an identical payload within 24 hours returns the original payout with status 201; the same key with a different payload returns 409. Keys are scoped per merchant.
+	IdempotencyKey *string `json:"Idempotency-Key,omitempty"`
+}
+
+// ListPlansParams defines parameters for ListPlans.
+type ListPlansParams struct {
+	ProductId *string                `form:"product_id,omitempty" json:"product_id,omitempty"`
+	Status    *ListPlansParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+	Cursor    *string                `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Limit     *int64                 `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
+// ListPlansParamsStatus defines parameters for ListPlans.
+type ListPlansParamsStatus string
+
+// CreatePlanParams defines parameters for CreatePlan.
+type CreatePlanParams struct {
+	// IdempotencyKey Unique key for replay-safe plan creation. Retrying with the same key and an identical payload within 24 hours returns the original plan with status 201; the same key with a different payload returns 409. Keys are scoped per merchant.
+	IdempotencyKey *string `json:"Idempotency-Key,omitempty"`
+}
+
+// ListPricesParams defines parameters for ListPrices.
+type ListPricesParams struct {
+	PlanId *string                 `form:"plan_id,omitempty" json:"plan_id,omitempty"`
+	Status *ListPricesParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+	Cursor *string                 `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Limit  *int64                  `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
+// ListPricesParamsStatus defines parameters for ListPrices.
+type ListPricesParamsStatus string
+
+// CreatePriceParams defines parameters for CreatePrice.
+type CreatePriceParams struct {
+	// IdempotencyKey Unique key for replay-safe price creation. Retrying with the same key and an identical payload within 24 hours returns the original price with status 201; the same key with a different payload returns 409. Keys are scoped per merchant.
+	IdempotencyKey *string `json:"Idempotency-Key,omitempty"`
+}
+
+// ListProductsParams defines parameters for ListProducts.
+type ListProductsParams struct {
+	StoreId *string                   `form:"store_id,omitempty" json:"store_id,omitempty"`
+	Status  *ListProductsParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+	Cursor  *string                   `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Limit   *int64                    `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
+// ListProductsParamsStatus defines parameters for ListProducts.
+type ListProductsParamsStatus string
+
+// CreateProductParams defines parameters for CreateProduct.
+type CreateProductParams struct {
+	// IdempotencyKey Unique key for replay-safe product creation. Retrying with the same key and an identical payload within 24 hours returns the original product with status 201; the same key with a different payload returns 409. Keys are scoped per merchant.
+	IdempotencyKey *string `json:"Idempotency-Key,omitempty"`
+}
+
 // GetRatesParams defines parameters for GetRates.
 type GetRatesParams struct {
 	// Symbols Comma-separated symbols (e.g. ETH,SOL,USDC). Omit for all.
 	Symbols *string `form:"symbols,omitempty" json:"symbols,omitempty"`
 }
 
+// ListStoresParams defines parameters for ListStores.
+type ListStoresParams struct {
+	Status *ListStoresParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+	Cursor *string                 `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Limit  *int64                  `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
+// ListStoresParamsStatus defines parameters for ListStores.
+type ListStoresParamsStatus string
+
+// CreateStoreParams defines parameters for CreateStore.
+type CreateStoreParams struct {
+	// IdempotencyKey Unique key for replay-safe store creation. Retrying with the same key and an identical payload within 24 hours returns the original store with status 201; the same key with a different payload returns 409. Keys are scoped per merchant.
+	IdempotencyKey *string `json:"Idempotency-Key,omitempty"`
+}
+
+// AttemptAgentWalletSpendJSONRequestBody defines body for AttemptAgentWalletSpend for application/json ContentType.
+type AttemptAgentWalletSpendJSONRequestBody = AgentSpendAttemptRequest
+
+// RevokeMerchantCredentialJSONRequestBody defines body for RevokeMerchantCredential for application/json ContentType.
+type RevokeMerchantCredentialJSONRequestBody = MerchantCredentialOperationRequest
+
+// RotateMerchantCredentialJSONRequestBody defines body for RotateMerchantCredential for application/json ContentType.
+type RotateMerchantCredentialJSONRequestBody = MerchantCredentialOperationRequest
+
 // UserLoginJSONRequestBody defines body for UserLogin for application/json ContentType.
 type UserLoginJSONRequestBody UserLoginJSONBody
+
+// UpdatePaymentMethodPolicyJSONRequestBody defines body for UpdatePaymentMethodPolicy for application/json ContentType.
+type UpdatePaymentMethodPolicyJSONRequestBody = UpdatePaymentMethodPolicyRequest
+
+// UpdateMerchantWebhookJSONRequestBody defines body for UpdateMerchantWebhook for application/json ContentType.
+type UpdateMerchantWebhookJSONRequestBody = UpdateMerchantWebhookRequest
 
 // RegisterMerchantJSONRequestBody defines body for RegisterMerchant for application/json ContentType.
 type RegisterMerchantJSONRequestBody = RegisterMerchantRequest
 
+// RequestEmailVerificationJSONRequestBody defines body for RequestEmailVerification for application/json ContentType.
+type RequestEmailVerificationJSONRequestBody = RequestEmailVerificationRequest
+
+// ConfirmEmailVerificationJSONRequestBody defines body for ConfirmEmailVerification for application/json ContentType.
+type ConfirmEmailVerificationJSONRequestBody = ConfirmEmailVerificationRequest
+
+// RequestRegistrationProofOfWorkJSONRequestBody defines body for RequestRegistrationProofOfWork for application/json ContentType.
+type RequestRegistrationProofOfWorkJSONRequestBody = RequestRegistrationProofOfWorkRequest
+
 // CreatePaymentSessionJSONRequestBody defines body for CreatePaymentSession for application/json ContentType.
 type CreatePaymentSessionJSONRequestBody = CreatePaymentSessionRequest
+
+// CreateDemoPaymentSessionJSONRequestBody defines body for CreateDemoPaymentSession for application/json ContentType.
+type CreateDemoPaymentSessionJSONRequestBody = CreateDemoSessionRequest
+
+// SelectPaymentMethodJSONRequestBody defines body for SelectPaymentMethod for application/json ContentType.
+type SelectPaymentMethodJSONRequestBody = SelectPaymentMethodRequest
 
 // RequestPayoutJSONRequestBody defines body for RequestPayout for application/json ContentType.
 type RequestPayoutJSONRequestBody = RequestPayoutRequest
 
+// CreatePlanJSONRequestBody defines body for CreatePlan for application/json ContentType.
+type CreatePlanJSONRequestBody = CreatePlanRequest
+
+// PatchPlanJSONRequestBody defines body for PatchPlan for application/json ContentType.
+type PatchPlanJSONRequestBody = PatchPlanRequest
+
+// CreatePriceJSONRequestBody defines body for CreatePrice for application/json ContentType.
+type CreatePriceJSONRequestBody = CreatePriceRequest
+
+// PatchPriceJSONRequestBody defines body for PatchPrice for application/json ContentType.
+type PatchPriceJSONRequestBody = PatchPriceRequest
+
+// CreateProductJSONRequestBody defines body for CreateProduct for application/json ContentType.
+type CreateProductJSONRequestBody = CreateProductRequest
+
+// PatchProductJSONRequestBody defines body for PatchProduct for application/json ContentType.
+type PatchProductJSONRequestBody = PatchProductRequest
+
+// FundSepoliaFaucetJSONRequestBody defines body for FundSepoliaFaucet for application/json ContentType.
+type FundSepoliaFaucetJSONRequestBody = FundSepoliaFaucetRequest
+
+// CreateStoreJSONRequestBody defines body for CreateStore for application/json ContentType.
+type CreateStoreJSONRequestBody = CreateStoreRequest
+
+// PatchStoreJSONRequestBody defines body for PatchStore for application/json ContentType.
+type PatchStoreJSONRequestBody = PatchStoreRequest
+
 // CreateWalletJSONRequestBody defines body for CreateWallet for application/json ContentType.
 type CreateWalletJSONRequestBody = CreateWalletRequest
+
+// ValidateX402PaymentJSONRequestBody defines body for ValidateX402Payment for application/json ContentType.
+type ValidateX402PaymentJSONRequestBody = X402PaymentPayload
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -354,32 +1371,92 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
+	// AttemptAgentWalletSpendWithBody request with any body
+	AttemptAgentWalletSpendWithBody(ctx context.Context, agentWalletId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	AttemptAgentWalletSpend(ctx context.Context, agentWalletId string, body AttemptAgentWalletSpendJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateCatalogCheckoutIntent request
+	CreateCatalogCheckoutIntent(ctx context.Context, priceId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListCatalogProducts request
+	ListCatalogProducts(ctx context.Context, params *ListCatalogProductsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetCatalogProduct request
+	GetCatalogProduct(ctx context.Context, productId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetMe request
 	GetMe(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// UserLoginWithBody request with any body
-	UserLoginWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetMerchantCredentialStatus request
+	GetMerchantCredentialStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	UserLogin(ctx context.Context, body UserLoginJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// RevokeMerchantCredentialWithBody request with any body
+	RevokeMerchantCredentialWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	RevokeMerchantCredential(ctx context.Context, body RevokeMerchantCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RotateMerchantCredentialWithBody request with any body
+	RotateMerchantCredentialWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	RotateMerchantCredential(ctx context.Context, body RotateMerchantCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UserLoginWithBody request with any body
+	UserLoginWithBody(ctx context.Context, params *UserLoginParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UserLogin(ctx context.Context, params *UserLoginParams, body UserLoginJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetPaymentMethodPolicy request
+	GetPaymentMethodPolicy(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdatePaymentMethodPolicyWithBody request with any body
+	UpdatePaymentMethodPolicyWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdatePaymentMethodPolicy(ctx context.Context, body UpdatePaymentMethodPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// UserRegister request
 	UserRegister(ctx context.Context, params *UserRegisterParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateMerchantWebhookWithBody request with any body
+	UpdateMerchantWebhookWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateMerchantWebhook(ctx context.Context, body UpdateMerchantWebhookJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// TestMerchantWebhookDelivery request
+	TestMerchantWebhookDelivery(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// RegisterMerchantWithBody request with any body
 	RegisterMerchantWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	RegisterMerchant(ctx context.Context, body RegisterMerchantJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// RequestEmailVerificationWithBody request with any body
+	RequestEmailVerificationWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	RequestEmailVerification(ctx context.Context, body RequestEmailVerificationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ConfirmEmailVerificationWithBody request with any body
+	ConfirmEmailVerificationWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	ConfirmEmailVerification(ctx context.Context, body ConfirmEmailVerificationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// RequestRegistrationProofOfWorkWithBody request with any body
+	RequestRegistrationProofOfWorkWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	RequestRegistrationProofOfWork(ctx context.Context, body RequestRegistrationProofOfWorkJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListPaymentMethods request
 	ListPaymentMethods(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreatePaymentSessionWithBody request with any body
-	CreatePaymentSessionWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	CreatePaymentSessionWithBody(ctx context.Context, params *CreatePaymentSessionParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	CreatePaymentSession(ctx context.Context, body CreatePaymentSessionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	CreatePaymentSession(ctx context.Context, params *CreatePaymentSessionParams, body CreatePaymentSessionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CreateDemoPaymentSession request
-	CreateDemoPaymentSession(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// CreateDemoPaymentSessionWithBody request with any body
+	CreateDemoPaymentSessionWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateDemoPaymentSession(ctx context.Context, body CreateDemoPaymentSessionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetPaymentSession request
 	GetPaymentSession(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -393,22 +1470,135 @@ type ClientInterface interface {
 	// GetReceiptBySessionID request
 	GetReceiptBySessionID(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// SelectPaymentMethodWithBody request with any body
+	SelectPaymentMethodWithBody(ctx context.Context, sessionId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	SelectPaymentMethod(ctx context.Context, sessionId string, body SelectPaymentMethodJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// SimulatePayment request
 	SimulatePayment(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// RequestPayoutWithBody request with any body
-	RequestPayoutWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// RetryWebhookDelivery request
+	RetryWebhookDelivery(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	RequestPayout(ctx context.Context, body RequestPayoutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// RequestPayoutWithBody request with any body
+	RequestPayoutWithBody(ctx context.Context, params *RequestPayoutParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	RequestPayout(ctx context.Context, params *RequestPayoutParams, body RequestPayoutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetPayout request
 	GetPayout(ctx context.Context, payoutId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ListPlans request
+	ListPlans(ctx context.Context, params *ListPlansParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreatePlanWithBody request with any body
+	CreatePlanWithBody(ctx context.Context, params *CreatePlanParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreatePlan(ctx context.Context, params *CreatePlanParams, body CreatePlanJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeletePlan request
+	DeletePlan(ctx context.Context, planId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetPlan request
+	GetPlan(ctx context.Context, planId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PatchPlanWithBody request with any body
+	PatchPlanWithBody(ctx context.Context, planId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PatchPlan(ctx context.Context, planId string, body PatchPlanJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ArchivePlan request
+	ArchivePlan(ctx context.Context, planId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PublishPlan request
+	PublishPlan(ctx context.Context, planId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListPrices request
+	ListPrices(ctx context.Context, params *ListPricesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreatePriceWithBody request with any body
+	CreatePriceWithBody(ctx context.Context, params *CreatePriceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreatePrice(ctx context.Context, params *CreatePriceParams, body CreatePriceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeletePrice request
+	DeletePrice(ctx context.Context, priceId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetPrice request
+	GetPrice(ctx context.Context, priceId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PatchPriceWithBody request with any body
+	PatchPriceWithBody(ctx context.Context, priceId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PatchPrice(ctx context.Context, priceId string, body PatchPriceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ArchivePrice request
+	ArchivePrice(ctx context.Context, priceId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PublishPrice request
+	PublishPrice(ctx context.Context, priceId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListProducts request
+	ListProducts(ctx context.Context, params *ListProductsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateProductWithBody request with any body
+	CreateProductWithBody(ctx context.Context, params *CreateProductParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateProduct(ctx context.Context, params *CreateProductParams, body CreateProductJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteProduct request
+	DeleteProduct(ctx context.Context, productId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetProduct request
+	GetProduct(ctx context.Context, productId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PatchProductWithBody request with any body
+	PatchProductWithBody(ctx context.Context, productId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PatchProduct(ctx context.Context, productId string, body PatchProductJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ArchiveProduct request
+	ArchiveProduct(ctx context.Context, productId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PublishProduct request
+	PublishProduct(ctx context.Context, productId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetRates request
 	GetRates(ctx context.Context, params *GetRatesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// FundSepoliaFaucetWithBody request with any body
+	FundSepoliaFaucetWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	FundSepoliaFaucet(ctx context.Context, body FundSepoliaFaucetJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ListSandboxFaucets request
 	ListSandboxFaucets(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListStores request
+	ListStores(ctx context.Context, params *ListStoresParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateStoreWithBody request with any body
+	CreateStoreWithBody(ctx context.Context, params *CreateStoreParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateStore(ctx context.Context, params *CreateStoreParams, body CreateStoreJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteStore request
+	DeleteStore(ctx context.Context, storeId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetStore request
+	GetStore(ctx context.Context, storeId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PatchStoreWithBody request with any body
+	PatchStoreWithBody(ctx context.Context, storeId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PatchStore(ctx context.Context, storeId string, body PatchStoreJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ArchiveStore request
+	ArchiveStore(ctx context.Context, storeId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PublishStore request
+	PublishStore(ctx context.Context, storeId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListWallets request
 	ListWallets(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -423,6 +1613,71 @@ type ClientInterface interface {
 
 	// ListTransactions request
 	ListTransactions(ctx context.Context, walletId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ValidateX402PaymentWithBody request with any body
+	ValidateX402PaymentWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	ValidateX402Payment(ctx context.Context, body ValidateX402PaymentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+}
+
+func (c *Client) AttemptAgentWalletSpendWithBody(ctx context.Context, agentWalletId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAttemptAgentWalletSpendRequestWithBody(c.Server, agentWalletId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) AttemptAgentWalletSpend(ctx context.Context, agentWalletId string, body AttemptAgentWalletSpendJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAttemptAgentWalletSpendRequest(c.Server, agentWalletId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateCatalogCheckoutIntent(ctx context.Context, priceId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateCatalogCheckoutIntentRequest(c.Server, priceId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListCatalogProducts(ctx context.Context, params *ListCatalogProductsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListCatalogProductsRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetCatalogProduct(ctx context.Context, productId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetCatalogProductRequest(c.Server, productId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
 }
 
 func (c *Client) GetMe(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -437,8 +1692,8 @@ func (c *Client) GetMe(ctx context.Context, reqEditors ...RequestEditorFn) (*htt
 	return c.Client.Do(req)
 }
 
-func (c *Client) UserLoginWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUserLoginRequestWithBody(c.Server, contentType, body)
+func (c *Client) GetMerchantCredentialStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetMerchantCredentialStatusRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -449,8 +1704,104 @@ func (c *Client) UserLoginWithBody(ctx context.Context, contentType string, body
 	return c.Client.Do(req)
 }
 
-func (c *Client) UserLogin(ctx context.Context, body UserLoginJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUserLoginRequest(c.Server, body)
+func (c *Client) RevokeMerchantCredentialWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRevokeMerchantCredentialRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RevokeMerchantCredential(ctx context.Context, body RevokeMerchantCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRevokeMerchantCredentialRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RotateMerchantCredentialWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRotateMerchantCredentialRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RotateMerchantCredential(ctx context.Context, body RotateMerchantCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRotateMerchantCredentialRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UserLoginWithBody(ctx context.Context, params *UserLoginParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUserLoginRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UserLogin(ctx context.Context, params *UserLoginParams, body UserLoginJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUserLoginRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetPaymentMethodPolicy(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetPaymentMethodPolicyRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdatePaymentMethodPolicyWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdatePaymentMethodPolicyRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdatePaymentMethodPolicy(ctx context.Context, body UpdatePaymentMethodPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdatePaymentMethodPolicyRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -463,6 +1814,42 @@ func (c *Client) UserLogin(ctx context.Context, body UserLoginJSONRequestBody, r
 
 func (c *Client) UserRegister(ctx context.Context, params *UserRegisterParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUserRegisterRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateMerchantWebhookWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateMerchantWebhookRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateMerchantWebhook(ctx context.Context, body UpdateMerchantWebhookJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateMerchantWebhookRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) TestMerchantWebhookDelivery(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewTestMerchantWebhookDeliveryRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -497,6 +1884,78 @@ func (c *Client) RegisterMerchant(ctx context.Context, body RegisterMerchantJSON
 	return c.Client.Do(req)
 }
 
+func (c *Client) RequestEmailVerificationWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRequestEmailVerificationRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RequestEmailVerification(ctx context.Context, body RequestEmailVerificationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRequestEmailVerificationRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ConfirmEmailVerificationWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewConfirmEmailVerificationRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ConfirmEmailVerification(ctx context.Context, body ConfirmEmailVerificationJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewConfirmEmailVerificationRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RequestRegistrationProofOfWorkWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRequestRegistrationProofOfWorkRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RequestRegistrationProofOfWork(ctx context.Context, body RequestRegistrationProofOfWorkJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRequestRegistrationProofOfWorkRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) ListPaymentMethods(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListPaymentMethodsRequest(c.Server)
 	if err != nil {
@@ -509,8 +1968,8 @@ func (c *Client) ListPaymentMethods(ctx context.Context, reqEditors ...RequestEd
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreatePaymentSessionWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreatePaymentSessionRequestWithBody(c.Server, contentType, body)
+func (c *Client) CreatePaymentSessionWithBody(ctx context.Context, params *CreatePaymentSessionParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreatePaymentSessionRequestWithBody(c.Server, params, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -521,8 +1980,8 @@ func (c *Client) CreatePaymentSessionWithBody(ctx context.Context, contentType s
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreatePaymentSession(ctx context.Context, body CreatePaymentSessionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreatePaymentSessionRequest(c.Server, body)
+func (c *Client) CreatePaymentSession(ctx context.Context, params *CreatePaymentSessionParams, body CreatePaymentSessionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreatePaymentSessionRequest(c.Server, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -533,8 +1992,20 @@ func (c *Client) CreatePaymentSession(ctx context.Context, body CreatePaymentSes
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateDemoPaymentSession(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateDemoPaymentSessionRequest(c.Server)
+func (c *Client) CreateDemoPaymentSessionWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateDemoPaymentSessionRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateDemoPaymentSession(ctx context.Context, body CreateDemoPaymentSessionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateDemoPaymentSessionRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -593,6 +2064,30 @@ func (c *Client) GetReceiptBySessionID(ctx context.Context, sessionId string, re
 	return c.Client.Do(req)
 }
 
+func (c *Client) SelectPaymentMethodWithBody(ctx context.Context, sessionId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSelectPaymentMethodRequestWithBody(c.Server, sessionId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) SelectPaymentMethod(ctx context.Context, sessionId string, body SelectPaymentMethodJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSelectPaymentMethodRequest(c.Server, sessionId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) SimulatePayment(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewSimulatePaymentRequest(c.Server, sessionId)
 	if err != nil {
@@ -605,8 +2100,8 @@ func (c *Client) SimulatePayment(ctx context.Context, sessionId string, reqEdito
 	return c.Client.Do(req)
 }
 
-func (c *Client) RequestPayoutWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRequestPayoutRequestWithBody(c.Server, contentType, body)
+func (c *Client) RetryWebhookDelivery(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRetryWebhookDeliveryRequest(c.Server, sessionId)
 	if err != nil {
 		return nil, err
 	}
@@ -617,8 +2112,20 @@ func (c *Client) RequestPayoutWithBody(ctx context.Context, contentType string, 
 	return c.Client.Do(req)
 }
 
-func (c *Client) RequestPayout(ctx context.Context, body RequestPayoutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewRequestPayoutRequest(c.Server, body)
+func (c *Client) RequestPayoutWithBody(ctx context.Context, params *RequestPayoutParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRequestPayoutRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) RequestPayout(ctx context.Context, params *RequestPayoutParams, body RequestPayoutJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewRequestPayoutRequest(c.Server, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -641,6 +2148,330 @@ func (c *Client) GetPayout(ctx context.Context, payoutId string, reqEditors ...R
 	return c.Client.Do(req)
 }
 
+func (c *Client) ListPlans(ctx context.Context, params *ListPlansParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListPlansRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreatePlanWithBody(ctx context.Context, params *CreatePlanParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreatePlanRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreatePlan(ctx context.Context, params *CreatePlanParams, body CreatePlanJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreatePlanRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeletePlan(ctx context.Context, planId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeletePlanRequest(c.Server, planId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetPlan(ctx context.Context, planId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetPlanRequest(c.Server, planId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PatchPlanWithBody(ctx context.Context, planId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPatchPlanRequestWithBody(c.Server, planId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PatchPlan(ctx context.Context, planId string, body PatchPlanJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPatchPlanRequest(c.Server, planId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ArchivePlan(ctx context.Context, planId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewArchivePlanRequest(c.Server, planId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PublishPlan(ctx context.Context, planId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPublishPlanRequest(c.Server, planId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListPrices(ctx context.Context, params *ListPricesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListPricesRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreatePriceWithBody(ctx context.Context, params *CreatePriceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreatePriceRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreatePrice(ctx context.Context, params *CreatePriceParams, body CreatePriceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreatePriceRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeletePrice(ctx context.Context, priceId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeletePriceRequest(c.Server, priceId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetPrice(ctx context.Context, priceId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetPriceRequest(c.Server, priceId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PatchPriceWithBody(ctx context.Context, priceId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPatchPriceRequestWithBody(c.Server, priceId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PatchPrice(ctx context.Context, priceId string, body PatchPriceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPatchPriceRequest(c.Server, priceId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ArchivePrice(ctx context.Context, priceId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewArchivePriceRequest(c.Server, priceId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PublishPrice(ctx context.Context, priceId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPublishPriceRequest(c.Server, priceId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListProducts(ctx context.Context, params *ListProductsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListProductsRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateProductWithBody(ctx context.Context, params *CreateProductParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateProductRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateProduct(ctx context.Context, params *CreateProductParams, body CreateProductJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateProductRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteProduct(ctx context.Context, productId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteProductRequest(c.Server, productId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetProduct(ctx context.Context, productId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetProductRequest(c.Server, productId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PatchProductWithBody(ctx context.Context, productId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPatchProductRequestWithBody(c.Server, productId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PatchProduct(ctx context.Context, productId string, body PatchProductJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPatchProductRequest(c.Server, productId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ArchiveProduct(ctx context.Context, productId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewArchiveProductRequest(c.Server, productId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PublishProduct(ctx context.Context, productId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPublishProductRequest(c.Server, productId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) GetRates(ctx context.Context, params *GetRatesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetRatesRequest(c.Server, params)
 	if err != nil {
@@ -653,8 +2484,140 @@ func (c *Client) GetRates(ctx context.Context, params *GetRatesParams, reqEditor
 	return c.Client.Do(req)
 }
 
+func (c *Client) FundSepoliaFaucetWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFundSepoliaFaucetRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) FundSepoliaFaucet(ctx context.Context, body FundSepoliaFaucetJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFundSepoliaFaucetRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) ListSandboxFaucets(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewListSandboxFaucetsRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListStores(ctx context.Context, params *ListStoresParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListStoresRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateStoreWithBody(ctx context.Context, params *CreateStoreParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateStoreRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateStore(ctx context.Context, params *CreateStoreParams, body CreateStoreJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateStoreRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteStore(ctx context.Context, storeId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteStoreRequest(c.Server, storeId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetStore(ctx context.Context, storeId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetStoreRequest(c.Server, storeId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PatchStoreWithBody(ctx context.Context, storeId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPatchStoreRequestWithBody(c.Server, storeId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PatchStore(ctx context.Context, storeId string, body PatchStoreJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPatchStoreRequest(c.Server, storeId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ArchiveStore(ctx context.Context, storeId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewArchiveStoreRequest(c.Server, storeId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PublishStore(ctx context.Context, storeId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPublishStoreRequest(c.Server, storeId)
 	if err != nil {
 		return nil, err
 	}
@@ -725,6 +2688,254 @@ func (c *Client) ListTransactions(ctx context.Context, walletId string, reqEdito
 	return c.Client.Do(req)
 }
 
+func (c *Client) ValidateX402PaymentWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewValidateX402PaymentRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ValidateX402Payment(ctx context.Context, body ValidateX402PaymentJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewValidateX402PaymentRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// NewAttemptAgentWalletSpendRequest calls the generic AttemptAgentWalletSpend builder with application/json body
+func NewAttemptAgentWalletSpendRequest(server string, agentWalletId string, body AttemptAgentWalletSpendJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAttemptAgentWalletSpendRequestWithBody(server, agentWalletId, "application/json", bodyReader)
+}
+
+// NewAttemptAgentWalletSpendRequestWithBody generates requests for AttemptAgentWalletSpend with any type of body
+func NewAttemptAgentWalletSpendRequestWithBody(server string, agentWalletId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "agent_wallet_id", runtime.ParamLocationPath, agentWalletId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/agent-wallets/%s/spend-attempts", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewCreateCatalogCheckoutIntentRequest generates requests for CreateCatalogCheckoutIntent
+func NewCreateCatalogCheckoutIntentRequest(server string, priceId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "price_id", runtime.ParamLocationPath, priceId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/catalog/prices/%s/checkout-intent", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewListCatalogProductsRequest generates requests for ListCatalogProducts
+func NewListCatalogProductsRequest(server string, params *ListCatalogProductsParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/catalog/products")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "merchant_id", runtime.ParamLocationQuery, params.MerchantId); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+		if params.Sandbox != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "sandbox", runtime.ParamLocationQuery, *params.Sandbox); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Q != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "q", runtime.ParamLocationQuery, *params.Q); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "cursor", runtime.ParamLocationQuery, *params.Cursor); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "limit", runtime.ParamLocationQuery, *params.Limit); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetCatalogProductRequest generates requests for GetCatalogProduct
+func NewGetCatalogProductRequest(server string, productId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "product_id", runtime.ParamLocationPath, productId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/catalog/products/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewGetMeRequest generates requests for GetMe
 func NewGetMeRequest(server string) (*http.Request, error) {
 	var err error
@@ -752,19 +2963,126 @@ func NewGetMeRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewUserLoginRequest calls the generic UserLogin builder with application/json body
-func NewUserLoginRequest(server string, body UserLoginJSONRequestBody) (*http.Request, error) {
+// NewGetMerchantCredentialStatusRequest generates requests for GetMerchantCredentialStatus
+func NewGetMerchantCredentialStatusRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/me/credentials")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewRevokeMerchantCredentialRequest calls the generic RevokeMerchantCredential builder with application/json body
+func NewRevokeMerchantCredentialRequest(server string, body RevokeMerchantCredentialJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewUserLoginRequestWithBody(server, "application/json", bodyReader)
+	return NewRevokeMerchantCredentialRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewRevokeMerchantCredentialRequestWithBody generates requests for RevokeMerchantCredential with any type of body
+func NewRevokeMerchantCredentialRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/me/credentials/revoke")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewRotateMerchantCredentialRequest calls the generic RotateMerchantCredential builder with application/json body
+func NewRotateMerchantCredentialRequest(server string, body RotateMerchantCredentialJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewRotateMerchantCredentialRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewRotateMerchantCredentialRequestWithBody generates requests for RotateMerchantCredential with any type of body
+func NewRotateMerchantCredentialRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/me/credentials/rotate")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewUserLoginRequest calls the generic UserLogin builder with application/json body
+func NewUserLoginRequest(server string, params *UserLoginParams, body UserLoginJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUserLoginRequestWithBody(server, params, "application/json", bodyReader)
 }
 
 // NewUserLoginRequestWithBody generates requests for UserLogin with any type of body
-func NewUserLoginRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+func NewUserLoginRequestWithBody(server string, params *UserLoginParams, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -783,6 +3101,88 @@ func NewUserLoginRequestWithBody(server string, contentType string, body io.Read
 	}
 
 	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.Authorization != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithLocation("simple", false, "Authorization", runtime.ParamLocationHeader, *params.Authorization)
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Authorization", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewGetPaymentMethodPolicyRequest generates requests for GetPaymentMethodPolicy
+func NewGetPaymentMethodPolicyRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/me/payment_method_policy")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdatePaymentMethodPolicyRequest calls the generic UpdatePaymentMethodPolicy builder with application/json body
+func NewUpdatePaymentMethodPolicyRequest(server string, body UpdatePaymentMethodPolicyJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdatePaymentMethodPolicyRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewUpdatePaymentMethodPolicyRequestWithBody generates requests for UpdatePaymentMethodPolicy with any type of body
+func NewUpdatePaymentMethodPolicyRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/me/payment_method_policy")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -832,6 +3232,73 @@ func NewUserRegisterRequest(server string, params *UserRegisterParams) (*http.Re
 	return req, nil
 }
 
+// NewUpdateMerchantWebhookRequest calls the generic UpdateMerchantWebhook builder with application/json body
+func NewUpdateMerchantWebhookRequest(server string, body UpdateMerchantWebhookJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateMerchantWebhookRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewUpdateMerchantWebhookRequestWithBody generates requests for UpdateMerchantWebhook with any type of body
+func NewUpdateMerchantWebhookRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/me/webhook")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewTestMerchantWebhookDeliveryRequest generates requests for TestMerchantWebhookDelivery
+func NewTestMerchantWebhookDeliveryRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/me/webhook/test")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewRegisterMerchantRequest calls the generic RegisterMerchant builder with application/json body
 func NewRegisterMerchantRequest(server string, body RegisterMerchantJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -853,6 +3320,126 @@ func NewRegisterMerchantRequestWithBody(server string, contentType string, body 
 	}
 
 	operationPath := fmt.Sprintf("/v1/merchants")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewRequestEmailVerificationRequest calls the generic RequestEmailVerification builder with application/json body
+func NewRequestEmailVerificationRequest(server string, body RequestEmailVerificationJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewRequestEmailVerificationRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewRequestEmailVerificationRequestWithBody generates requests for RequestEmailVerification with any type of body
+func NewRequestEmailVerificationRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/merchants/email-verification")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewConfirmEmailVerificationRequest calls the generic ConfirmEmailVerification builder with application/json body
+func NewConfirmEmailVerificationRequest(server string, body ConfirmEmailVerificationJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewConfirmEmailVerificationRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewConfirmEmailVerificationRequestWithBody generates requests for ConfirmEmailVerification with any type of body
+func NewConfirmEmailVerificationRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/merchants/email-verification/confirm")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewRequestRegistrationProofOfWorkRequest calls the generic RequestRegistrationProofOfWork builder with application/json body
+func NewRequestRegistrationProofOfWorkRequest(server string, body RequestRegistrationProofOfWorkJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewRequestRegistrationProofOfWorkRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewRequestRegistrationProofOfWorkRequestWithBody generates requests for RequestRegistrationProofOfWork with any type of body
+func NewRequestRegistrationProofOfWorkRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/merchants/registration-proof-of-work")
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -900,18 +3487,18 @@ func NewListPaymentMethodsRequest(server string) (*http.Request, error) {
 }
 
 // NewCreatePaymentSessionRequest calls the generic CreatePaymentSession builder with application/json body
-func NewCreatePaymentSessionRequest(server string, body CreatePaymentSessionJSONRequestBody) (*http.Request, error) {
+func NewCreatePaymentSessionRequest(server string, params *CreatePaymentSessionParams, body CreatePaymentSessionJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewCreatePaymentSessionRequestWithBody(server, "application/json", bodyReader)
+	return NewCreatePaymentSessionRequestWithBody(server, params, "application/json", bodyReader)
 }
 
 // NewCreatePaymentSessionRequestWithBody generates requests for CreatePaymentSession with any type of body
-func NewCreatePaymentSessionRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+func NewCreatePaymentSessionRequestWithBody(server string, params *CreatePaymentSessionParams, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -936,11 +3523,37 @@ func NewCreatePaymentSessionRequestWithBody(server string, contentType string, b
 
 	req.Header.Add("Content-Type", contentType)
 
+	if params != nil {
+
+		if params.IdempotencyKey != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithLocation("simple", false, "Idempotency-Key", runtime.ParamLocationHeader, *params.IdempotencyKey)
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Idempotency-Key", headerParam0)
+		}
+
+	}
+
 	return req, nil
 }
 
-// NewCreateDemoPaymentSessionRequest generates requests for CreateDemoPaymentSession
-func NewCreateDemoPaymentSessionRequest(server string) (*http.Request, error) {
+// NewCreateDemoPaymentSessionRequest calls the generic CreateDemoPaymentSession builder with application/json body
+func NewCreateDemoPaymentSessionRequest(server string, body CreateDemoPaymentSessionJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateDemoPaymentSessionRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateDemoPaymentSessionRequestWithBody generates requests for CreateDemoPaymentSession with any type of body
+func NewCreateDemoPaymentSessionRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -958,10 +3571,12 @@ func NewCreateDemoPaymentSessionRequest(server string) (*http.Request, error) {
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	req, err := http.NewRequest("POST", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -1102,6 +3717,53 @@ func NewGetReceiptBySessionIDRequest(server string, sessionId string) (*http.Req
 	return req, nil
 }
 
+// NewSelectPaymentMethodRequest calls the generic SelectPaymentMethod builder with application/json body
+func NewSelectPaymentMethodRequest(server string, sessionId string, body SelectPaymentMethodJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewSelectPaymentMethodRequestWithBody(server, sessionId, "application/json", bodyReader)
+}
+
+// NewSelectPaymentMethodRequestWithBody generates requests for SelectPaymentMethod with any type of body
+func NewSelectPaymentMethodRequestWithBody(server string, sessionId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "session_id", runtime.ParamLocationPath, sessionId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/payment_sessions/%s/select_method", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewSimulatePaymentRequest generates requests for SimulatePayment
 func NewSimulatePaymentRequest(server string, sessionId string) (*http.Request, error) {
 	var err error
@@ -1136,19 +3798,53 @@ func NewSimulatePaymentRequest(server string, sessionId string) (*http.Request, 
 	return req, nil
 }
 
+// NewRetryWebhookDeliveryRequest generates requests for RetryWebhookDelivery
+func NewRetryWebhookDeliveryRequest(server string, sessionId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "session_id", runtime.ParamLocationPath, sessionId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/payment_sessions/%s/webhook/retry", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewRequestPayoutRequest calls the generic RequestPayout builder with application/json body
-func NewRequestPayoutRequest(server string, body RequestPayoutJSONRequestBody) (*http.Request, error) {
+func NewRequestPayoutRequest(server string, params *RequestPayoutParams, body RequestPayoutJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewRequestPayoutRequestWithBody(server, "application/json", bodyReader)
+	return NewRequestPayoutRequestWithBody(server, params, "application/json", bodyReader)
 }
 
 // NewRequestPayoutRequestWithBody generates requests for RequestPayout with any type of body
-func NewRequestPayoutRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+func NewRequestPayoutRequestWithBody(server string, params *RequestPayoutParams, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -1172,6 +3868,21 @@ func NewRequestPayoutRequestWithBody(server string, contentType string, body io.
 	}
 
 	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IdempotencyKey != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithLocation("simple", false, "Idempotency-Key", runtime.ParamLocationHeader, *params.IdempotencyKey)
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Idempotency-Key", headerParam0)
+		}
+
+	}
 
 	return req, nil
 }
@@ -1203,6 +3914,1011 @@ func NewGetPayoutRequest(server string, payoutId string) (*http.Request, error) 
 	}
 
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewListPlansRequest generates requests for ListPlans
+func NewListPlansRequest(server string, params *ListPlansParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/plans")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.ProductId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "product_id", runtime.ParamLocationQuery, *params.ProductId); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Status != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "status", runtime.ParamLocationQuery, *params.Status); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "cursor", runtime.ParamLocationQuery, *params.Cursor); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "limit", runtime.ParamLocationQuery, *params.Limit); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreatePlanRequest calls the generic CreatePlan builder with application/json body
+func NewCreatePlanRequest(server string, params *CreatePlanParams, body CreatePlanJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreatePlanRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewCreatePlanRequestWithBody generates requests for CreatePlan with any type of body
+func NewCreatePlanRequestWithBody(server string, params *CreatePlanParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/plans")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IdempotencyKey != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithLocation("simple", false, "Idempotency-Key", runtime.ParamLocationHeader, *params.IdempotencyKey)
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Idempotency-Key", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewDeletePlanRequest generates requests for DeletePlan
+func NewDeletePlanRequest(server string, planId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "plan_id", runtime.ParamLocationPath, planId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/plans/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetPlanRequest generates requests for GetPlan
+func NewGetPlanRequest(server string, planId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "plan_id", runtime.ParamLocationPath, planId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/plans/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPatchPlanRequest calls the generic PatchPlan builder with application/json body
+func NewPatchPlanRequest(server string, planId string, body PatchPlanJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPatchPlanRequestWithBody(server, planId, "application/json", bodyReader)
+}
+
+// NewPatchPlanRequestWithBody generates requests for PatchPlan with any type of body
+func NewPatchPlanRequestWithBody(server string, planId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "plan_id", runtime.ParamLocationPath, planId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/plans/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewArchivePlanRequest generates requests for ArchivePlan
+func NewArchivePlanRequest(server string, planId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "plan_id", runtime.ParamLocationPath, planId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/plans/%s/archive", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPublishPlanRequest generates requests for PublishPlan
+func NewPublishPlanRequest(server string, planId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "plan_id", runtime.ParamLocationPath, planId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/plans/%s/publish", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewListPricesRequest generates requests for ListPrices
+func NewListPricesRequest(server string, params *ListPricesParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/prices")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.PlanId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "plan_id", runtime.ParamLocationQuery, *params.PlanId); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Status != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "status", runtime.ParamLocationQuery, *params.Status); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "cursor", runtime.ParamLocationQuery, *params.Cursor); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "limit", runtime.ParamLocationQuery, *params.Limit); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreatePriceRequest calls the generic CreatePrice builder with application/json body
+func NewCreatePriceRequest(server string, params *CreatePriceParams, body CreatePriceJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreatePriceRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewCreatePriceRequestWithBody generates requests for CreatePrice with any type of body
+func NewCreatePriceRequestWithBody(server string, params *CreatePriceParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/prices")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IdempotencyKey != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithLocation("simple", false, "Idempotency-Key", runtime.ParamLocationHeader, *params.IdempotencyKey)
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Idempotency-Key", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewDeletePriceRequest generates requests for DeletePrice
+func NewDeletePriceRequest(server string, priceId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "price_id", runtime.ParamLocationPath, priceId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/prices/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetPriceRequest generates requests for GetPrice
+func NewGetPriceRequest(server string, priceId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "price_id", runtime.ParamLocationPath, priceId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/prices/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPatchPriceRequest calls the generic PatchPrice builder with application/json body
+func NewPatchPriceRequest(server string, priceId string, body PatchPriceJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPatchPriceRequestWithBody(server, priceId, "application/json", bodyReader)
+}
+
+// NewPatchPriceRequestWithBody generates requests for PatchPrice with any type of body
+func NewPatchPriceRequestWithBody(server string, priceId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "price_id", runtime.ParamLocationPath, priceId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/prices/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewArchivePriceRequest generates requests for ArchivePrice
+func NewArchivePriceRequest(server string, priceId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "price_id", runtime.ParamLocationPath, priceId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/prices/%s/archive", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPublishPriceRequest generates requests for PublishPrice
+func NewPublishPriceRequest(server string, priceId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "price_id", runtime.ParamLocationPath, priceId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/prices/%s/publish", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewListProductsRequest generates requests for ListProducts
+func NewListProductsRequest(server string, params *ListProductsParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/products")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.StoreId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "store_id", runtime.ParamLocationQuery, *params.StoreId); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Status != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "status", runtime.ParamLocationQuery, *params.Status); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "cursor", runtime.ParamLocationQuery, *params.Cursor); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "limit", runtime.ParamLocationQuery, *params.Limit); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateProductRequest calls the generic CreateProduct builder with application/json body
+func NewCreateProductRequest(server string, params *CreateProductParams, body CreateProductJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateProductRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewCreateProductRequestWithBody generates requests for CreateProduct with any type of body
+func NewCreateProductRequestWithBody(server string, params *CreateProductParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/products")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IdempotencyKey != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithLocation("simple", false, "Idempotency-Key", runtime.ParamLocationHeader, *params.IdempotencyKey)
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Idempotency-Key", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewDeleteProductRequest generates requests for DeleteProduct
+func NewDeleteProductRequest(server string, productId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "product_id", runtime.ParamLocationPath, productId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/products/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetProductRequest generates requests for GetProduct
+func NewGetProductRequest(server string, productId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "product_id", runtime.ParamLocationPath, productId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/products/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPatchProductRequest calls the generic PatchProduct builder with application/json body
+func NewPatchProductRequest(server string, productId string, body PatchProductJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPatchProductRequestWithBody(server, productId, "application/json", bodyReader)
+}
+
+// NewPatchProductRequestWithBody generates requests for PatchProduct with any type of body
+func NewPatchProductRequestWithBody(server string, productId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "product_id", runtime.ParamLocationPath, productId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/products/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewArchiveProductRequest generates requests for ArchiveProduct
+func NewArchiveProductRequest(server string, productId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "product_id", runtime.ParamLocationPath, productId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/products/%s/archive", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPublishProductRequest generates requests for PublishProduct
+func NewPublishProductRequest(server string, productId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "product_id", runtime.ParamLocationPath, productId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/products/%s/publish", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1259,6 +4975,46 @@ func NewGetRatesRequest(server string, params *GetRatesParams) (*http.Request, e
 	return req, nil
 }
 
+// NewFundSepoliaFaucetRequest calls the generic FundSepoliaFaucet builder with application/json body
+func NewFundSepoliaFaucetRequest(server string, body FundSepoliaFaucetJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewFundSepoliaFaucetRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewFundSepoliaFaucetRequestWithBody generates requests for FundSepoliaFaucet with any type of body
+func NewFundSepoliaFaucetRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/sandbox/faucet/fund")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewListSandboxFaucetsRequest generates requests for ListSandboxFaucets
 func NewListSandboxFaucetsRequest(server string) (*http.Request, error) {
 	var err error
@@ -1279,6 +5035,325 @@ func NewListSandboxFaucetsRequest(server string) (*http.Request, error) {
 	}
 
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewListStoresRequest generates requests for ListStores
+func NewListStoresRequest(server string, params *ListStoresParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/stores")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Status != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "status", runtime.ParamLocationQuery, *params.Status); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Cursor != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "cursor", runtime.ParamLocationQuery, *params.Cursor); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "limit", runtime.ParamLocationQuery, *params.Limit); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateStoreRequest calls the generic CreateStore builder with application/json body
+func NewCreateStoreRequest(server string, params *CreateStoreParams, body CreateStoreJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateStoreRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewCreateStoreRequestWithBody generates requests for CreateStore with any type of body
+func NewCreateStoreRequestWithBody(server string, params *CreateStoreParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/stores")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	if params != nil {
+
+		if params.IdempotencyKey != nil {
+			var headerParam0 string
+
+			headerParam0, err = runtime.StyleParamWithLocation("simple", false, "Idempotency-Key", runtime.ParamLocationHeader, *params.IdempotencyKey)
+			if err != nil {
+				return nil, err
+			}
+
+			req.Header.Set("Idempotency-Key", headerParam0)
+		}
+
+	}
+
+	return req, nil
+}
+
+// NewDeleteStoreRequest generates requests for DeleteStore
+func NewDeleteStoreRequest(server string, storeId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "store_id", runtime.ParamLocationPath, storeId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/stores/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetStoreRequest generates requests for GetStore
+func NewGetStoreRequest(server string, storeId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "store_id", runtime.ParamLocationPath, storeId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/stores/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPatchStoreRequest calls the generic PatchStore builder with application/json body
+func NewPatchStoreRequest(server string, storeId string, body PatchStoreJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPatchStoreRequestWithBody(server, storeId, "application/json", bodyReader)
+}
+
+// NewPatchStoreRequestWithBody generates requests for PatchStore with any type of body
+func NewPatchStoreRequestWithBody(server string, storeId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "store_id", runtime.ParamLocationPath, storeId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/stores/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PATCH", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewArchiveStoreRequest generates requests for ArchiveStore
+func NewArchiveStoreRequest(server string, storeId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "store_id", runtime.ParamLocationPath, storeId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/stores/%s/archive", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPublishStoreRequest generates requests for PublishStore
+func NewPublishStoreRequest(server string, storeId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "store_id", runtime.ParamLocationPath, storeId)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/stores/%s/publish", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1421,6 +5496,46 @@ func NewListTransactionsRequest(server string, walletId string) (*http.Request, 
 	return req, nil
 }
 
+// NewValidateX402PaymentRequest calls the generic ValidateX402Payment builder with application/json body
+func NewValidateX402PaymentRequest(server string, body ValidateX402PaymentJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewValidateX402PaymentRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewValidateX402PaymentRequestWithBody generates requests for ValidateX402Payment with any type of body
+func NewValidateX402PaymentRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/x402/facilitator")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 func (c *Client) applyEditors(ctx context.Context, req *http.Request, additionalEditors []RequestEditorFn) error {
 	for _, r := range c.RequestEditors {
 		if err := r(ctx, req); err != nil {
@@ -1464,78 +5579,348 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
+	// AttemptAgentWalletSpendWithBodyWithResponse request with any body
+	AttemptAgentWalletSpendWithBodyWithResponse(ctx context.Context, agentWalletId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttemptAgentWalletSpendHTTPResponse, error)
+
+	AttemptAgentWalletSpendWithResponse(ctx context.Context, agentWalletId string, body AttemptAgentWalletSpendJSONRequestBody, reqEditors ...RequestEditorFn) (*AttemptAgentWalletSpendHTTPResponse, error)
+
+	// CreateCatalogCheckoutIntentWithResponse request
+	CreateCatalogCheckoutIntentWithResponse(ctx context.Context, priceId string, reqEditors ...RequestEditorFn) (*CreateCatalogCheckoutIntentHTTPResponse, error)
+
+	// ListCatalogProductsWithResponse request
+	ListCatalogProductsWithResponse(ctx context.Context, params *ListCatalogProductsParams, reqEditors ...RequestEditorFn) (*ListCatalogProductsHTTPResponse, error)
+
+	// GetCatalogProductWithResponse request
+	GetCatalogProductWithResponse(ctx context.Context, productId string, reqEditors ...RequestEditorFn) (*GetCatalogProductHTTPResponse, error)
+
 	// GetMeWithResponse request
-	GetMeWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetMeResponse, error)
+	GetMeWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetMeHTTPResponse, error)
+
+	// GetMerchantCredentialStatusWithResponse request
+	GetMerchantCredentialStatusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetMerchantCredentialStatusHTTPResponse, error)
+
+	// RevokeMerchantCredentialWithBodyWithResponse request with any body
+	RevokeMerchantCredentialWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RevokeMerchantCredentialHTTPResponse, error)
+
+	RevokeMerchantCredentialWithResponse(ctx context.Context, body RevokeMerchantCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*RevokeMerchantCredentialHTTPResponse, error)
+
+	// RotateMerchantCredentialWithBodyWithResponse request with any body
+	RotateMerchantCredentialWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RotateMerchantCredentialHTTPResponse, error)
+
+	RotateMerchantCredentialWithResponse(ctx context.Context, body RotateMerchantCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*RotateMerchantCredentialHTTPResponse, error)
 
 	// UserLoginWithBodyWithResponse request with any body
-	UserLoginWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UserLoginResponse, error)
+	UserLoginWithBodyWithResponse(ctx context.Context, params *UserLoginParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UserLoginHTTPResponse, error)
 
-	UserLoginWithResponse(ctx context.Context, body UserLoginJSONRequestBody, reqEditors ...RequestEditorFn) (*UserLoginResponse, error)
+	UserLoginWithResponse(ctx context.Context, params *UserLoginParams, body UserLoginJSONRequestBody, reqEditors ...RequestEditorFn) (*UserLoginHTTPResponse, error)
+
+	// GetPaymentMethodPolicyWithResponse request
+	GetPaymentMethodPolicyWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetPaymentMethodPolicyHTTPResponse, error)
+
+	// UpdatePaymentMethodPolicyWithBodyWithResponse request with any body
+	UpdatePaymentMethodPolicyWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdatePaymentMethodPolicyHTTPResponse, error)
+
+	UpdatePaymentMethodPolicyWithResponse(ctx context.Context, body UpdatePaymentMethodPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdatePaymentMethodPolicyHTTPResponse, error)
 
 	// UserRegisterWithResponse request
-	UserRegisterWithResponse(ctx context.Context, params *UserRegisterParams, reqEditors ...RequestEditorFn) (*UserRegisterResponse, error)
+	UserRegisterWithResponse(ctx context.Context, params *UserRegisterParams, reqEditors ...RequestEditorFn) (*UserRegisterHTTPResponse, error)
+
+	// UpdateMerchantWebhookWithBodyWithResponse request with any body
+	UpdateMerchantWebhookWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateMerchantWebhookHTTPResponse, error)
+
+	UpdateMerchantWebhookWithResponse(ctx context.Context, body UpdateMerchantWebhookJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateMerchantWebhookHTTPResponse, error)
+
+	// TestMerchantWebhookDeliveryWithResponse request
+	TestMerchantWebhookDeliveryWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*TestMerchantWebhookDeliveryHTTPResponse, error)
 
 	// RegisterMerchantWithBodyWithResponse request with any body
-	RegisterMerchantWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RegisterMerchantResponse, error)
+	RegisterMerchantWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RegisterMerchantHTTPResponse, error)
 
-	RegisterMerchantWithResponse(ctx context.Context, body RegisterMerchantJSONRequestBody, reqEditors ...RequestEditorFn) (*RegisterMerchantResponse, error)
+	RegisterMerchantWithResponse(ctx context.Context, body RegisterMerchantJSONRequestBody, reqEditors ...RequestEditorFn) (*RegisterMerchantHTTPResponse, error)
+
+	// RequestEmailVerificationWithBodyWithResponse request with any body
+	RequestEmailVerificationWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RequestEmailVerificationHTTPResponse, error)
+
+	RequestEmailVerificationWithResponse(ctx context.Context, body RequestEmailVerificationJSONRequestBody, reqEditors ...RequestEditorFn) (*RequestEmailVerificationHTTPResponse, error)
+
+	// ConfirmEmailVerificationWithBodyWithResponse request with any body
+	ConfirmEmailVerificationWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ConfirmEmailVerificationHTTPResponse, error)
+
+	ConfirmEmailVerificationWithResponse(ctx context.Context, body ConfirmEmailVerificationJSONRequestBody, reqEditors ...RequestEditorFn) (*ConfirmEmailVerificationHTTPResponse, error)
+
+	// RequestRegistrationProofOfWorkWithBodyWithResponse request with any body
+	RequestRegistrationProofOfWorkWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RequestRegistrationProofOfWorkHTTPResponse, error)
+
+	RequestRegistrationProofOfWorkWithResponse(ctx context.Context, body RequestRegistrationProofOfWorkJSONRequestBody, reqEditors ...RequestEditorFn) (*RequestRegistrationProofOfWorkHTTPResponse, error)
 
 	// ListPaymentMethodsWithResponse request
-	ListPaymentMethodsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListPaymentMethodsResponse, error)
+	ListPaymentMethodsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListPaymentMethodsHTTPResponse, error)
 
 	// CreatePaymentSessionWithBodyWithResponse request with any body
-	CreatePaymentSessionWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreatePaymentSessionResponse, error)
+	CreatePaymentSessionWithBodyWithResponse(ctx context.Context, params *CreatePaymentSessionParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreatePaymentSessionHTTPResponse, error)
 
-	CreatePaymentSessionWithResponse(ctx context.Context, body CreatePaymentSessionJSONRequestBody, reqEditors ...RequestEditorFn) (*CreatePaymentSessionResponse, error)
+	CreatePaymentSessionWithResponse(ctx context.Context, params *CreatePaymentSessionParams, body CreatePaymentSessionJSONRequestBody, reqEditors ...RequestEditorFn) (*CreatePaymentSessionHTTPResponse, error)
 
-	// CreateDemoPaymentSessionWithResponse request
-	CreateDemoPaymentSessionWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*CreateDemoPaymentSessionResponse, error)
+	// CreateDemoPaymentSessionWithBodyWithResponse request with any body
+	CreateDemoPaymentSessionWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateDemoPaymentSessionHTTPResponse, error)
+
+	CreateDemoPaymentSessionWithResponse(ctx context.Context, body CreateDemoPaymentSessionJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateDemoPaymentSessionHTTPResponse, error)
 
 	// GetPaymentSessionWithResponse request
-	GetPaymentSessionWithResponse(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*GetPaymentSessionResponse, error)
+	GetPaymentSessionWithResponse(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*GetPaymentSessionHTTPResponse, error)
 
 	// FulfillDemoPaymentSessionWithResponse request
-	FulfillDemoPaymentSessionWithResponse(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*FulfillDemoPaymentSessionResponse, error)
+	FulfillDemoPaymentSessionWithResponse(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*FulfillDemoPaymentSessionHTTPResponse, error)
 
 	// ProvideDevWalletForDemoWithResponse request
-	ProvideDevWalletForDemoWithResponse(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*ProvideDevWalletForDemoResponse, error)
+	ProvideDevWalletForDemoWithResponse(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*ProvideDevWalletForDemoHTTPResponse, error)
 
 	// GetReceiptBySessionIDWithResponse request
-	GetReceiptBySessionIDWithResponse(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*GetReceiptBySessionIDResponse, error)
+	GetReceiptBySessionIDWithResponse(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*GetReceiptBySessionIDHTTPResponse, error)
+
+	// SelectPaymentMethodWithBodyWithResponse request with any body
+	SelectPaymentMethodWithBodyWithResponse(ctx context.Context, sessionId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SelectPaymentMethodHTTPResponse, error)
+
+	SelectPaymentMethodWithResponse(ctx context.Context, sessionId string, body SelectPaymentMethodJSONRequestBody, reqEditors ...RequestEditorFn) (*SelectPaymentMethodHTTPResponse, error)
 
 	// SimulatePaymentWithResponse request
-	SimulatePaymentWithResponse(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*SimulatePaymentResponse, error)
+	SimulatePaymentWithResponse(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*SimulatePaymentHTTPResponse, error)
+
+	// RetryWebhookDeliveryWithResponse request
+	RetryWebhookDeliveryWithResponse(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*RetryWebhookDeliveryHTTPResponse, error)
 
 	// RequestPayoutWithBodyWithResponse request with any body
-	RequestPayoutWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RequestPayoutResponse, error)
+	RequestPayoutWithBodyWithResponse(ctx context.Context, params *RequestPayoutParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RequestPayoutHTTPResponse, error)
 
-	RequestPayoutWithResponse(ctx context.Context, body RequestPayoutJSONRequestBody, reqEditors ...RequestEditorFn) (*RequestPayoutResponse, error)
+	RequestPayoutWithResponse(ctx context.Context, params *RequestPayoutParams, body RequestPayoutJSONRequestBody, reqEditors ...RequestEditorFn) (*RequestPayoutHTTPResponse, error)
 
 	// GetPayoutWithResponse request
-	GetPayoutWithResponse(ctx context.Context, payoutId string, reqEditors ...RequestEditorFn) (*GetPayoutResponse, error)
+	GetPayoutWithResponse(ctx context.Context, payoutId string, reqEditors ...RequestEditorFn) (*GetPayoutHTTPResponse, error)
+
+	// ListPlansWithResponse request
+	ListPlansWithResponse(ctx context.Context, params *ListPlansParams, reqEditors ...RequestEditorFn) (*ListPlansHTTPResponse, error)
+
+	// CreatePlanWithBodyWithResponse request with any body
+	CreatePlanWithBodyWithResponse(ctx context.Context, params *CreatePlanParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreatePlanHTTPResponse, error)
+
+	CreatePlanWithResponse(ctx context.Context, params *CreatePlanParams, body CreatePlanJSONRequestBody, reqEditors ...RequestEditorFn) (*CreatePlanHTTPResponse, error)
+
+	// DeletePlanWithResponse request
+	DeletePlanWithResponse(ctx context.Context, planId string, reqEditors ...RequestEditorFn) (*DeletePlanHTTPResponse, error)
+
+	// GetPlanWithResponse request
+	GetPlanWithResponse(ctx context.Context, planId string, reqEditors ...RequestEditorFn) (*GetPlanHTTPResponse, error)
+
+	// PatchPlanWithBodyWithResponse request with any body
+	PatchPlanWithBodyWithResponse(ctx context.Context, planId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PatchPlanHTTPResponse, error)
+
+	PatchPlanWithResponse(ctx context.Context, planId string, body PatchPlanJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchPlanHTTPResponse, error)
+
+	// ArchivePlanWithResponse request
+	ArchivePlanWithResponse(ctx context.Context, planId string, reqEditors ...RequestEditorFn) (*ArchivePlanHTTPResponse, error)
+
+	// PublishPlanWithResponse request
+	PublishPlanWithResponse(ctx context.Context, planId string, reqEditors ...RequestEditorFn) (*PublishPlanHTTPResponse, error)
+
+	// ListPricesWithResponse request
+	ListPricesWithResponse(ctx context.Context, params *ListPricesParams, reqEditors ...RequestEditorFn) (*ListPricesHTTPResponse, error)
+
+	// CreatePriceWithBodyWithResponse request with any body
+	CreatePriceWithBodyWithResponse(ctx context.Context, params *CreatePriceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreatePriceHTTPResponse, error)
+
+	CreatePriceWithResponse(ctx context.Context, params *CreatePriceParams, body CreatePriceJSONRequestBody, reqEditors ...RequestEditorFn) (*CreatePriceHTTPResponse, error)
+
+	// DeletePriceWithResponse request
+	DeletePriceWithResponse(ctx context.Context, priceId string, reqEditors ...RequestEditorFn) (*DeletePriceHTTPResponse, error)
+
+	// GetPriceWithResponse request
+	GetPriceWithResponse(ctx context.Context, priceId string, reqEditors ...RequestEditorFn) (*GetPriceHTTPResponse, error)
+
+	// PatchPriceWithBodyWithResponse request with any body
+	PatchPriceWithBodyWithResponse(ctx context.Context, priceId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PatchPriceHTTPResponse, error)
+
+	PatchPriceWithResponse(ctx context.Context, priceId string, body PatchPriceJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchPriceHTTPResponse, error)
+
+	// ArchivePriceWithResponse request
+	ArchivePriceWithResponse(ctx context.Context, priceId string, reqEditors ...RequestEditorFn) (*ArchivePriceHTTPResponse, error)
+
+	// PublishPriceWithResponse request
+	PublishPriceWithResponse(ctx context.Context, priceId string, reqEditors ...RequestEditorFn) (*PublishPriceHTTPResponse, error)
+
+	// ListProductsWithResponse request
+	ListProductsWithResponse(ctx context.Context, params *ListProductsParams, reqEditors ...RequestEditorFn) (*ListProductsHTTPResponse, error)
+
+	// CreateProductWithBodyWithResponse request with any body
+	CreateProductWithBodyWithResponse(ctx context.Context, params *CreateProductParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateProductHTTPResponse, error)
+
+	CreateProductWithResponse(ctx context.Context, params *CreateProductParams, body CreateProductJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateProductHTTPResponse, error)
+
+	// DeleteProductWithResponse request
+	DeleteProductWithResponse(ctx context.Context, productId string, reqEditors ...RequestEditorFn) (*DeleteProductHTTPResponse, error)
+
+	// GetProductWithResponse request
+	GetProductWithResponse(ctx context.Context, productId string, reqEditors ...RequestEditorFn) (*GetProductHTTPResponse, error)
+
+	// PatchProductWithBodyWithResponse request with any body
+	PatchProductWithBodyWithResponse(ctx context.Context, productId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PatchProductHTTPResponse, error)
+
+	PatchProductWithResponse(ctx context.Context, productId string, body PatchProductJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchProductHTTPResponse, error)
+
+	// ArchiveProductWithResponse request
+	ArchiveProductWithResponse(ctx context.Context, productId string, reqEditors ...RequestEditorFn) (*ArchiveProductHTTPResponse, error)
+
+	// PublishProductWithResponse request
+	PublishProductWithResponse(ctx context.Context, productId string, reqEditors ...RequestEditorFn) (*PublishProductHTTPResponse, error)
 
 	// GetRatesWithResponse request
-	GetRatesWithResponse(ctx context.Context, params *GetRatesParams, reqEditors ...RequestEditorFn) (*GetRatesResponse, error)
+	GetRatesWithResponse(ctx context.Context, params *GetRatesParams, reqEditors ...RequestEditorFn) (*GetRatesHTTPResponse, error)
+
+	// FundSepoliaFaucetWithBodyWithResponse request with any body
+	FundSepoliaFaucetWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*FundSepoliaFaucetHTTPResponse, error)
+
+	FundSepoliaFaucetWithResponse(ctx context.Context, body FundSepoliaFaucetJSONRequestBody, reqEditors ...RequestEditorFn) (*FundSepoliaFaucetHTTPResponse, error)
 
 	// ListSandboxFaucetsWithResponse request
-	ListSandboxFaucetsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListSandboxFaucetsResponse, error)
+	ListSandboxFaucetsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListSandboxFaucetsHTTPResponse, error)
+
+	// ListStoresWithResponse request
+	ListStoresWithResponse(ctx context.Context, params *ListStoresParams, reqEditors ...RequestEditorFn) (*ListStoresHTTPResponse, error)
+
+	// CreateStoreWithBodyWithResponse request with any body
+	CreateStoreWithBodyWithResponse(ctx context.Context, params *CreateStoreParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateStoreHTTPResponse, error)
+
+	CreateStoreWithResponse(ctx context.Context, params *CreateStoreParams, body CreateStoreJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateStoreHTTPResponse, error)
+
+	// DeleteStoreWithResponse request
+	DeleteStoreWithResponse(ctx context.Context, storeId string, reqEditors ...RequestEditorFn) (*DeleteStoreHTTPResponse, error)
+
+	// GetStoreWithResponse request
+	GetStoreWithResponse(ctx context.Context, storeId string, reqEditors ...RequestEditorFn) (*GetStoreHTTPResponse, error)
+
+	// PatchStoreWithBodyWithResponse request with any body
+	PatchStoreWithBodyWithResponse(ctx context.Context, storeId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PatchStoreHTTPResponse, error)
+
+	PatchStoreWithResponse(ctx context.Context, storeId string, body PatchStoreJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchStoreHTTPResponse, error)
+
+	// ArchiveStoreWithResponse request
+	ArchiveStoreWithResponse(ctx context.Context, storeId string, reqEditors ...RequestEditorFn) (*ArchiveStoreHTTPResponse, error)
+
+	// PublishStoreWithResponse request
+	PublishStoreWithResponse(ctx context.Context, storeId string, reqEditors ...RequestEditorFn) (*PublishStoreHTTPResponse, error)
 
 	// ListWalletsWithResponse request
-	ListWalletsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListWalletsResponse, error)
+	ListWalletsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListWalletsHTTPResponse, error)
 
 	// CreateWalletWithBodyWithResponse request with any body
-	CreateWalletWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateWalletResponse, error)
+	CreateWalletWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateWalletHTTPResponse, error)
 
-	CreateWalletWithResponse(ctx context.Context, body CreateWalletJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateWalletResponse, error)
+	CreateWalletWithResponse(ctx context.Context, body CreateWalletJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateWalletHTTPResponse, error)
 
 	// GetWalletWithResponse request
-	GetWalletWithResponse(ctx context.Context, walletId string, reqEditors ...RequestEditorFn) (*GetWalletResponse, error)
+	GetWalletWithResponse(ctx context.Context, walletId string, reqEditors ...RequestEditorFn) (*GetWalletHTTPResponse, error)
 
 	// ListTransactionsWithResponse request
-	ListTransactionsWithResponse(ctx context.Context, walletId string, reqEditors ...RequestEditorFn) (*ListTransactionsResponse, error)
+	ListTransactionsWithResponse(ctx context.Context, walletId string, reqEditors ...RequestEditorFn) (*ListTransactionsHTTPResponse, error)
+
+	// ValidateX402PaymentWithBodyWithResponse request with any body
+	ValidateX402PaymentWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ValidateX402PaymentHTTPResponse, error)
+
+	ValidateX402PaymentWithResponse(ctx context.Context, body ValidateX402PaymentJSONRequestBody, reqEditors ...RequestEditorFn) (*ValidateX402PaymentHTTPResponse, error)
 }
 
-type GetMeResponse struct {
+type AttemptAgentWalletSpendHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *AgentSpendAttempt
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r AttemptAgentWalletSpendHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AttemptAgentWalletSpendHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateCatalogCheckoutIntentHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *CatalogCheckoutIntent
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateCatalogCheckoutIntentHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateCatalogCheckoutIntentHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListCatalogProductsHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *CatalogProductListResponse
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r ListCatalogProductsHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListCatalogProductsHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetCatalogProductHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *CatalogDiscoveryProduct
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r GetCatalogProductHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetCatalogProductHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetMeHTTPResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Merchant
@@ -1543,7 +5928,7 @@ type GetMeResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetMeResponse) Status() string {
+func (r GetMeHTTPResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1551,14 +5936,83 @@ func (r GetMeResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetMeResponse) StatusCode() int {
+func (r GetMeHTTPResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type UserLoginResponse struct {
+type GetMerchantCredentialStatusHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *MerchantCredentialStatus
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r GetMerchantCredentialStatusHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetMerchantCredentialStatusHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type RevokeMerchantCredentialHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *Merchant
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r RevokeMerchantCredentialHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RevokeMerchantCredentialHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type RotateMerchantCredentialHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *Merchant
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r RotateMerchantCredentialHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RotateMerchantCredentialHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UserLoginHTTPResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *User
@@ -1566,7 +6020,7 @@ type UserLoginResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r UserLoginResponse) Status() string {
+func (r UserLoginHTTPResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1574,14 +6028,60 @@ func (r UserLoginResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r UserLoginResponse) StatusCode() int {
+func (r UserLoginHTTPResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type UserRegisterResponse struct {
+type GetPaymentMethodPolicyHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *PaymentMethodPolicyState
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r GetPaymentMethodPolicyHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetPaymentMethodPolicyHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdatePaymentMethodPolicyHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *PaymentMethodPolicyState
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdatePaymentMethodPolicyHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdatePaymentMethodPolicyHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UserRegisterHTTPResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *User
@@ -1589,7 +6089,7 @@ type UserRegisterResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r UserRegisterResponse) Status() string {
+func (r UserRegisterHTTPResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1597,14 +6097,60 @@ func (r UserRegisterResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r UserRegisterResponse) StatusCode() int {
+func (r UserRegisterHTTPResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type RegisterMerchantResponse struct {
+type UpdateMerchantWebhookHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *Merchant
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateMerchantWebhookHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateMerchantWebhookHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type TestMerchantWebhookDeliveryHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *WebhookTestDeliveryResult
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r TestMerchantWebhookDeliveryHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r TestMerchantWebhookDeliveryHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type RegisterMerchantHTTPResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *Merchant
@@ -1612,7 +6158,7 @@ type RegisterMerchantResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r RegisterMerchantResponse) Status() string {
+func (r RegisterMerchantHTTPResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1620,14 +6166,83 @@ func (r RegisterMerchantResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r RegisterMerchantResponse) StatusCode() int {
+func (r RegisterMerchantHTTPResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type ListPaymentMethodsResponse struct {
+type RequestEmailVerificationHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *RequestEmailVerificationResponse
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r RequestEmailVerificationHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RequestEmailVerificationHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ConfirmEmailVerificationHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ConfirmEmailVerificationResponse
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r ConfirmEmailVerificationHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ConfirmEmailVerificationHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type RequestRegistrationProofOfWorkHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *RequestRegistrationProofOfWorkResponse
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r RequestRegistrationProofOfWorkHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RequestRegistrationProofOfWorkHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListPaymentMethodsHTTPResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]PaymentMethodInfo
@@ -1635,7 +6250,7 @@ type ListPaymentMethodsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r ListPaymentMethodsResponse) Status() string {
+func (r ListPaymentMethodsHTTPResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1643,14 +6258,37 @@ func (r ListPaymentMethodsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r ListPaymentMethodsResponse) StatusCode() int {
+func (r ListPaymentMethodsHTTPResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type CreatePaymentSessionResponse struct {
+type CreatePaymentSessionHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *PaymentSessionOrIntent
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r CreatePaymentSessionHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreatePaymentSessionHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateDemoPaymentSessionHTTPResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *PaymentSession
@@ -1658,7 +6296,7 @@ type CreatePaymentSessionResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r CreatePaymentSessionResponse) Status() string {
+func (r CreateDemoPaymentSessionHTTPResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1666,22 +6304,22 @@ func (r CreatePaymentSessionResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r CreatePaymentSessionResponse) StatusCode() int {
+func (r CreateDemoPaymentSessionHTTPResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type CreateDemoPaymentSessionResponse struct {
+type GetPaymentSessionHTTPResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON201      *PaymentSession
+	JSON200      *PaymentSessionOrIntent
 	JSONDefault  *Error
 }
 
 // Status returns HTTPResponse.Status
-func (r CreateDemoPaymentSessionResponse) Status() string {
+func (r GetPaymentSessionHTTPResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1689,37 +6327,14 @@ func (r CreateDemoPaymentSessionResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r CreateDemoPaymentSessionResponse) StatusCode() int {
+func (r GetPaymentSessionHTTPResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetPaymentSessionResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *PaymentSession
-	JSONDefault  *Error
-}
-
-// Status returns HTTPResponse.Status
-func (r GetPaymentSessionResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetPaymentSessionResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type FulfillDemoPaymentSessionResponse struct {
+type FulfillDemoPaymentSessionHTTPResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON404      *Error
@@ -1727,7 +6342,7 @@ type FulfillDemoPaymentSessionResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r FulfillDemoPaymentSessionResponse) Status() string {
+func (r FulfillDemoPaymentSessionHTTPResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1735,14 +6350,14 @@ func (r FulfillDemoPaymentSessionResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r FulfillDemoPaymentSessionResponse) StatusCode() int {
+func (r FulfillDemoPaymentSessionHTTPResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type ProvideDevWalletForDemoResponse struct {
+type ProvideDevWalletForDemoHTTPResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
@@ -1757,7 +6372,7 @@ type ProvideDevWalletForDemoResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r ProvideDevWalletForDemoResponse) Status() string {
+func (r ProvideDevWalletForDemoHTTPResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1765,21 +6380,21 @@ func (r ProvideDevWalletForDemoResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r ProvideDevWalletForDemoResponse) StatusCode() int {
+func (r ProvideDevWalletForDemoHTTPResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetReceiptBySessionIDResponse struct {
+type GetReceiptBySessionIDHTTPResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSONDefault  *Error
 }
 
 // Status returns HTTPResponse.Status
-func (r GetReceiptBySessionIDResponse) Status() string {
+func (r GetReceiptBySessionIDHTTPResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1787,14 +6402,37 @@ func (r GetReceiptBySessionIDResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetReceiptBySessionIDResponse) StatusCode() int {
+func (r GetReceiptBySessionIDHTTPResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type SimulatePaymentResponse struct {
+type SelectPaymentMethodHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *PaymentSession
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r SelectPaymentMethodHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r SelectPaymentMethodHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type SimulatePaymentHTTPResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *PaymentSession
@@ -1804,7 +6442,7 @@ type SimulatePaymentResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r SimulatePaymentResponse) Status() string {
+func (r SimulatePaymentHTTPResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1812,14 +6450,37 @@ func (r SimulatePaymentResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r SimulatePaymentResponse) StatusCode() int {
+func (r SimulatePaymentHTTPResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type RequestPayoutResponse struct {
+type RetryWebhookDeliveryHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON202      *WebhookDeliveryStatus
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r RetryWebhookDeliveryHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r RetryWebhookDeliveryHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type RequestPayoutHTTPResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *Payout
@@ -1827,7 +6488,7 @@ type RequestPayoutResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r RequestPayoutResponse) Status() string {
+func (r RequestPayoutHTTPResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1835,14 +6496,14 @@ func (r RequestPayoutResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r RequestPayoutResponse) StatusCode() int {
+func (r RequestPayoutHTTPResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetPayoutResponse struct {
+type GetPayoutHTTPResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Payout
@@ -1850,7 +6511,7 @@ type GetPayoutResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetPayoutResponse) Status() string {
+func (r GetPayoutHTTPResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1858,14 +6519,497 @@ func (r GetPayoutResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetPayoutResponse) StatusCode() int {
+func (r GetPayoutHTTPResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetRatesResponse struct {
+type ListPlansHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *PlanListResponse
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r ListPlansHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListPlansHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreatePlanHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *CatalogPlan
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r CreatePlanHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreatePlanHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeletePlanHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r DeletePlanHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeletePlanHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetPlanHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *CatalogPlan
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r GetPlanHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetPlanHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PatchPlanHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *CatalogPlan
+	JSON201      *CatalogPlan
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r PatchPlanHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PatchPlanHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ArchivePlanHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *CatalogPlan
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r ArchivePlanHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ArchivePlanHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PublishPlanHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *CatalogPlan
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r PublishPlanHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PublishPlanHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListPricesHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *PriceListResponse
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r ListPricesHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListPricesHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreatePriceHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *CatalogPrice
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r CreatePriceHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreatePriceHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeletePriceHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r DeletePriceHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeletePriceHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetPriceHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *CatalogPrice
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r GetPriceHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetPriceHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PatchPriceHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *CatalogPrice
+	JSON201      *CatalogPrice
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r PatchPriceHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PatchPriceHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ArchivePriceHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *CatalogPrice
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r ArchivePriceHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ArchivePriceHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PublishPriceHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *CatalogPrice
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r PublishPriceHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PublishPriceHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListProductsHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ProductListResponse
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r ListProductsHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListProductsHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateProductHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *CatalogProduct
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateProductHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateProductHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteProductHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteProductHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteProductHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetProductHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *CatalogProduct
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r GetProductHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetProductHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PatchProductHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *CatalogProduct
+	JSON201      *CatalogProduct
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r PatchProductHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PatchProductHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ArchiveProductHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *CatalogProduct
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r ArchiveProductHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ArchiveProductHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PublishProductHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *CatalogProduct
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r PublishProductHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PublishProductHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetRatesHTTPResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]RateInfo
@@ -1873,7 +7017,7 @@ type GetRatesResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetRatesResponse) Status() string {
+func (r GetRatesHTTPResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1881,14 +7025,37 @@ func (r GetRatesResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetRatesResponse) StatusCode() int {
+func (r GetRatesHTTPResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type ListSandboxFaucetsResponse struct {
+type FundSepoliaFaucetHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *FundSepoliaFaucetResponse
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r FundSepoliaFaucetHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FundSepoliaFaucetHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListSandboxFaucetsHTTPResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *map[string]string
@@ -1896,7 +7063,7 @@ type ListSandboxFaucetsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r ListSandboxFaucetsResponse) Status() string {
+func (r ListSandboxFaucetsHTTPResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1904,14 +7071,174 @@ func (r ListSandboxFaucetsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r ListSandboxFaucetsResponse) StatusCode() int {
+func (r ListSandboxFaucetsHTTPResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type ListWalletsResponse struct {
+type ListStoresHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *StoreListResponse
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r ListStoresHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListStoresHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateStoreHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *CatalogStore
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateStoreHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateStoreHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteStoreHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteStoreHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteStoreHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetStoreHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *CatalogStore
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r GetStoreHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetStoreHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PatchStoreHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *CatalogStore
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r PatchStoreHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PatchStoreHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ArchiveStoreHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *CatalogStore
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r ArchiveStoreHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ArchiveStoreHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PublishStoreHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *CatalogStore
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r PublishStoreHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PublishStoreHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListWalletsHTTPResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]Wallet
@@ -1919,7 +7246,7 @@ type ListWalletsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r ListWalletsResponse) Status() string {
+func (r ListWalletsHTTPResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1927,14 +7254,14 @@ func (r ListWalletsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r ListWalletsResponse) StatusCode() int {
+func (r ListWalletsHTTPResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type CreateWalletResponse struct {
+type CreateWalletHTTPResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *Wallet
@@ -1942,7 +7269,7 @@ type CreateWalletResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r CreateWalletResponse) Status() string {
+func (r CreateWalletHTTPResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1950,14 +7277,14 @@ func (r CreateWalletResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r CreateWalletResponse) StatusCode() int {
+func (r CreateWalletHTTPResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetWalletResponse struct {
+type GetWalletHTTPResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Wallet
@@ -1965,7 +7292,7 @@ type GetWalletResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetWalletResponse) Status() string {
+func (r GetWalletHTTPResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1973,14 +7300,14 @@ func (r GetWalletResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetWalletResponse) StatusCode() int {
+func (r GetWalletHTTPResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type ListTransactionsResponse struct {
+type ListTransactionsHTTPResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]Transaction
@@ -1988,7 +7315,7 @@ type ListTransactionsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r ListTransactionsResponse) Status() string {
+func (r ListTransactionsHTTPResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1996,242 +7323,971 @@ func (r ListTransactionsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r ListTransactionsResponse) StatusCode() int {
+func (r ListTransactionsHTTPResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// GetMeWithResponse request returning *GetMeResponse
-func (c *ClientWithResponses) GetMeWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetMeResponse, error) {
+type ValidateX402PaymentHTTPResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *X402ValidationResult
+	JSONDefault  *Error
+}
+
+// Status returns HTTPResponse.Status
+func (r ValidateX402PaymentHTTPResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ValidateX402PaymentHTTPResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// AttemptAgentWalletSpendWithBodyWithResponse request with arbitrary body returning *AttemptAgentWalletSpendHTTPResponse
+func (c *ClientWithResponses) AttemptAgentWalletSpendWithBodyWithResponse(ctx context.Context, agentWalletId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AttemptAgentWalletSpendHTTPResponse, error) {
+	rsp, err := c.AttemptAgentWalletSpendWithBody(ctx, agentWalletId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAttemptAgentWalletSpendHTTPResponse(rsp)
+}
+
+func (c *ClientWithResponses) AttemptAgentWalletSpendWithResponse(ctx context.Context, agentWalletId string, body AttemptAgentWalletSpendJSONRequestBody, reqEditors ...RequestEditorFn) (*AttemptAgentWalletSpendHTTPResponse, error) {
+	rsp, err := c.AttemptAgentWalletSpend(ctx, agentWalletId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAttemptAgentWalletSpendHTTPResponse(rsp)
+}
+
+// CreateCatalogCheckoutIntentWithResponse request returning *CreateCatalogCheckoutIntentHTTPResponse
+func (c *ClientWithResponses) CreateCatalogCheckoutIntentWithResponse(ctx context.Context, priceId string, reqEditors ...RequestEditorFn) (*CreateCatalogCheckoutIntentHTTPResponse, error) {
+	rsp, err := c.CreateCatalogCheckoutIntent(ctx, priceId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateCatalogCheckoutIntentHTTPResponse(rsp)
+}
+
+// ListCatalogProductsWithResponse request returning *ListCatalogProductsHTTPResponse
+func (c *ClientWithResponses) ListCatalogProductsWithResponse(ctx context.Context, params *ListCatalogProductsParams, reqEditors ...RequestEditorFn) (*ListCatalogProductsHTTPResponse, error) {
+	rsp, err := c.ListCatalogProducts(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListCatalogProductsHTTPResponse(rsp)
+}
+
+// GetCatalogProductWithResponse request returning *GetCatalogProductHTTPResponse
+func (c *ClientWithResponses) GetCatalogProductWithResponse(ctx context.Context, productId string, reqEditors ...RequestEditorFn) (*GetCatalogProductHTTPResponse, error) {
+	rsp, err := c.GetCatalogProduct(ctx, productId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetCatalogProductHTTPResponse(rsp)
+}
+
+// GetMeWithResponse request returning *GetMeHTTPResponse
+func (c *ClientWithResponses) GetMeWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetMeHTTPResponse, error) {
 	rsp, err := c.GetMe(ctx, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetMeResponse(rsp)
+	return ParseGetMeHTTPResponse(rsp)
 }
 
-// UserLoginWithBodyWithResponse request with arbitrary body returning *UserLoginResponse
-func (c *ClientWithResponses) UserLoginWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UserLoginResponse, error) {
-	rsp, err := c.UserLoginWithBody(ctx, contentType, body, reqEditors...)
+// GetMerchantCredentialStatusWithResponse request returning *GetMerchantCredentialStatusHTTPResponse
+func (c *ClientWithResponses) GetMerchantCredentialStatusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetMerchantCredentialStatusHTTPResponse, error) {
+	rsp, err := c.GetMerchantCredentialStatus(ctx, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseUserLoginResponse(rsp)
+	return ParseGetMerchantCredentialStatusHTTPResponse(rsp)
 }
 
-func (c *ClientWithResponses) UserLoginWithResponse(ctx context.Context, body UserLoginJSONRequestBody, reqEditors ...RequestEditorFn) (*UserLoginResponse, error) {
-	rsp, err := c.UserLogin(ctx, body, reqEditors...)
+// RevokeMerchantCredentialWithBodyWithResponse request with arbitrary body returning *RevokeMerchantCredentialHTTPResponse
+func (c *ClientWithResponses) RevokeMerchantCredentialWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RevokeMerchantCredentialHTTPResponse, error) {
+	rsp, err := c.RevokeMerchantCredentialWithBody(ctx, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseUserLoginResponse(rsp)
+	return ParseRevokeMerchantCredentialHTTPResponse(rsp)
 }
 
-// UserRegisterWithResponse request returning *UserRegisterResponse
-func (c *ClientWithResponses) UserRegisterWithResponse(ctx context.Context, params *UserRegisterParams, reqEditors ...RequestEditorFn) (*UserRegisterResponse, error) {
+func (c *ClientWithResponses) RevokeMerchantCredentialWithResponse(ctx context.Context, body RevokeMerchantCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*RevokeMerchantCredentialHTTPResponse, error) {
+	rsp, err := c.RevokeMerchantCredential(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRevokeMerchantCredentialHTTPResponse(rsp)
+}
+
+// RotateMerchantCredentialWithBodyWithResponse request with arbitrary body returning *RotateMerchantCredentialHTTPResponse
+func (c *ClientWithResponses) RotateMerchantCredentialWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RotateMerchantCredentialHTTPResponse, error) {
+	rsp, err := c.RotateMerchantCredentialWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRotateMerchantCredentialHTTPResponse(rsp)
+}
+
+func (c *ClientWithResponses) RotateMerchantCredentialWithResponse(ctx context.Context, body RotateMerchantCredentialJSONRequestBody, reqEditors ...RequestEditorFn) (*RotateMerchantCredentialHTTPResponse, error) {
+	rsp, err := c.RotateMerchantCredential(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRotateMerchantCredentialHTTPResponse(rsp)
+}
+
+// UserLoginWithBodyWithResponse request with arbitrary body returning *UserLoginHTTPResponse
+func (c *ClientWithResponses) UserLoginWithBodyWithResponse(ctx context.Context, params *UserLoginParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UserLoginHTTPResponse, error) {
+	rsp, err := c.UserLoginWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUserLoginHTTPResponse(rsp)
+}
+
+func (c *ClientWithResponses) UserLoginWithResponse(ctx context.Context, params *UserLoginParams, body UserLoginJSONRequestBody, reqEditors ...RequestEditorFn) (*UserLoginHTTPResponse, error) {
+	rsp, err := c.UserLogin(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUserLoginHTTPResponse(rsp)
+}
+
+// GetPaymentMethodPolicyWithResponse request returning *GetPaymentMethodPolicyHTTPResponse
+func (c *ClientWithResponses) GetPaymentMethodPolicyWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetPaymentMethodPolicyHTTPResponse, error) {
+	rsp, err := c.GetPaymentMethodPolicy(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetPaymentMethodPolicyHTTPResponse(rsp)
+}
+
+// UpdatePaymentMethodPolicyWithBodyWithResponse request with arbitrary body returning *UpdatePaymentMethodPolicyHTTPResponse
+func (c *ClientWithResponses) UpdatePaymentMethodPolicyWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdatePaymentMethodPolicyHTTPResponse, error) {
+	rsp, err := c.UpdatePaymentMethodPolicyWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdatePaymentMethodPolicyHTTPResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdatePaymentMethodPolicyWithResponse(ctx context.Context, body UpdatePaymentMethodPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdatePaymentMethodPolicyHTTPResponse, error) {
+	rsp, err := c.UpdatePaymentMethodPolicy(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdatePaymentMethodPolicyHTTPResponse(rsp)
+}
+
+// UserRegisterWithResponse request returning *UserRegisterHTTPResponse
+func (c *ClientWithResponses) UserRegisterWithResponse(ctx context.Context, params *UserRegisterParams, reqEditors ...RequestEditorFn) (*UserRegisterHTTPResponse, error) {
 	rsp, err := c.UserRegister(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseUserRegisterResponse(rsp)
+	return ParseUserRegisterHTTPResponse(rsp)
 }
 
-// RegisterMerchantWithBodyWithResponse request with arbitrary body returning *RegisterMerchantResponse
-func (c *ClientWithResponses) RegisterMerchantWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RegisterMerchantResponse, error) {
+// UpdateMerchantWebhookWithBodyWithResponse request with arbitrary body returning *UpdateMerchantWebhookHTTPResponse
+func (c *ClientWithResponses) UpdateMerchantWebhookWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateMerchantWebhookHTTPResponse, error) {
+	rsp, err := c.UpdateMerchantWebhookWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateMerchantWebhookHTTPResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateMerchantWebhookWithResponse(ctx context.Context, body UpdateMerchantWebhookJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateMerchantWebhookHTTPResponse, error) {
+	rsp, err := c.UpdateMerchantWebhook(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateMerchantWebhookHTTPResponse(rsp)
+}
+
+// TestMerchantWebhookDeliveryWithResponse request returning *TestMerchantWebhookDeliveryHTTPResponse
+func (c *ClientWithResponses) TestMerchantWebhookDeliveryWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*TestMerchantWebhookDeliveryHTTPResponse, error) {
+	rsp, err := c.TestMerchantWebhookDelivery(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseTestMerchantWebhookDeliveryHTTPResponse(rsp)
+}
+
+// RegisterMerchantWithBodyWithResponse request with arbitrary body returning *RegisterMerchantHTTPResponse
+func (c *ClientWithResponses) RegisterMerchantWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RegisterMerchantHTTPResponse, error) {
 	rsp, err := c.RegisterMerchantWithBody(ctx, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseRegisterMerchantResponse(rsp)
+	return ParseRegisterMerchantHTTPResponse(rsp)
 }
 
-func (c *ClientWithResponses) RegisterMerchantWithResponse(ctx context.Context, body RegisterMerchantJSONRequestBody, reqEditors ...RequestEditorFn) (*RegisterMerchantResponse, error) {
+func (c *ClientWithResponses) RegisterMerchantWithResponse(ctx context.Context, body RegisterMerchantJSONRequestBody, reqEditors ...RequestEditorFn) (*RegisterMerchantHTTPResponse, error) {
 	rsp, err := c.RegisterMerchant(ctx, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseRegisterMerchantResponse(rsp)
+	return ParseRegisterMerchantHTTPResponse(rsp)
 }
 
-// ListPaymentMethodsWithResponse request returning *ListPaymentMethodsResponse
-func (c *ClientWithResponses) ListPaymentMethodsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListPaymentMethodsResponse, error) {
+// RequestEmailVerificationWithBodyWithResponse request with arbitrary body returning *RequestEmailVerificationHTTPResponse
+func (c *ClientWithResponses) RequestEmailVerificationWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RequestEmailVerificationHTTPResponse, error) {
+	rsp, err := c.RequestEmailVerificationWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRequestEmailVerificationHTTPResponse(rsp)
+}
+
+func (c *ClientWithResponses) RequestEmailVerificationWithResponse(ctx context.Context, body RequestEmailVerificationJSONRequestBody, reqEditors ...RequestEditorFn) (*RequestEmailVerificationHTTPResponse, error) {
+	rsp, err := c.RequestEmailVerification(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRequestEmailVerificationHTTPResponse(rsp)
+}
+
+// ConfirmEmailVerificationWithBodyWithResponse request with arbitrary body returning *ConfirmEmailVerificationHTTPResponse
+func (c *ClientWithResponses) ConfirmEmailVerificationWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ConfirmEmailVerificationHTTPResponse, error) {
+	rsp, err := c.ConfirmEmailVerificationWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseConfirmEmailVerificationHTTPResponse(rsp)
+}
+
+func (c *ClientWithResponses) ConfirmEmailVerificationWithResponse(ctx context.Context, body ConfirmEmailVerificationJSONRequestBody, reqEditors ...RequestEditorFn) (*ConfirmEmailVerificationHTTPResponse, error) {
+	rsp, err := c.ConfirmEmailVerification(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseConfirmEmailVerificationHTTPResponse(rsp)
+}
+
+// RequestRegistrationProofOfWorkWithBodyWithResponse request with arbitrary body returning *RequestRegistrationProofOfWorkHTTPResponse
+func (c *ClientWithResponses) RequestRegistrationProofOfWorkWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RequestRegistrationProofOfWorkHTTPResponse, error) {
+	rsp, err := c.RequestRegistrationProofOfWorkWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRequestRegistrationProofOfWorkHTTPResponse(rsp)
+}
+
+func (c *ClientWithResponses) RequestRegistrationProofOfWorkWithResponse(ctx context.Context, body RequestRegistrationProofOfWorkJSONRequestBody, reqEditors ...RequestEditorFn) (*RequestRegistrationProofOfWorkHTTPResponse, error) {
+	rsp, err := c.RequestRegistrationProofOfWork(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRequestRegistrationProofOfWorkHTTPResponse(rsp)
+}
+
+// ListPaymentMethodsWithResponse request returning *ListPaymentMethodsHTTPResponse
+func (c *ClientWithResponses) ListPaymentMethodsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListPaymentMethodsHTTPResponse, error) {
 	rsp, err := c.ListPaymentMethods(ctx, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseListPaymentMethodsResponse(rsp)
+	return ParseListPaymentMethodsHTTPResponse(rsp)
 }
 
-// CreatePaymentSessionWithBodyWithResponse request with arbitrary body returning *CreatePaymentSessionResponse
-func (c *ClientWithResponses) CreatePaymentSessionWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreatePaymentSessionResponse, error) {
-	rsp, err := c.CreatePaymentSessionWithBody(ctx, contentType, body, reqEditors...)
+// CreatePaymentSessionWithBodyWithResponse request with arbitrary body returning *CreatePaymentSessionHTTPResponse
+func (c *ClientWithResponses) CreatePaymentSessionWithBodyWithResponse(ctx context.Context, params *CreatePaymentSessionParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreatePaymentSessionHTTPResponse, error) {
+	rsp, err := c.CreatePaymentSessionWithBody(ctx, params, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseCreatePaymentSessionResponse(rsp)
+	return ParseCreatePaymentSessionHTTPResponse(rsp)
 }
 
-func (c *ClientWithResponses) CreatePaymentSessionWithResponse(ctx context.Context, body CreatePaymentSessionJSONRequestBody, reqEditors ...RequestEditorFn) (*CreatePaymentSessionResponse, error) {
-	rsp, err := c.CreatePaymentSession(ctx, body, reqEditors...)
+func (c *ClientWithResponses) CreatePaymentSessionWithResponse(ctx context.Context, params *CreatePaymentSessionParams, body CreatePaymentSessionJSONRequestBody, reqEditors ...RequestEditorFn) (*CreatePaymentSessionHTTPResponse, error) {
+	rsp, err := c.CreatePaymentSession(ctx, params, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseCreatePaymentSessionResponse(rsp)
+	return ParseCreatePaymentSessionHTTPResponse(rsp)
 }
 
-// CreateDemoPaymentSessionWithResponse request returning *CreateDemoPaymentSessionResponse
-func (c *ClientWithResponses) CreateDemoPaymentSessionWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*CreateDemoPaymentSessionResponse, error) {
-	rsp, err := c.CreateDemoPaymentSession(ctx, reqEditors...)
+// CreateDemoPaymentSessionWithBodyWithResponse request with arbitrary body returning *CreateDemoPaymentSessionHTTPResponse
+func (c *ClientWithResponses) CreateDemoPaymentSessionWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateDemoPaymentSessionHTTPResponse, error) {
+	rsp, err := c.CreateDemoPaymentSessionWithBody(ctx, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseCreateDemoPaymentSessionResponse(rsp)
+	return ParseCreateDemoPaymentSessionHTTPResponse(rsp)
 }
 
-// GetPaymentSessionWithResponse request returning *GetPaymentSessionResponse
-func (c *ClientWithResponses) GetPaymentSessionWithResponse(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*GetPaymentSessionResponse, error) {
+func (c *ClientWithResponses) CreateDemoPaymentSessionWithResponse(ctx context.Context, body CreateDemoPaymentSessionJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateDemoPaymentSessionHTTPResponse, error) {
+	rsp, err := c.CreateDemoPaymentSession(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateDemoPaymentSessionHTTPResponse(rsp)
+}
+
+// GetPaymentSessionWithResponse request returning *GetPaymentSessionHTTPResponse
+func (c *ClientWithResponses) GetPaymentSessionWithResponse(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*GetPaymentSessionHTTPResponse, error) {
 	rsp, err := c.GetPaymentSession(ctx, sessionId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetPaymentSessionResponse(rsp)
+	return ParseGetPaymentSessionHTTPResponse(rsp)
 }
 
-// FulfillDemoPaymentSessionWithResponse request returning *FulfillDemoPaymentSessionResponse
-func (c *ClientWithResponses) FulfillDemoPaymentSessionWithResponse(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*FulfillDemoPaymentSessionResponse, error) {
+// FulfillDemoPaymentSessionWithResponse request returning *FulfillDemoPaymentSessionHTTPResponse
+func (c *ClientWithResponses) FulfillDemoPaymentSessionWithResponse(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*FulfillDemoPaymentSessionHTTPResponse, error) {
 	rsp, err := c.FulfillDemoPaymentSession(ctx, sessionId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseFulfillDemoPaymentSessionResponse(rsp)
+	return ParseFulfillDemoPaymentSessionHTTPResponse(rsp)
 }
 
-// ProvideDevWalletForDemoWithResponse request returning *ProvideDevWalletForDemoResponse
-func (c *ClientWithResponses) ProvideDevWalletForDemoWithResponse(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*ProvideDevWalletForDemoResponse, error) {
+// ProvideDevWalletForDemoWithResponse request returning *ProvideDevWalletForDemoHTTPResponse
+func (c *ClientWithResponses) ProvideDevWalletForDemoWithResponse(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*ProvideDevWalletForDemoHTTPResponse, error) {
 	rsp, err := c.ProvideDevWalletForDemo(ctx, sessionId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseProvideDevWalletForDemoResponse(rsp)
+	return ParseProvideDevWalletForDemoHTTPResponse(rsp)
 }
 
-// GetReceiptBySessionIDWithResponse request returning *GetReceiptBySessionIDResponse
-func (c *ClientWithResponses) GetReceiptBySessionIDWithResponse(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*GetReceiptBySessionIDResponse, error) {
+// GetReceiptBySessionIDWithResponse request returning *GetReceiptBySessionIDHTTPResponse
+func (c *ClientWithResponses) GetReceiptBySessionIDWithResponse(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*GetReceiptBySessionIDHTTPResponse, error) {
 	rsp, err := c.GetReceiptBySessionID(ctx, sessionId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetReceiptBySessionIDResponse(rsp)
+	return ParseGetReceiptBySessionIDHTTPResponse(rsp)
 }
 
-// SimulatePaymentWithResponse request returning *SimulatePaymentResponse
-func (c *ClientWithResponses) SimulatePaymentWithResponse(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*SimulatePaymentResponse, error) {
+// SelectPaymentMethodWithBodyWithResponse request with arbitrary body returning *SelectPaymentMethodHTTPResponse
+func (c *ClientWithResponses) SelectPaymentMethodWithBodyWithResponse(ctx context.Context, sessionId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SelectPaymentMethodHTTPResponse, error) {
+	rsp, err := c.SelectPaymentMethodWithBody(ctx, sessionId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSelectPaymentMethodHTTPResponse(rsp)
+}
+
+func (c *ClientWithResponses) SelectPaymentMethodWithResponse(ctx context.Context, sessionId string, body SelectPaymentMethodJSONRequestBody, reqEditors ...RequestEditorFn) (*SelectPaymentMethodHTTPResponse, error) {
+	rsp, err := c.SelectPaymentMethod(ctx, sessionId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSelectPaymentMethodHTTPResponse(rsp)
+}
+
+// SimulatePaymentWithResponse request returning *SimulatePaymentHTTPResponse
+func (c *ClientWithResponses) SimulatePaymentWithResponse(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*SimulatePaymentHTTPResponse, error) {
 	rsp, err := c.SimulatePayment(ctx, sessionId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseSimulatePaymentResponse(rsp)
+	return ParseSimulatePaymentHTTPResponse(rsp)
 }
 
-// RequestPayoutWithBodyWithResponse request with arbitrary body returning *RequestPayoutResponse
-func (c *ClientWithResponses) RequestPayoutWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RequestPayoutResponse, error) {
-	rsp, err := c.RequestPayoutWithBody(ctx, contentType, body, reqEditors...)
+// RetryWebhookDeliveryWithResponse request returning *RetryWebhookDeliveryHTTPResponse
+func (c *ClientWithResponses) RetryWebhookDeliveryWithResponse(ctx context.Context, sessionId string, reqEditors ...RequestEditorFn) (*RetryWebhookDeliveryHTTPResponse, error) {
+	rsp, err := c.RetryWebhookDelivery(ctx, sessionId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseRequestPayoutResponse(rsp)
+	return ParseRetryWebhookDeliveryHTTPResponse(rsp)
 }
 
-func (c *ClientWithResponses) RequestPayoutWithResponse(ctx context.Context, body RequestPayoutJSONRequestBody, reqEditors ...RequestEditorFn) (*RequestPayoutResponse, error) {
-	rsp, err := c.RequestPayout(ctx, body, reqEditors...)
+// RequestPayoutWithBodyWithResponse request with arbitrary body returning *RequestPayoutHTTPResponse
+func (c *ClientWithResponses) RequestPayoutWithBodyWithResponse(ctx context.Context, params *RequestPayoutParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*RequestPayoutHTTPResponse, error) {
+	rsp, err := c.RequestPayoutWithBody(ctx, params, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseRequestPayoutResponse(rsp)
+	return ParseRequestPayoutHTTPResponse(rsp)
 }
 
-// GetPayoutWithResponse request returning *GetPayoutResponse
-func (c *ClientWithResponses) GetPayoutWithResponse(ctx context.Context, payoutId string, reqEditors ...RequestEditorFn) (*GetPayoutResponse, error) {
+func (c *ClientWithResponses) RequestPayoutWithResponse(ctx context.Context, params *RequestPayoutParams, body RequestPayoutJSONRequestBody, reqEditors ...RequestEditorFn) (*RequestPayoutHTTPResponse, error) {
+	rsp, err := c.RequestPayout(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseRequestPayoutHTTPResponse(rsp)
+}
+
+// GetPayoutWithResponse request returning *GetPayoutHTTPResponse
+func (c *ClientWithResponses) GetPayoutWithResponse(ctx context.Context, payoutId string, reqEditors ...RequestEditorFn) (*GetPayoutHTTPResponse, error) {
 	rsp, err := c.GetPayout(ctx, payoutId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetPayoutResponse(rsp)
+	return ParseGetPayoutHTTPResponse(rsp)
 }
 
-// GetRatesWithResponse request returning *GetRatesResponse
-func (c *ClientWithResponses) GetRatesWithResponse(ctx context.Context, params *GetRatesParams, reqEditors ...RequestEditorFn) (*GetRatesResponse, error) {
+// ListPlansWithResponse request returning *ListPlansHTTPResponse
+func (c *ClientWithResponses) ListPlansWithResponse(ctx context.Context, params *ListPlansParams, reqEditors ...RequestEditorFn) (*ListPlansHTTPResponse, error) {
+	rsp, err := c.ListPlans(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListPlansHTTPResponse(rsp)
+}
+
+// CreatePlanWithBodyWithResponse request with arbitrary body returning *CreatePlanHTTPResponse
+func (c *ClientWithResponses) CreatePlanWithBodyWithResponse(ctx context.Context, params *CreatePlanParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreatePlanHTTPResponse, error) {
+	rsp, err := c.CreatePlanWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreatePlanHTTPResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreatePlanWithResponse(ctx context.Context, params *CreatePlanParams, body CreatePlanJSONRequestBody, reqEditors ...RequestEditorFn) (*CreatePlanHTTPResponse, error) {
+	rsp, err := c.CreatePlan(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreatePlanHTTPResponse(rsp)
+}
+
+// DeletePlanWithResponse request returning *DeletePlanHTTPResponse
+func (c *ClientWithResponses) DeletePlanWithResponse(ctx context.Context, planId string, reqEditors ...RequestEditorFn) (*DeletePlanHTTPResponse, error) {
+	rsp, err := c.DeletePlan(ctx, planId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeletePlanHTTPResponse(rsp)
+}
+
+// GetPlanWithResponse request returning *GetPlanHTTPResponse
+func (c *ClientWithResponses) GetPlanWithResponse(ctx context.Context, planId string, reqEditors ...RequestEditorFn) (*GetPlanHTTPResponse, error) {
+	rsp, err := c.GetPlan(ctx, planId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetPlanHTTPResponse(rsp)
+}
+
+// PatchPlanWithBodyWithResponse request with arbitrary body returning *PatchPlanHTTPResponse
+func (c *ClientWithResponses) PatchPlanWithBodyWithResponse(ctx context.Context, planId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PatchPlanHTTPResponse, error) {
+	rsp, err := c.PatchPlanWithBody(ctx, planId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePatchPlanHTTPResponse(rsp)
+}
+
+func (c *ClientWithResponses) PatchPlanWithResponse(ctx context.Context, planId string, body PatchPlanJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchPlanHTTPResponse, error) {
+	rsp, err := c.PatchPlan(ctx, planId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePatchPlanHTTPResponse(rsp)
+}
+
+// ArchivePlanWithResponse request returning *ArchivePlanHTTPResponse
+func (c *ClientWithResponses) ArchivePlanWithResponse(ctx context.Context, planId string, reqEditors ...RequestEditorFn) (*ArchivePlanHTTPResponse, error) {
+	rsp, err := c.ArchivePlan(ctx, planId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseArchivePlanHTTPResponse(rsp)
+}
+
+// PublishPlanWithResponse request returning *PublishPlanHTTPResponse
+func (c *ClientWithResponses) PublishPlanWithResponse(ctx context.Context, planId string, reqEditors ...RequestEditorFn) (*PublishPlanHTTPResponse, error) {
+	rsp, err := c.PublishPlan(ctx, planId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePublishPlanHTTPResponse(rsp)
+}
+
+// ListPricesWithResponse request returning *ListPricesHTTPResponse
+func (c *ClientWithResponses) ListPricesWithResponse(ctx context.Context, params *ListPricesParams, reqEditors ...RequestEditorFn) (*ListPricesHTTPResponse, error) {
+	rsp, err := c.ListPrices(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListPricesHTTPResponse(rsp)
+}
+
+// CreatePriceWithBodyWithResponse request with arbitrary body returning *CreatePriceHTTPResponse
+func (c *ClientWithResponses) CreatePriceWithBodyWithResponse(ctx context.Context, params *CreatePriceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreatePriceHTTPResponse, error) {
+	rsp, err := c.CreatePriceWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreatePriceHTTPResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreatePriceWithResponse(ctx context.Context, params *CreatePriceParams, body CreatePriceJSONRequestBody, reqEditors ...RequestEditorFn) (*CreatePriceHTTPResponse, error) {
+	rsp, err := c.CreatePrice(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreatePriceHTTPResponse(rsp)
+}
+
+// DeletePriceWithResponse request returning *DeletePriceHTTPResponse
+func (c *ClientWithResponses) DeletePriceWithResponse(ctx context.Context, priceId string, reqEditors ...RequestEditorFn) (*DeletePriceHTTPResponse, error) {
+	rsp, err := c.DeletePrice(ctx, priceId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeletePriceHTTPResponse(rsp)
+}
+
+// GetPriceWithResponse request returning *GetPriceHTTPResponse
+func (c *ClientWithResponses) GetPriceWithResponse(ctx context.Context, priceId string, reqEditors ...RequestEditorFn) (*GetPriceHTTPResponse, error) {
+	rsp, err := c.GetPrice(ctx, priceId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetPriceHTTPResponse(rsp)
+}
+
+// PatchPriceWithBodyWithResponse request with arbitrary body returning *PatchPriceHTTPResponse
+func (c *ClientWithResponses) PatchPriceWithBodyWithResponse(ctx context.Context, priceId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PatchPriceHTTPResponse, error) {
+	rsp, err := c.PatchPriceWithBody(ctx, priceId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePatchPriceHTTPResponse(rsp)
+}
+
+func (c *ClientWithResponses) PatchPriceWithResponse(ctx context.Context, priceId string, body PatchPriceJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchPriceHTTPResponse, error) {
+	rsp, err := c.PatchPrice(ctx, priceId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePatchPriceHTTPResponse(rsp)
+}
+
+// ArchivePriceWithResponse request returning *ArchivePriceHTTPResponse
+func (c *ClientWithResponses) ArchivePriceWithResponse(ctx context.Context, priceId string, reqEditors ...RequestEditorFn) (*ArchivePriceHTTPResponse, error) {
+	rsp, err := c.ArchivePrice(ctx, priceId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseArchivePriceHTTPResponse(rsp)
+}
+
+// PublishPriceWithResponse request returning *PublishPriceHTTPResponse
+func (c *ClientWithResponses) PublishPriceWithResponse(ctx context.Context, priceId string, reqEditors ...RequestEditorFn) (*PublishPriceHTTPResponse, error) {
+	rsp, err := c.PublishPrice(ctx, priceId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePublishPriceHTTPResponse(rsp)
+}
+
+// ListProductsWithResponse request returning *ListProductsHTTPResponse
+func (c *ClientWithResponses) ListProductsWithResponse(ctx context.Context, params *ListProductsParams, reqEditors ...RequestEditorFn) (*ListProductsHTTPResponse, error) {
+	rsp, err := c.ListProducts(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListProductsHTTPResponse(rsp)
+}
+
+// CreateProductWithBodyWithResponse request with arbitrary body returning *CreateProductHTTPResponse
+func (c *ClientWithResponses) CreateProductWithBodyWithResponse(ctx context.Context, params *CreateProductParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateProductHTTPResponse, error) {
+	rsp, err := c.CreateProductWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateProductHTTPResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateProductWithResponse(ctx context.Context, params *CreateProductParams, body CreateProductJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateProductHTTPResponse, error) {
+	rsp, err := c.CreateProduct(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateProductHTTPResponse(rsp)
+}
+
+// DeleteProductWithResponse request returning *DeleteProductHTTPResponse
+func (c *ClientWithResponses) DeleteProductWithResponse(ctx context.Context, productId string, reqEditors ...RequestEditorFn) (*DeleteProductHTTPResponse, error) {
+	rsp, err := c.DeleteProduct(ctx, productId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteProductHTTPResponse(rsp)
+}
+
+// GetProductWithResponse request returning *GetProductHTTPResponse
+func (c *ClientWithResponses) GetProductWithResponse(ctx context.Context, productId string, reqEditors ...RequestEditorFn) (*GetProductHTTPResponse, error) {
+	rsp, err := c.GetProduct(ctx, productId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetProductHTTPResponse(rsp)
+}
+
+// PatchProductWithBodyWithResponse request with arbitrary body returning *PatchProductHTTPResponse
+func (c *ClientWithResponses) PatchProductWithBodyWithResponse(ctx context.Context, productId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PatchProductHTTPResponse, error) {
+	rsp, err := c.PatchProductWithBody(ctx, productId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePatchProductHTTPResponse(rsp)
+}
+
+func (c *ClientWithResponses) PatchProductWithResponse(ctx context.Context, productId string, body PatchProductJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchProductHTTPResponse, error) {
+	rsp, err := c.PatchProduct(ctx, productId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePatchProductHTTPResponse(rsp)
+}
+
+// ArchiveProductWithResponse request returning *ArchiveProductHTTPResponse
+func (c *ClientWithResponses) ArchiveProductWithResponse(ctx context.Context, productId string, reqEditors ...RequestEditorFn) (*ArchiveProductHTTPResponse, error) {
+	rsp, err := c.ArchiveProduct(ctx, productId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseArchiveProductHTTPResponse(rsp)
+}
+
+// PublishProductWithResponse request returning *PublishProductHTTPResponse
+func (c *ClientWithResponses) PublishProductWithResponse(ctx context.Context, productId string, reqEditors ...RequestEditorFn) (*PublishProductHTTPResponse, error) {
+	rsp, err := c.PublishProduct(ctx, productId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePublishProductHTTPResponse(rsp)
+}
+
+// GetRatesWithResponse request returning *GetRatesHTTPResponse
+func (c *ClientWithResponses) GetRatesWithResponse(ctx context.Context, params *GetRatesParams, reqEditors ...RequestEditorFn) (*GetRatesHTTPResponse, error) {
 	rsp, err := c.GetRates(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetRatesResponse(rsp)
+	return ParseGetRatesHTTPResponse(rsp)
 }
 
-// ListSandboxFaucetsWithResponse request returning *ListSandboxFaucetsResponse
-func (c *ClientWithResponses) ListSandboxFaucetsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListSandboxFaucetsResponse, error) {
+// FundSepoliaFaucetWithBodyWithResponse request with arbitrary body returning *FundSepoliaFaucetHTTPResponse
+func (c *ClientWithResponses) FundSepoliaFaucetWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*FundSepoliaFaucetHTTPResponse, error) {
+	rsp, err := c.FundSepoliaFaucetWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFundSepoliaFaucetHTTPResponse(rsp)
+}
+
+func (c *ClientWithResponses) FundSepoliaFaucetWithResponse(ctx context.Context, body FundSepoliaFaucetJSONRequestBody, reqEditors ...RequestEditorFn) (*FundSepoliaFaucetHTTPResponse, error) {
+	rsp, err := c.FundSepoliaFaucet(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFundSepoliaFaucetHTTPResponse(rsp)
+}
+
+// ListSandboxFaucetsWithResponse request returning *ListSandboxFaucetsHTTPResponse
+func (c *ClientWithResponses) ListSandboxFaucetsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListSandboxFaucetsHTTPResponse, error) {
 	rsp, err := c.ListSandboxFaucets(ctx, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseListSandboxFaucetsResponse(rsp)
+	return ParseListSandboxFaucetsHTTPResponse(rsp)
 }
 
-// ListWalletsWithResponse request returning *ListWalletsResponse
-func (c *ClientWithResponses) ListWalletsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListWalletsResponse, error) {
+// ListStoresWithResponse request returning *ListStoresHTTPResponse
+func (c *ClientWithResponses) ListStoresWithResponse(ctx context.Context, params *ListStoresParams, reqEditors ...RequestEditorFn) (*ListStoresHTTPResponse, error) {
+	rsp, err := c.ListStores(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListStoresHTTPResponse(rsp)
+}
+
+// CreateStoreWithBodyWithResponse request with arbitrary body returning *CreateStoreHTTPResponse
+func (c *ClientWithResponses) CreateStoreWithBodyWithResponse(ctx context.Context, params *CreateStoreParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateStoreHTTPResponse, error) {
+	rsp, err := c.CreateStoreWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateStoreHTTPResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateStoreWithResponse(ctx context.Context, params *CreateStoreParams, body CreateStoreJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateStoreHTTPResponse, error) {
+	rsp, err := c.CreateStore(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateStoreHTTPResponse(rsp)
+}
+
+// DeleteStoreWithResponse request returning *DeleteStoreHTTPResponse
+func (c *ClientWithResponses) DeleteStoreWithResponse(ctx context.Context, storeId string, reqEditors ...RequestEditorFn) (*DeleteStoreHTTPResponse, error) {
+	rsp, err := c.DeleteStore(ctx, storeId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteStoreHTTPResponse(rsp)
+}
+
+// GetStoreWithResponse request returning *GetStoreHTTPResponse
+func (c *ClientWithResponses) GetStoreWithResponse(ctx context.Context, storeId string, reqEditors ...RequestEditorFn) (*GetStoreHTTPResponse, error) {
+	rsp, err := c.GetStore(ctx, storeId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetStoreHTTPResponse(rsp)
+}
+
+// PatchStoreWithBodyWithResponse request with arbitrary body returning *PatchStoreHTTPResponse
+func (c *ClientWithResponses) PatchStoreWithBodyWithResponse(ctx context.Context, storeId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PatchStoreHTTPResponse, error) {
+	rsp, err := c.PatchStoreWithBody(ctx, storeId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePatchStoreHTTPResponse(rsp)
+}
+
+func (c *ClientWithResponses) PatchStoreWithResponse(ctx context.Context, storeId string, body PatchStoreJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchStoreHTTPResponse, error) {
+	rsp, err := c.PatchStore(ctx, storeId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePatchStoreHTTPResponse(rsp)
+}
+
+// ArchiveStoreWithResponse request returning *ArchiveStoreHTTPResponse
+func (c *ClientWithResponses) ArchiveStoreWithResponse(ctx context.Context, storeId string, reqEditors ...RequestEditorFn) (*ArchiveStoreHTTPResponse, error) {
+	rsp, err := c.ArchiveStore(ctx, storeId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseArchiveStoreHTTPResponse(rsp)
+}
+
+// PublishStoreWithResponse request returning *PublishStoreHTTPResponse
+func (c *ClientWithResponses) PublishStoreWithResponse(ctx context.Context, storeId string, reqEditors ...RequestEditorFn) (*PublishStoreHTTPResponse, error) {
+	rsp, err := c.PublishStore(ctx, storeId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePublishStoreHTTPResponse(rsp)
+}
+
+// ListWalletsWithResponse request returning *ListWalletsHTTPResponse
+func (c *ClientWithResponses) ListWalletsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListWalletsHTTPResponse, error) {
 	rsp, err := c.ListWallets(ctx, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseListWalletsResponse(rsp)
+	return ParseListWalletsHTTPResponse(rsp)
 }
 
-// CreateWalletWithBodyWithResponse request with arbitrary body returning *CreateWalletResponse
-func (c *ClientWithResponses) CreateWalletWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateWalletResponse, error) {
+// CreateWalletWithBodyWithResponse request with arbitrary body returning *CreateWalletHTTPResponse
+func (c *ClientWithResponses) CreateWalletWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateWalletHTTPResponse, error) {
 	rsp, err := c.CreateWalletWithBody(ctx, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseCreateWalletResponse(rsp)
+	return ParseCreateWalletHTTPResponse(rsp)
 }
 
-func (c *ClientWithResponses) CreateWalletWithResponse(ctx context.Context, body CreateWalletJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateWalletResponse, error) {
+func (c *ClientWithResponses) CreateWalletWithResponse(ctx context.Context, body CreateWalletJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateWalletHTTPResponse, error) {
 	rsp, err := c.CreateWallet(ctx, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseCreateWalletResponse(rsp)
+	return ParseCreateWalletHTTPResponse(rsp)
 }
 
-// GetWalletWithResponse request returning *GetWalletResponse
-func (c *ClientWithResponses) GetWalletWithResponse(ctx context.Context, walletId string, reqEditors ...RequestEditorFn) (*GetWalletResponse, error) {
+// GetWalletWithResponse request returning *GetWalletHTTPResponse
+func (c *ClientWithResponses) GetWalletWithResponse(ctx context.Context, walletId string, reqEditors ...RequestEditorFn) (*GetWalletHTTPResponse, error) {
 	rsp, err := c.GetWallet(ctx, walletId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetWalletResponse(rsp)
+	return ParseGetWalletHTTPResponse(rsp)
 }
 
-// ListTransactionsWithResponse request returning *ListTransactionsResponse
-func (c *ClientWithResponses) ListTransactionsWithResponse(ctx context.Context, walletId string, reqEditors ...RequestEditorFn) (*ListTransactionsResponse, error) {
+// ListTransactionsWithResponse request returning *ListTransactionsHTTPResponse
+func (c *ClientWithResponses) ListTransactionsWithResponse(ctx context.Context, walletId string, reqEditors ...RequestEditorFn) (*ListTransactionsHTTPResponse, error) {
 	rsp, err := c.ListTransactions(ctx, walletId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseListTransactionsResponse(rsp)
+	return ParseListTransactionsHTTPResponse(rsp)
 }
 
-// ParseGetMeResponse parses an HTTP response from a GetMeWithResponse call
-func ParseGetMeResponse(rsp *http.Response) (*GetMeResponse, error) {
+// ValidateX402PaymentWithBodyWithResponse request with arbitrary body returning *ValidateX402PaymentHTTPResponse
+func (c *ClientWithResponses) ValidateX402PaymentWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ValidateX402PaymentHTTPResponse, error) {
+	rsp, err := c.ValidateX402PaymentWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseValidateX402PaymentHTTPResponse(rsp)
+}
+
+func (c *ClientWithResponses) ValidateX402PaymentWithResponse(ctx context.Context, body ValidateX402PaymentJSONRequestBody, reqEditors ...RequestEditorFn) (*ValidateX402PaymentHTTPResponse, error) {
+	rsp, err := c.ValidateX402Payment(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseValidateX402PaymentHTTPResponse(rsp)
+}
+
+// ParseAttemptAgentWalletSpendHTTPResponse parses an HTTP response from a AttemptAgentWalletSpendWithResponse call
+func ParseAttemptAgentWalletSpendHTTPResponse(rsp *http.Response) (*AttemptAgentWalletSpendHTTPResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetMeResponse{
+	response := &AttemptAgentWalletSpendHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AgentSpendAttempt
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateCatalogCheckoutIntentHTTPResponse parses an HTTP response from a CreateCatalogCheckoutIntentWithResponse call
+func ParseCreateCatalogCheckoutIntentHTTPResponse(rsp *http.Response) (*CreateCatalogCheckoutIntentHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateCatalogCheckoutIntentHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest CatalogCheckoutIntent
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListCatalogProductsHTTPResponse parses an HTTP response from a ListCatalogProductsWithResponse call
+func ParseListCatalogProductsHTTPResponse(rsp *http.Response) (*ListCatalogProductsHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListCatalogProductsHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CatalogProductListResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetCatalogProductHTTPResponse parses an HTTP response from a GetCatalogProductWithResponse call
+func ParseGetCatalogProductHTTPResponse(rsp *http.Response) (*GetCatalogProductHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetCatalogProductHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CatalogDiscoveryProduct
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetMeHTTPResponse parses an HTTP response from a GetMeWithResponse call
+func ParseGetMeHTTPResponse(rsp *http.Response) (*GetMeHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetMeHTTPResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2256,15 +8312,114 @@ func ParseGetMeResponse(rsp *http.Response) (*GetMeResponse, error) {
 	return response, nil
 }
 
-// ParseUserLoginResponse parses an HTTP response from a UserLoginWithResponse call
-func ParseUserLoginResponse(rsp *http.Response) (*UserLoginResponse, error) {
+// ParseGetMerchantCredentialStatusHTTPResponse parses an HTTP response from a GetMerchantCredentialStatusWithResponse call
+func ParseGetMerchantCredentialStatusHTTPResponse(rsp *http.Response) (*GetMerchantCredentialStatusHTTPResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &UserLoginResponse{
+	response := &GetMerchantCredentialStatusHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest MerchantCredentialStatus
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseRevokeMerchantCredentialHTTPResponse parses an HTTP response from a RevokeMerchantCredentialWithResponse call
+func ParseRevokeMerchantCredentialHTTPResponse(rsp *http.Response) (*RevokeMerchantCredentialHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RevokeMerchantCredentialHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Merchant
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseRotateMerchantCredentialHTTPResponse parses an HTTP response from a RotateMerchantCredentialWithResponse call
+func ParseRotateMerchantCredentialHTTPResponse(rsp *http.Response) (*RotateMerchantCredentialHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RotateMerchantCredentialHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Merchant
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUserLoginHTTPResponse parses an HTTP response from a UserLoginWithResponse call
+func ParseUserLoginHTTPResponse(rsp *http.Response) (*UserLoginHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UserLoginHTTPResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2289,15 +8444,81 @@ func ParseUserLoginResponse(rsp *http.Response) (*UserLoginResponse, error) {
 	return response, nil
 }
 
-// ParseUserRegisterResponse parses an HTTP response from a UserRegisterWithResponse call
-func ParseUserRegisterResponse(rsp *http.Response) (*UserRegisterResponse, error) {
+// ParseGetPaymentMethodPolicyHTTPResponse parses an HTTP response from a GetPaymentMethodPolicyWithResponse call
+func ParseGetPaymentMethodPolicyHTTPResponse(rsp *http.Response) (*GetPaymentMethodPolicyHTTPResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &UserRegisterResponse{
+	response := &GetPaymentMethodPolicyHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PaymentMethodPolicyState
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdatePaymentMethodPolicyHTTPResponse parses an HTTP response from a UpdatePaymentMethodPolicyWithResponse call
+func ParseUpdatePaymentMethodPolicyHTTPResponse(rsp *http.Response) (*UpdatePaymentMethodPolicyHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdatePaymentMethodPolicyHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PaymentMethodPolicyState
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUserRegisterHTTPResponse parses an HTTP response from a UserRegisterWithResponse call
+func ParseUserRegisterHTTPResponse(rsp *http.Response) (*UserRegisterHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UserRegisterHTTPResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2322,15 +8543,81 @@ func ParseUserRegisterResponse(rsp *http.Response) (*UserRegisterResponse, error
 	return response, nil
 }
 
-// ParseRegisterMerchantResponse parses an HTTP response from a RegisterMerchantWithResponse call
-func ParseRegisterMerchantResponse(rsp *http.Response) (*RegisterMerchantResponse, error) {
+// ParseUpdateMerchantWebhookHTTPResponse parses an HTTP response from a UpdateMerchantWebhookWithResponse call
+func ParseUpdateMerchantWebhookHTTPResponse(rsp *http.Response) (*UpdateMerchantWebhookHTTPResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &RegisterMerchantResponse{
+	response := &UpdateMerchantWebhookHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest Merchant
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseTestMerchantWebhookDeliveryHTTPResponse parses an HTTP response from a TestMerchantWebhookDeliveryWithResponse call
+func ParseTestMerchantWebhookDeliveryHTTPResponse(rsp *http.Response) (*TestMerchantWebhookDeliveryHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &TestMerchantWebhookDeliveryHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest WebhookTestDeliveryResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseRegisterMerchantHTTPResponse parses an HTTP response from a RegisterMerchantWithResponse call
+func ParseRegisterMerchantHTTPResponse(rsp *http.Response) (*RegisterMerchantHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RegisterMerchantHTTPResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2355,15 +8642,114 @@ func ParseRegisterMerchantResponse(rsp *http.Response) (*RegisterMerchantRespons
 	return response, nil
 }
 
-// ParseListPaymentMethodsResponse parses an HTTP response from a ListPaymentMethodsWithResponse call
-func ParseListPaymentMethodsResponse(rsp *http.Response) (*ListPaymentMethodsResponse, error) {
+// ParseRequestEmailVerificationHTTPResponse parses an HTTP response from a RequestEmailVerificationWithResponse call
+func ParseRequestEmailVerificationHTTPResponse(rsp *http.Response) (*RequestEmailVerificationHTTPResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &ListPaymentMethodsResponse{
+	response := &RequestEmailVerificationHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest RequestEmailVerificationResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseConfirmEmailVerificationHTTPResponse parses an HTTP response from a ConfirmEmailVerificationWithResponse call
+func ParseConfirmEmailVerificationHTTPResponse(rsp *http.Response) (*ConfirmEmailVerificationHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ConfirmEmailVerificationHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ConfirmEmailVerificationResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseRequestRegistrationProofOfWorkHTTPResponse parses an HTTP response from a RequestRegistrationProofOfWorkWithResponse call
+func ParseRequestRegistrationProofOfWorkHTTPResponse(rsp *http.Response) (*RequestRegistrationProofOfWorkHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RequestRegistrationProofOfWorkHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest RequestRegistrationProofOfWorkResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListPaymentMethodsHTTPResponse parses an HTTP response from a ListPaymentMethodsWithResponse call
+func ParseListPaymentMethodsHTTPResponse(rsp *http.Response) (*ListPaymentMethodsHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListPaymentMethodsHTTPResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2388,15 +8774,48 @@ func ParseListPaymentMethodsResponse(rsp *http.Response) (*ListPaymentMethodsRes
 	return response, nil
 }
 
-// ParseCreatePaymentSessionResponse parses an HTTP response from a CreatePaymentSessionWithResponse call
-func ParseCreatePaymentSessionResponse(rsp *http.Response) (*CreatePaymentSessionResponse, error) {
+// ParseCreatePaymentSessionHTTPResponse parses an HTTP response from a CreatePaymentSessionWithResponse call
+func ParseCreatePaymentSessionHTTPResponse(rsp *http.Response) (*CreatePaymentSessionHTTPResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &CreatePaymentSessionResponse{
+	response := &CreatePaymentSessionHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest PaymentSessionOrIntent
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateDemoPaymentSessionHTTPResponse parses an HTTP response from a CreateDemoPaymentSessionWithResponse call
+func ParseCreateDemoPaymentSessionHTTPResponse(rsp *http.Response) (*CreateDemoPaymentSessionHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateDemoPaymentSessionHTTPResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2421,55 +8840,22 @@ func ParseCreatePaymentSessionResponse(rsp *http.Response) (*CreatePaymentSessio
 	return response, nil
 }
 
-// ParseCreateDemoPaymentSessionResponse parses an HTTP response from a CreateDemoPaymentSessionWithResponse call
-func ParseCreateDemoPaymentSessionResponse(rsp *http.Response) (*CreateDemoPaymentSessionResponse, error) {
+// ParseGetPaymentSessionHTTPResponse parses an HTTP response from a GetPaymentSessionWithResponse call
+func ParseGetPaymentSessionHTTPResponse(rsp *http.Response) (*GetPaymentSessionHTTPResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &CreateDemoPaymentSessionResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
-		var dest PaymentSession
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON201 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
-		var dest Error
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSONDefault = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetPaymentSessionResponse parses an HTTP response from a GetPaymentSessionWithResponse call
-func ParseGetPaymentSessionResponse(rsp *http.Response) (*GetPaymentSessionResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetPaymentSessionResponse{
+	response := &GetPaymentSessionHTTPResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest PaymentSession
+		var dest PaymentSessionOrIntent
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -2487,15 +8873,15 @@ func ParseGetPaymentSessionResponse(rsp *http.Response) (*GetPaymentSessionRespo
 	return response, nil
 }
 
-// ParseFulfillDemoPaymentSessionResponse parses an HTTP response from a FulfillDemoPaymentSessionWithResponse call
-func ParseFulfillDemoPaymentSessionResponse(rsp *http.Response) (*FulfillDemoPaymentSessionResponse, error) {
+// ParseFulfillDemoPaymentSessionHTTPResponse parses an HTTP response from a FulfillDemoPaymentSessionWithResponse call
+func ParseFulfillDemoPaymentSessionHTTPResponse(rsp *http.Response) (*FulfillDemoPaymentSessionHTTPResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &FulfillDemoPaymentSessionResponse{
+	response := &FulfillDemoPaymentSessionHTTPResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2520,15 +8906,15 @@ func ParseFulfillDemoPaymentSessionResponse(rsp *http.Response) (*FulfillDemoPay
 	return response, nil
 }
 
-// ParseProvideDevWalletForDemoResponse parses an HTTP response from a ProvideDevWalletForDemoWithResponse call
-func ParseProvideDevWalletForDemoResponse(rsp *http.Response) (*ProvideDevWalletForDemoResponse, error) {
+// ParseProvideDevWalletForDemoHTTPResponse parses an HTTP response from a ProvideDevWalletForDemoWithResponse call
+func ParseProvideDevWalletForDemoHTTPResponse(rsp *http.Response) (*ProvideDevWalletForDemoHTTPResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &ProvideDevWalletForDemoResponse{
+	response := &ProvideDevWalletForDemoHTTPResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2566,15 +8952,15 @@ func ParseProvideDevWalletForDemoResponse(rsp *http.Response) (*ProvideDevWallet
 	return response, nil
 }
 
-// ParseGetReceiptBySessionIDResponse parses an HTTP response from a GetReceiptBySessionIDWithResponse call
-func ParseGetReceiptBySessionIDResponse(rsp *http.Response) (*GetReceiptBySessionIDResponse, error) {
+// ParseGetReceiptBySessionIDHTTPResponse parses an HTTP response from a GetReceiptBySessionIDWithResponse call
+func ParseGetReceiptBySessionIDHTTPResponse(rsp *http.Response) (*GetReceiptBySessionIDHTTPResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetReceiptBySessionIDResponse{
+	response := &GetReceiptBySessionIDHTTPResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2592,15 +8978,48 @@ func ParseGetReceiptBySessionIDResponse(rsp *http.Response) (*GetReceiptBySessio
 	return response, nil
 }
 
-// ParseSimulatePaymentResponse parses an HTTP response from a SimulatePaymentWithResponse call
-func ParseSimulatePaymentResponse(rsp *http.Response) (*SimulatePaymentResponse, error) {
+// ParseSelectPaymentMethodHTTPResponse parses an HTTP response from a SelectPaymentMethodWithResponse call
+func ParseSelectPaymentMethodHTTPResponse(rsp *http.Response) (*SelectPaymentMethodHTTPResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &SimulatePaymentResponse{
+	response := &SelectPaymentMethodHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PaymentSession
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseSimulatePaymentHTTPResponse parses an HTTP response from a SimulatePaymentWithResponse call
+func ParseSimulatePaymentHTTPResponse(rsp *http.Response) (*SimulatePaymentHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &SimulatePaymentHTTPResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2639,15 +9058,48 @@ func ParseSimulatePaymentResponse(rsp *http.Response) (*SimulatePaymentResponse,
 	return response, nil
 }
 
-// ParseRequestPayoutResponse parses an HTTP response from a RequestPayoutWithResponse call
-func ParseRequestPayoutResponse(rsp *http.Response) (*RequestPayoutResponse, error) {
+// ParseRetryWebhookDeliveryHTTPResponse parses an HTTP response from a RetryWebhookDeliveryWithResponse call
+func ParseRetryWebhookDeliveryHTTPResponse(rsp *http.Response) (*RetryWebhookDeliveryHTTPResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &RequestPayoutResponse{
+	response := &RetryWebhookDeliveryHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest WebhookDeliveryStatus
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseRequestPayoutHTTPResponse parses an HTTP response from a RequestPayoutWithResponse call
+func ParseRequestPayoutHTTPResponse(rsp *http.Response) (*RequestPayoutHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &RequestPayoutHTTPResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2672,15 +9124,15 @@ func ParseRequestPayoutResponse(rsp *http.Response) (*RequestPayoutResponse, err
 	return response, nil
 }
 
-// ParseGetPayoutResponse parses an HTTP response from a GetPayoutWithResponse call
-func ParseGetPayoutResponse(rsp *http.Response) (*GetPayoutResponse, error) {
+// ParseGetPayoutHTTPResponse parses an HTTP response from a GetPayoutWithResponse call
+func ParseGetPayoutHTTPResponse(rsp *http.Response) (*GetPayoutHTTPResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetPayoutResponse{
+	response := &GetPayoutHTTPResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2705,15 +9157,708 @@ func ParseGetPayoutResponse(rsp *http.Response) (*GetPayoutResponse, error) {
 	return response, nil
 }
 
-// ParseGetRatesResponse parses an HTTP response from a GetRatesWithResponse call
-func ParseGetRatesResponse(rsp *http.Response) (*GetRatesResponse, error) {
+// ParseListPlansHTTPResponse parses an HTTP response from a ListPlansWithResponse call
+func ParseListPlansHTTPResponse(rsp *http.Response) (*ListPlansHTTPResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetRatesResponse{
+	response := &ListPlansHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PlanListResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreatePlanHTTPResponse parses an HTTP response from a CreatePlanWithResponse call
+func ParseCreatePlanHTTPResponse(rsp *http.Response) (*CreatePlanHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreatePlanHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest CatalogPlan
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeletePlanHTTPResponse parses an HTTP response from a DeletePlanWithResponse call
+func ParseDeletePlanHTTPResponse(rsp *http.Response) (*DeletePlanHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeletePlanHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetPlanHTTPResponse parses an HTTP response from a GetPlanWithResponse call
+func ParseGetPlanHTTPResponse(rsp *http.Response) (*GetPlanHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetPlanHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CatalogPlan
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePatchPlanHTTPResponse parses an HTTP response from a PatchPlanWithResponse call
+func ParsePatchPlanHTTPResponse(rsp *http.Response) (*PatchPlanHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PatchPlanHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CatalogPlan
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest CatalogPlan
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseArchivePlanHTTPResponse parses an HTTP response from a ArchivePlanWithResponse call
+func ParseArchivePlanHTTPResponse(rsp *http.Response) (*ArchivePlanHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ArchivePlanHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CatalogPlan
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePublishPlanHTTPResponse parses an HTTP response from a PublishPlanWithResponse call
+func ParsePublishPlanHTTPResponse(rsp *http.Response) (*PublishPlanHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PublishPlanHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CatalogPlan
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListPricesHTTPResponse parses an HTTP response from a ListPricesWithResponse call
+func ParseListPricesHTTPResponse(rsp *http.Response) (*ListPricesHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListPricesHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PriceListResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreatePriceHTTPResponse parses an HTTP response from a CreatePriceWithResponse call
+func ParseCreatePriceHTTPResponse(rsp *http.Response) (*CreatePriceHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreatePriceHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest CatalogPrice
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeletePriceHTTPResponse parses an HTTP response from a DeletePriceWithResponse call
+func ParseDeletePriceHTTPResponse(rsp *http.Response) (*DeletePriceHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeletePriceHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetPriceHTTPResponse parses an HTTP response from a GetPriceWithResponse call
+func ParseGetPriceHTTPResponse(rsp *http.Response) (*GetPriceHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetPriceHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CatalogPrice
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePatchPriceHTTPResponse parses an HTTP response from a PatchPriceWithResponse call
+func ParsePatchPriceHTTPResponse(rsp *http.Response) (*PatchPriceHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PatchPriceHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CatalogPrice
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest CatalogPrice
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseArchivePriceHTTPResponse parses an HTTP response from a ArchivePriceWithResponse call
+func ParseArchivePriceHTTPResponse(rsp *http.Response) (*ArchivePriceHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ArchivePriceHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CatalogPrice
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePublishPriceHTTPResponse parses an HTTP response from a PublishPriceWithResponse call
+func ParsePublishPriceHTTPResponse(rsp *http.Response) (*PublishPriceHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PublishPriceHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CatalogPrice
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListProductsHTTPResponse parses an HTTP response from a ListProductsWithResponse call
+func ParseListProductsHTTPResponse(rsp *http.Response) (*ListProductsHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListProductsHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ProductListResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateProductHTTPResponse parses an HTTP response from a CreateProductWithResponse call
+func ParseCreateProductHTTPResponse(rsp *http.Response) (*CreateProductHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateProductHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest CatalogProduct
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteProductHTTPResponse parses an HTTP response from a DeleteProductWithResponse call
+func ParseDeleteProductHTTPResponse(rsp *http.Response) (*DeleteProductHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteProductHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetProductHTTPResponse parses an HTTP response from a GetProductWithResponse call
+func ParseGetProductHTTPResponse(rsp *http.Response) (*GetProductHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetProductHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CatalogProduct
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePatchProductHTTPResponse parses an HTTP response from a PatchProductWithResponse call
+func ParsePatchProductHTTPResponse(rsp *http.Response) (*PatchProductHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PatchProductHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CatalogProduct
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest CatalogProduct
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseArchiveProductHTTPResponse parses an HTTP response from a ArchiveProductWithResponse call
+func ParseArchiveProductHTTPResponse(rsp *http.Response) (*ArchiveProductHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ArchiveProductHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CatalogProduct
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePublishProductHTTPResponse parses an HTTP response from a PublishProductWithResponse call
+func ParsePublishProductHTTPResponse(rsp *http.Response) (*PublishProductHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PublishProductHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CatalogProduct
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetRatesHTTPResponse parses an HTTP response from a GetRatesWithResponse call
+func ParseGetRatesHTTPResponse(rsp *http.Response) (*GetRatesHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetRatesHTTPResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2738,15 +9883,48 @@ func ParseGetRatesResponse(rsp *http.Response) (*GetRatesResponse, error) {
 	return response, nil
 }
 
-// ParseListSandboxFaucetsResponse parses an HTTP response from a ListSandboxFaucetsWithResponse call
-func ParseListSandboxFaucetsResponse(rsp *http.Response) (*ListSandboxFaucetsResponse, error) {
+// ParseFundSepoliaFaucetHTTPResponse parses an HTTP response from a FundSepoliaFaucetWithResponse call
+func ParseFundSepoliaFaucetHTTPResponse(rsp *http.Response) (*FundSepoliaFaucetHTTPResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &ListSandboxFaucetsResponse{
+	response := &FundSepoliaFaucetHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest FundSepoliaFaucetResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListSandboxFaucetsHTTPResponse parses an HTTP response from a ListSandboxFaucetsWithResponse call
+func ParseListSandboxFaucetsHTTPResponse(rsp *http.Response) (*ListSandboxFaucetsHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListSandboxFaucetsHTTPResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2771,15 +9949,239 @@ func ParseListSandboxFaucetsResponse(rsp *http.Response) (*ListSandboxFaucetsRes
 	return response, nil
 }
 
-// ParseListWalletsResponse parses an HTTP response from a ListWalletsWithResponse call
-func ParseListWalletsResponse(rsp *http.Response) (*ListWalletsResponse, error) {
+// ParseListStoresHTTPResponse parses an HTTP response from a ListStoresWithResponse call
+func ParseListStoresHTTPResponse(rsp *http.Response) (*ListStoresHTTPResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &ListWalletsResponse{
+	response := &ListStoresHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest StoreListResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateStoreHTTPResponse parses an HTTP response from a CreateStoreWithResponse call
+func ParseCreateStoreHTTPResponse(rsp *http.Response) (*CreateStoreHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateStoreHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest CatalogStore
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteStoreHTTPResponse parses an HTTP response from a DeleteStoreWithResponse call
+func ParseDeleteStoreHTTPResponse(rsp *http.Response) (*DeleteStoreHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteStoreHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetStoreHTTPResponse parses an HTTP response from a GetStoreWithResponse call
+func ParseGetStoreHTTPResponse(rsp *http.Response) (*GetStoreHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetStoreHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CatalogStore
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePatchStoreHTTPResponse parses an HTTP response from a PatchStoreWithResponse call
+func ParsePatchStoreHTTPResponse(rsp *http.Response) (*PatchStoreHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PatchStoreHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CatalogStore
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseArchiveStoreHTTPResponse parses an HTTP response from a ArchiveStoreWithResponse call
+func ParseArchiveStoreHTTPResponse(rsp *http.Response) (*ArchiveStoreHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ArchiveStoreHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CatalogStore
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePublishStoreHTTPResponse parses an HTTP response from a PublishStoreWithResponse call
+func ParsePublishStoreHTTPResponse(rsp *http.Response) (*PublishStoreHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PublishStoreHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CatalogStore
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListWalletsHTTPResponse parses an HTTP response from a ListWalletsWithResponse call
+func ParseListWalletsHTTPResponse(rsp *http.Response) (*ListWalletsHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListWalletsHTTPResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2804,15 +10206,15 @@ func ParseListWalletsResponse(rsp *http.Response) (*ListWalletsResponse, error) 
 	return response, nil
 }
 
-// ParseCreateWalletResponse parses an HTTP response from a CreateWalletWithResponse call
-func ParseCreateWalletResponse(rsp *http.Response) (*CreateWalletResponse, error) {
+// ParseCreateWalletHTTPResponse parses an HTTP response from a CreateWalletWithResponse call
+func ParseCreateWalletHTTPResponse(rsp *http.Response) (*CreateWalletHTTPResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &CreateWalletResponse{
+	response := &CreateWalletHTTPResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2837,15 +10239,15 @@ func ParseCreateWalletResponse(rsp *http.Response) (*CreateWalletResponse, error
 	return response, nil
 }
 
-// ParseGetWalletResponse parses an HTTP response from a GetWalletWithResponse call
-func ParseGetWalletResponse(rsp *http.Response) (*GetWalletResponse, error) {
+// ParseGetWalletHTTPResponse parses an HTTP response from a GetWalletWithResponse call
+func ParseGetWalletHTTPResponse(rsp *http.Response) (*GetWalletHTTPResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetWalletResponse{
+	response := &GetWalletHTTPResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2870,15 +10272,15 @@ func ParseGetWalletResponse(rsp *http.Response) (*GetWalletResponse, error) {
 	return response, nil
 }
 
-// ParseListTransactionsResponse parses an HTTP response from a ListTransactionsWithResponse call
-func ParseListTransactionsResponse(rsp *http.Response) (*ListTransactionsResponse, error) {
+// ParseListTransactionsHTTPResponse parses an HTTP response from a ListTransactionsWithResponse call
+func ParseListTransactionsHTTPResponse(rsp *http.Response) (*ListTransactionsHTTPResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &ListTransactionsResponse{
+	response := &ListTransactionsHTTPResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2903,63 +10305,259 @@ func ParseListTransactionsResponse(rsp *http.Response) (*ListTransactionsRespons
 	return response, nil
 }
 
+// ParseValidateX402PaymentHTTPResponse parses an HTTP response from a ValidateX402PaymentWithResponse call
+func ParseValidateX402PaymentHTTPResponse(rsp *http.Response) (*ValidateX402PaymentHTTPResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ValidateX402PaymentHTTPResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest X402ValidationResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
-	"rf4TAAD//0Y+dQaASAAA",
+	"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",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

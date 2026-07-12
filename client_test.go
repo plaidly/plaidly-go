@@ -57,7 +57,7 @@ func TestCreatePaymentSession(t *testing.T) {
 	got, err := c.CreatePaymentSession(context.Background(), CreatePaymentSessionRequest{
 		Amount:    25.5,
 		ExpiresIn: "15m",
-		PaymentMethod: PaymentMethod{
+		PaymentMethod: &PaymentMethod{
 			MethodID: MethodIDCrypto, Chain: "solana", Token: "USDC", Network: "mainnet",
 		},
 	})

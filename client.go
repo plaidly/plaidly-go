@@ -13,7 +13,7 @@
 //	session, err := client.CreatePaymentSession(ctx, plaidlyapi.CreatePaymentSessionRequest{
 //	    Amount:     100.00,
 //	    ExpiresIn:  "15m",
-//	    PaymentMethod: plaidlyapi.PaymentMethod{
+//	    PaymentMethod: &plaidlyapi.PaymentMethod{
 //	        MethodID: 0, Chain: "solana", Token: "USDC", Network: "mainnet",
 //	    },
 //	})
@@ -37,20 +37,63 @@ const defaultBaseURL = "https://api.plaidly.io"
 
 // Re-export generated types so callers only need to import this package.
 type (
+	CreateDemoSessionRequest    = plaidlyapi.CreateDemoSessionRequest
 	CreatePaymentSessionRequest = plaidlyapi.CreatePaymentSessionRequest
 	CreateWalletRequest         = plaidlyapi.CreateWalletRequest
 	Merchant                    = plaidlyapi.Merchant
 	PaymentMethod               = plaidlyapi.PaymentMethod
 	PaymentMethodInfo           = plaidlyapi.PaymentMethodInfo
 	PaymentSession              = plaidlyapi.PaymentSession
+	PaymentSessionOrIntent      = plaidlyapi.PaymentSessionOrIntent
 	Payout                      = plaidlyapi.Payout
 	RateInfo                    = plaidlyapi.RateInfo
 	Receipt                     = plaidlyapi.Receipt
 	RegisterMerchantRequest     = plaidlyapi.RegisterMerchantRequest
 	RequestPayoutRequest        = plaidlyapi.RequestPayoutRequest
+	SelectPaymentMethodRequest  = plaidlyapi.SelectPaymentMethodRequest
 	Transaction                 = plaidlyapi.Transaction
 	User                        = plaidlyapi.User
 	Wallet                      = plaidlyapi.Wallet
+
+	// Public/sandbox merchant registration anti-abuse flow (BDT-542).
+	RequestEmailVerificationRequest        = plaidlyapi.RequestEmailVerificationRequest
+	RequestEmailVerificationResponse       = plaidlyapi.RequestEmailVerificationResponse
+	ConfirmEmailVerificationRequest        = plaidlyapi.ConfirmEmailVerificationRequest
+	ConfirmEmailVerificationResponse       = plaidlyapi.ConfirmEmailVerificationResponse
+	RequestRegistrationProofOfWorkRequest  = plaidlyapi.RequestRegistrationProofOfWorkRequest
+	RequestRegistrationProofOfWorkResponse = plaidlyapi.RequestRegistrationProofOfWorkResponse
+
+	// Merchant payment-method policy (BDT-529).
+	PaymentMethodPolicyState         = plaidlyapi.PaymentMethodPolicyState
+	PaymentMethodPolicyEntry         = plaidlyapi.PaymentMethodPolicyEntry
+	PaymentMethodPolicyIdentity      = plaidlyapi.PaymentMethodPolicyIdentity
+	UpdatePaymentMethodPolicyRequest = plaidlyapi.UpdatePaymentMethodPolicyRequest
+
+	// Generic commerce catalog (BDT-223): stores, products, plans, prices.
+	CatalogStore       = plaidlyapi.CatalogStore
+	CreateStoreRequest = plaidlyapi.CreateStoreRequest
+	PatchStoreRequest  = plaidlyapi.PatchStoreRequest
+	StoreListResponse  = plaidlyapi.StoreListResponse
+
+	CatalogProduct       = plaidlyapi.CatalogProduct
+	CreateProductRequest = plaidlyapi.CreateProductRequest
+	PatchProductRequest  = plaidlyapi.PatchProductRequest
+	ProductListResponse  = plaidlyapi.ProductListResponse
+
+	CatalogPlan       = plaidlyapi.CatalogPlan
+	CreatePlanRequest = plaidlyapi.CreatePlanRequest
+	PatchPlanRequest  = plaidlyapi.PatchPlanRequest
+	PlanListResponse  = plaidlyapi.PlanListResponse
+
+	CatalogPrice       = plaidlyapi.CatalogPrice
+	CreatePriceRequest = plaidlyapi.CreatePriceRequest
+	PatchPriceRequest  = plaidlyapi.PatchPriceRequest
+	PriceListResponse  = plaidlyapi.PriceListResponse
+
+	CatalogDiscoveryProduct    = plaidlyapi.CatalogDiscoveryProduct
+	CatalogDiscoveryPlan       = plaidlyapi.CatalogDiscoveryPlan
+	CatalogProductListResponse = plaidlyapi.CatalogProductListResponse
+	CatalogCheckoutIntent      = plaidlyapi.CatalogCheckoutIntent
 )
 
 // MethodID values for PaymentMethod.MethodID.

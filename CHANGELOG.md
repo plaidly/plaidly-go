@@ -1,19 +1,125 @@
 # Changelog
 
 All notable changes to this SDK are recorded here. This file did not exist
-before this change; entries below cover the current `Unreleased` work only.
+before BDT-530; entries below cover all `Unreleased` work since `v0.3.0`.
 
-## Unreleased (BDT-530)
+## Unreleased
 
-Contract work for Compono billing's integration. Not tagged yet — see
-"Release status" below for why.
+Not tagged yet — see `RELEASE.md` for how tagging works. Covers BDT-530
+(idempotency-key contract, typed-error fix) and the subsequent spec-sync
+change (BDT-542, BDT-223, BDT-529, BDT-528).
+
+### Spec sync (2026-07-12)
+
+`spec/openapi.yaml` has been re-synced from the live, deployed
+`plaidly-api/api/openapi.yaml`; it had drifted since the last sync (see the
+now-resolved "Known gap" note that used to live here). `generated/plaidlyapi`
+was regenerated with `make generate` (`oapi-codegen` `v2.4.1`, pinned).
+Sync required adding `output-options.response-type-suffix: HTTPResponse` to
+`oapi-cfg.yaml`: the new spec's `RequestEmailVerificationResponse` /
+`ConfirmEmailVerificationResponse` / `RequestRegistrationProofOfWorkResponse`
+/ `FundSepoliaFaucetResponse` schema names collided with oapi-codegen's
+auto-generated per-operation `<OperationId>Response` wrapper struct names
+(the collision produces duplicate-declaration compile errors without the
+suffix override).
+
+The regen also surfaced two small breaking-shape changes unrelated to the
+four features below, now fixed everywhere in this SDK and its tests/examples:
+- `CreatePaymentSessionRequest.PaymentMethod` is now `*PaymentMethod`
+  (pointer, since it's mutually exclusive with the new `PaymentMethods`
+  field — see below) instead of a bare value.
+- `CreatePaymentSession` and `RequestPayout` now pass an explicit `nil`
+  `*Params` argument to the regenerated raw client (both operations gained a
+  formal `Idempotency-Key` header parameter in the spec; the SDK still sets
+  that header via its own `RequestOption`/`RequestEditorFn` mechanism, not
+  through the generated `Params` struct, so behavior is unchanged).
 
 ### Real, deployed-endpoint features
 
 These are wired against endpoints that are live on `api.plaidly.io` today.
 
+#### Multi-method checkout intents (BDT-528) — now deployed
+
+Corrects this file's previous "Experimental" entry: BDT-528 shipped to
+production, but **not** as the speculative `/v1/checkout_intents*` resource
+this SDK had anticipated. It landed as a `paymentMethods` (plural) extension
+of the existing payment-session endpoints instead:
+- `POST /v1/payment_sessions` now accepts `paymentMethods` (an array of 1-20
+  candidate `PaymentMethod`s) as an alternative to the singular
+  `paymentMethod`. The response type is `PaymentSessionOrIntent`, which is
+  a `PaymentSession`-shaped snapshot with `Status ==
+  "awaiting_method_selection"` and `CandidatePaymentMethods` populated until
+  a method is selected.
+- `GET /v1/payment_sessions/{session_id}` returns the same
+  `PaymentSessionOrIntent` shape.
+- `POST /v1/payment_sessions/{session_id}/select_method` binds one method
+  from the candidate set, materializing an ordinary `PaymentSession` with a
+  deposit address.
+
+`CreateCheckoutIntent`, `GetCheckoutIntent`, and `SelectCheckoutMethod` keep
+their names but are rewritten against this real contract: they now call
+`c.raw.CreatePaymentSession` / `c.raw.GetPaymentSession` /
+`c.raw.SelectPaymentMethod` (the generated client) like every other wrapper,
+instead of the unexported `Client.doRequest`/manual-`*http.Request` path used
+previously (that path existed only because the old spec had no knowledge of
+these endpoints — no longer true). The speculative
+`EventCheckoutIntentMethodSelected` / `EventCheckoutIntentExpired` webhook
+event constants and the standalone `CheckoutMethodOption` /
+`CreateCheckoutIntentRequest` / `CheckoutIntent` /
+`SelectCheckoutMethodRequest` / `SelectedCheckoutMethod` types are removed —
+no such webhook events exist, and the real endpoints reuse
+`CreatePaymentSessionRequest` / `PaymentSessionOrIntent` /
+`PaymentMethod` / `PaymentSession` directly. New constant:
+`CheckoutIntentStatusAwaitingSelection`.
+
+#### Public/sandbox merchant registration anti-abuse flow (BDT-542)
+
+New file `registration.go`:
+- `RequestEmailVerification`, `ConfirmEmailVerification`,
+  `RequestRegistrationProofOfWork` wrap the three new
+  `POST /v1/merchants/email-verification`,
+  `POST /v1/merchants/email-verification/confirm`, and
+  `POST /v1/merchants/registration-proof-of-work` endpoints.
+- `RegisterMerchantRequest` gains optional `RegistrationIntentId`,
+  `ProofOfWorkChallengeId`, `ProofOfWorkNonce` fields for public/sandbox
+  registration (bearer-authenticated live merchant creation ignores them).
+- `SolveProofOfWork(challenge string, difficultyBits int) string` — a local,
+  offline `sha256-leading-zero-bits-v1` solver (find a nonce such that
+  `sha256(challenge + ":" + nonce)` has at least `difficultyBits` leading
+  zero bits) so callers don't need to reimplement bit-counting. Mirrors
+  `plaidly-api/internal/pow`'s `leadingZeroBits` exactly; verified in
+  `registration_test.go` against an independently inlined copy of that same
+  reference logic, plus an end-to-end test that feeds a solved nonce into
+  `RegisterMerchant`.
+
+#### Generic commerce catalog (BDT-223)
+
+New file `catalog.go`: full CRUD (`Create`/`List`/`Get`/`Patch`/`Delete`)
+plus `Publish`/`Archive` transitions for stores, products, plans, and prices
+(`CreateStore`, `ListStores`, `GetStore`, `PatchStore`, `DeleteStore`,
+`PublishStore`, `ArchiveStore`, and the equivalent 7 methods each for
+`*Product`, `*Plan`, `*Price`), matching the immutable/versioned semantics of
+the live API — `PatchProduct`/`PatchPlan`/`PatchPrice` return a *new*
+resource version (different `Id`, `SupersedesProductId`/`SupersedesPlanId`/
+`SupersedesPriceId` set) once the target is published or
+checkout-referenced, rather than mutating in place; stores always mutate in
+place. Also wraps the public, unauthenticated buyer-agent discovery
+endpoints — `ListCatalogProducts`, `GetCatalogProduct` — and
+`CreateCatalogCheckoutIntent`, which resolves a published price into the
+fields needed to build a `CreatePaymentSession` call. New constants
+`CatalogStatusDraft` / `CatalogStatusPublished` / `CatalogStatusArchived`.
+
+#### Merchant payment-method policy (BDT-529)
+
+`merchants.go` gains `GetPaymentMethodPolicy` / `UpdatePaymentMethodPolicy`
+(`GET`/`PUT /v1/me/payment_method_policy`), returning/accepting
+`PaymentMethodPolicyState` (declared policy version plus live-computed
+per-identity eligibility) and `UpdatePaymentMethodPolicyRequest`.
+
+#### Carried over from BDT-530
+
 - `WithIdempotencyKey(key string) RequestOption`, plumbed through
-  `CreatePaymentSession` and `RequestPayout` (both now take
+  `CreatePaymentSession` and `RequestPayout` (both take
   `opts ...RequestOption`, backward compatible with the old 2-argument call
   shape). Matches the live `Idempotency-Key` header contract on
   `POST /v1/payment_sessions` and `POST /v1/payouts`: merchant-scoped, 24h
@@ -43,57 +149,6 @@ These are wired against endpoints that are live on `api.plaidly.io` today.
   only adds checked-in golden fixtures on top of the existing inline test
   vector, so the signature scheme has a reusable, cross-checkable reference
   independent of any one test file.
-
-### Experimental — anticipating endpoints that are NOT deployed yet
-
-BDT-528 (multi-method checkout intents) and BDT-529 (payment-method policy)
-are plaidly-api tickets and have not shipped to any environment as of this
-change. The methods below were built against the epic's locked phase-1
-contract so the SDK is ready the moment they land, per BDT-530's
-coordination note. **Calling any of these against a real Plaidly API today
-returns 404.** They are covered by mock-transport tests only
-(`checkout_intent_test.go`), never against a live server.
-
-- `CreateCheckoutIntent(ctx, CreateCheckoutIntentRequest, ...RequestOption) (*CheckoutIntent, error)`
-  — anticipates `POST /v1/checkout_intents`.
-- `GetCheckoutIntent(ctx, intentID string, ...RequestOption) (*CheckoutIntent, error)`
-  — anticipates `GET /v1/checkout_intents/{intent_id}`.
-- `SelectCheckoutMethod(ctx, intentID string, SelectCheckoutMethodRequest, ...RequestOption) (*SelectedCheckoutMethod, error)`
-  — anticipates `POST /v1/checkout_intents/{intent_id}/select`.
-- New types: `CheckoutMethodOption`, `CreateCheckoutIntentRequest`,
-  `CheckoutIntent` (carries `Methods []CheckoutMethodOption`,
-  `PolicyVersion string`, `ExpiresAt time.Time`), `SelectCheckoutMethodRequest`,
-  `SelectedCheckoutMethod` (carries the bound `Chain`/`Network`/`Token` plus
-  `DepositAddress`/`PaymentURL`/`QRCodeURL`/`DeepLink`).
-- New webhook event-type constants `EventCheckoutIntentMethodSelected`
-  (`checkout_intent.method_selected`) and `EventCheckoutIntentExpired`
-  (`checkout_intent.expired`) — **not emitted by any deployed environment
-  today**; the server does not know about checkout intents yet.
-- These three methods route through a new unexported `Client.doRequest`
-  helper (manual `*http.Request` construction) rather than the generated
-  `plaidlyapi.Client`, because the SDK's `spec/openapi.yaml` — and therefore
-  `generated/plaidlyapi` — has no knowledge of these endpoints. `doRequest`
-  still applies `RequestOption`s (including `WithIdempotencyKey`) and shares
-  `Client.doJSON`'s retry/error-decoding path with every other method.
-  **Follow-up:** once BDT-528/BDT-529 land, sync `spec/openapi.yaml` from
-  `plaidly-api/api/openapi.yaml`, run `make generate`, and replace this
-  hand-built path with the generated one (same pattern already used for
-  every other endpoint).
-
-### Known gap not addressed in this change
-
-`spec/openapi.yaml` (this repo's bundled copy of the API spec, used by
-`make generate`) has not been synced against the live
-`plaidly-api/api/openapi.yaml` — notably, it does not declare the
-`Idempotency-Key` header parameter that the live API has had on
-`POST /v1/payment_sessions` and `POST /v1/payouts` since migration `000040`.
-This SDK change does not depend on that sync (the generated client's
-`...RequestEditorFn` mechanism already allows injecting arbitrary headers
-without the spec declaring them), but the spec is still stale as
-documentation/codegen input. Syncing it is lower-risk to do as its own
-change, separately from this feature work, since the live spec has diverged
-across ~18 more endpoints than the SDK currently wraps at all (see
-plaidly-docs#4 / BDT-543's parity table for the full inventory).
 
 ## v0.3.0
 
