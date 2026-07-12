@@ -9,6 +9,27 @@ Not tagged yet — see `RELEASE.md` for how tagging works. Covers BDT-530
 (idempotency-key contract, typed-error fix) and the subsequent spec-sync
 change (BDT-542, BDT-223, BDT-529, BDT-528).
 
+### Merchant credential + webhook management (BDT-544)
+
+The generated `plaidlyapi` client already wrapped
+`GET /v1/me/credentials`, `POST /v1/me/credentials/rotate`,
+`POST /v1/me/credentials/revoke`, `PUT /v1/me/webhook`, and
+`POST /v1/me/webhook/test`, but the hand-written high-level `Client` never
+exposed them. Added, in `credentials.go`:
+
+- `Client.GetMerchantCredentialStatus` — masked previews + rotation timestamps.
+- `Client.RotateMerchantCredential(ctx, credentialType, opts...)` — returns the
+  full `Merchant`, whose `ApiKey`/`WebhookSecret` fields carry the fresh secret
+  exactly once (response-only). Accepts `RequestOption` for idempotency keys,
+  same convention as the catalog mutators.
+- `Client.RevokeMerchantCredential(ctx, credentialType, opts...)`.
+- `Client.UpdateMerchantWebhook(ctx, url, opts...)`.
+- `Client.TestMerchantWebhookDelivery(ctx)`.
+
+New exported types: `MerchantCredentialStatus`, `MerchantCredentialOperationRequest`,
+`MerchantCredentialType` (with `CredentialTypeAPIKey` / `CredentialTypeWebhookSecret`
+constants), `UpdateMerchantWebhookRequest`, `WebhookTestDeliveryResult`.
+
 ### Spec sync (2026-07-12)
 
 `spec/openapi.yaml` has been re-synced from the live, deployed

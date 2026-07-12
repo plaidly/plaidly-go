@@ -94,6 +94,21 @@ type (
 	CatalogDiscoveryPlan       = plaidlyapi.CatalogDiscoveryPlan
 	CatalogProductListResponse = plaidlyapi.CatalogProductListResponse
 	CatalogCheckoutIntent      = plaidlyapi.CatalogCheckoutIntent
+
+	// Merchant credential status/rotation (BDT-544).
+	MerchantCredentialStatus           = plaidlyapi.MerchantCredentialStatus
+	MerchantCredentialOperationRequest = plaidlyapi.MerchantCredentialOperationRequest
+	MerchantCredentialType             = plaidlyapi.MerchantCredentialOperationRequestCredentialType
+
+	// Merchant webhook management (BDT-544).
+	UpdateMerchantWebhookRequest = plaidlyapi.UpdateMerchantWebhookRequest
+	WebhookTestDeliveryResult    = plaidlyapi.WebhookTestDeliveryResult
+)
+
+// Credential kind values for MerchantCredentialOperationRequest.CredentialType.
+const (
+	CredentialTypeAPIKey        = plaidlyapi.ApiKey
+	CredentialTypeWebhookSecret = plaidlyapi.WebhookSecret
 )
 
 // MethodID values for PaymentMethod.MethodID.
