@@ -6,3 +6,4 @@ generate:
 output: generated/plaidlyapi/plaidlyapi.gen.go
 output-options:
   skip-prune: true
+  response-type-suffix: HTTPResponse

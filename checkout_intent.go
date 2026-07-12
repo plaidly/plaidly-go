@@ -3,72 +3,39 @@ package plaidly
 import (
 	"context"
 	"net/http"
-	"net/url"
-	"time"
 )
 
+// Multi-method checkout intent statuses (BDT-528, deployed to production).
+// A checkout intent is a PaymentSessionOrIntent whose Status is
+// CheckoutIntentStatusAwaitingSelection until a method is selected, at which
+// point it materializes into an ordinary PaymentSession with one of the
+// regular payment-session statuses (see StatusPending etc. in client.go).
 const (
-	CheckoutIntentStatusOpen     = "open"
-	CheckoutIntentStatusSelected = "selected"
-	CheckoutIntentStatusExpired  = "expired"
-	CheckoutIntentStatusCanceled = "canceled"
+	CheckoutIntentStatusAwaitingSelection = "awaiting_method_selection"
 )
 
-const (
-	EventCheckoutIntentMethodSelected = "checkout_intent.method_selected"
-	EventCheckoutIntentExpired        = "checkout_intent.expired"
-)
-
-type CheckoutMethodOption struct {
-	Chain   string `json:"chain"`
-	Network string `json:"network"`
-	Token   string `json:"token"`
-}
-
-type CreateCheckoutIntentRequest struct {
-	Amount    float64                 `json:"amount"`
-	Currency  string                  `json:"currency,omitempty"`
-	ExpiresIn string                  `json:"expires_in,omitempty"`
-	Methods   []CheckoutMethodOption  `json:"methods"`
-	Metadata  *map[string]interface{} `json:"metadata,omitempty"`
-}
-
-type CheckoutIntent struct {
-	IntentID      string                 `json:"intent_id"`
-	Status        string                 `json:"status"`
-	Amount        float64                `json:"amount"`
-	Currency      string                 `json:"currency"`
-	Methods       []CheckoutMethodOption `json:"methods"`
-	PolicyVersion string                 `json:"policy_version"`
-	ExpiresAt     time.Time              `json:"expires_at"`
-	CreatedAt     time.Time              `json:"created_at"`
-	SelectedIndex *int                   `json:"selected_index,omitempty"`
-}
-
-type SelectCheckoutMethodRequest struct {
-	Chain   string `json:"chain"`
-	Network string `json:"network"`
-	Token   string `json:"token"`
-}
-
-type SelectedCheckoutMethod struct {
-	IntentID       string    `json:"intent_id"`
-	SessionID      string    `json:"session_id"`
-	Chain          string    `json:"chain"`
-	Network        string    `json:"network"`
-	Token          string    `json:"token"`
-	DepositAddress string    `json:"deposit_address"`
-	PaymentURL     string    `json:"payment_url"`
-	QRCodeURL      string    `json:"qr_code_url,omitempty"`
-	DeepLink       string    `json:"deep_link,omitempty"`
-	ExpiresAt      time.Time `json:"expires_at"`
-}
-
-func (c *Client) CreateCheckoutIntent(ctx context.Context, req CreateCheckoutIntentRequest, opts ...RequestOption) (*CheckoutIntent, error) {
+// CreateCheckoutIntent creates a multi-method checkout intent: it is
+// POST /v1/payment_sessions with req.PaymentMethods (plural, a candidate
+// set of 1-20 PaymentMethod values) set instead of the single-method
+// req.PaymentMethod field. The server intersects the candidate set with
+// merchant policy, environment restriction, and currently enabled/certified
+// rails, and returns a checkout intent for the payer to select from via
+// SelectCheckoutMethod. Supplying both PaymentMethod and PaymentMethods, or
+// neither, is a 400.
+//
+// The returned intent's SessionId doubles as the intent_id passed to
+// GetCheckoutIntent and SelectCheckoutMethod.
+//
+// This flow was deployed to production as part of BDT-528; it is not a
+// distinct /v1/checkout_intents resource, but the paymentMethods
+// (plural) extension of the existing payment-session endpoints.
+//
+// POST /v1/payment_sessions
+func (c *Client) CreateCheckoutIntent(ctx context.Context, req CreatePaymentSessionRequest, opts ...RequestOption) (*PaymentSessionOrIntent, error) {
 	ro := buildRequestOptions(opts)
-	var out CheckoutIntent
+	var out PaymentSessionOrIntent
 	err := c.doJSON(ctx, func(ctx context.Context) (*http.Response, error) {
-		return c.doRequest(ctx, http.MethodPost, "/v1/checkout_intents", req, ro)
+		return c.raw.CreatePaymentSession(ctx, nil, req, ro.toEditors()...)
 	}, &out)
 	if err != nil {
 		return nil, err
@@ -76,11 +43,18 @@ func (c *Client) CreateCheckoutIntent(ctx context.Context, req CreateCheckoutInt
 	return &out, nil
 }
 
-func (c *Client) GetCheckoutIntent(ctx context.Context, intentID string, opts ...RequestOption) (*CheckoutIntent, error) {
-	ro := buildRequestOptions(opts)
-	var out CheckoutIntent
+// GetCheckoutIntent fetches a checkout intent by its id (the SessionId
+// returned from CreateCheckoutIntent). Before a method has been selected
+// this returns the intent's candidate snapshot (Status ==
+// CheckoutIntentStatusAwaitingSelection, CandidatePaymentMethods populated);
+// afterwards it returns the same materialized session GetPaymentSession
+// would. This is the same underlying endpoint as GetPaymentSession.
+//
+// GET /v1/payment_sessions/{session_id}
+func (c *Client) GetCheckoutIntent(ctx context.Context, intentID string) (*PaymentSessionOrIntent, error) {
+	var out PaymentSessionOrIntent
 	err := c.doJSON(ctx, func(ctx context.Context) (*http.Response, error) {
-		return c.doRequest(ctx, http.MethodGet, "/v1/checkout_intents/"+url.PathEscape(intentID), nil, ro)
+		return c.raw.GetPaymentSession(ctx, intentID)
 	}, &out)
 	if err != nil {
 		return nil, err
@@ -88,11 +62,22 @@ func (c *Client) GetCheckoutIntent(ctx context.Context, intentID string, opts ..
 	return &out, nil
 }
 
-func (c *Client) SelectCheckoutMethod(ctx context.Context, intentID string, req SelectCheckoutMethodRequest, opts ...RequestOption) (*SelectedCheckoutMethod, error) {
-	ro := buildRequestOptions(opts)
-	var out SelectedCheckoutMethod
+// SelectCheckoutMethod selects one payment method from a checkout intent's
+// merchant-approved candidate set, atomically materializing it into a bound
+// payment session with a deposit address. Concurrent selections for the
+// same intent converge to a single method/address; a losing caller receives
+// the same response as the winner rather than an error.
+//
+// intentID is the SessionId returned by CreateCheckoutIntent. This endpoint
+// is public: the payer authorizes with knowledge of the intent id, the same
+// trust model as GetCheckoutIntent.
+//
+// POST /v1/payment_sessions/{session_id}/select_method
+func (c *Client) SelectCheckoutMethod(ctx context.Context, intentID string, method PaymentMethod) (*PaymentSession, error) {
+	req := SelectPaymentMethodRequest{PaymentMethod: method}
+	var out PaymentSession
 	err := c.doJSON(ctx, func(ctx context.Context) (*http.Response, error) {
-		return c.doRequest(ctx, http.MethodPost, "/v1/checkout_intents/"+url.PathEscape(intentID)+"/select", req, ro)
+		return c.raw.SelectPaymentMethod(ctx, intentID, req)
 	}, &out)
 	if err != nil {
 		return nil, err

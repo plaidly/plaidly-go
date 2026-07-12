@@ -125,7 +125,7 @@ func (h *Helper) CreateInvoiceWithOptions(ctx context.Context, opts InvoiceOptio
 	req := plaidly.CreatePaymentSessionRequest{
 		Amount:    opts.Amount,
 		ExpiresIn: expiresIn,
-		PaymentMethod: plaidly.PaymentMethod{
+		PaymentMethod: &plaidly.PaymentMethod{
 			MethodID: plaidly.MethodIDCrypto,
 			Chain:    opts.Chain,
 			Token:    opts.Token,

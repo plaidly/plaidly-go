@@ -12,11 +12,109 @@ security:
   - bearerAuth: []
 
 paths:
+  /v1/merchants/email-verification:
+    post:
+      tags: [Merchants]
+      security: []
+      operationId: requestEmailVerification
+      summary: Request a one-time email verification code for sandbox merchant registration
+      description: >
+        First step of public/sandbox registration. Always returns the same
+        response shape regardless of whether the email is on the trusted-email
+        policy, so the response never reveals trust-policy membership or
+        account existence; a real code is only dispatched for emails that
+        satisfy the active trusted-email policy or supply a valid invitation
+        token.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestEmailVerificationRequest'
+      responses:
+        '200':
+          description: Verification challenge created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestEmailVerificationResponse'
+        default:
+          description: Error requesting email verification
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/merchants/email-verification/confirm:
+    post:
+      tags: [Merchants]
+      security: []
+      operationId: confirmEmailVerification
+      summary: Confirm a one-time email verification code
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmEmailVerificationRequest'
+      responses:
+        '200':
+          description: Email verified
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfirmEmailVerificationResponse'
+        default:
+          description: Error confirming email verification
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/merchants/registration-proof-of-work:
+    post:
+      tags: [Merchants]
+      security: []
+      operationId: requestRegistrationProofOfWork
+      summary: Request a proof-of-work challenge for sandbox merchant registration
+      description: >
+        Second step of public/sandbox registration, after email verification.
+        Required before POST /v1/merchants proceeds unless the registration
+        intent carries a valid, unexpired invitation token, in which case
+        required is false and no challenge is issued.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestRegistrationProofOfWorkRequest'
+      responses:
+        '200':
+          description: Proof-of-work challenge issued, or not required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestRegistrationProofOfWorkResponse'
+        default:
+          description: Error requesting a proof-of-work challenge
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /v1/merchants:
     post:
       tags: [Merchants]
+      security: []
       operationId: registerMerchant
-      summary: Register a new merchant and receive an API key
+      summary: Register a merchant and receive an API key
+      description: >
+        Public only for sandbox merchant onboarding. Non-sandbox merchant
+        creation requires a bearer-authenticated user. Public/sandbox
+        registration additionally requires registration_intent_id from a
+        completed email-verification + proof-of-work sequence (see
+        POST /v1/merchants/email-verification and
+        POST /v1/merchants/registration-proof-of-work).
       requestBody:
         required: true
         content:
@@ -56,14 +154,216 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /v1/me/credentials:
+    get:
+      tags: [Merchants]
+      operationId: getMerchantCredentialStatus
+      summary: Get the authenticated merchant's credential status
+      description: >
+        Returns non-sensitive metadata about the merchant's current API key and
+        webhook secret: masked previews, creation/rotation timestamps, and
+        rotation-overlap grace period expiry. Never returns a usable credential
+        value.
+      responses:
+        '200':
+          description: Current credential status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantCredentialStatus'
+        default:
+          description: Error fetching merchant credential status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/me/credentials/rotate:
+    post:
+      tags: [Merchants]
+      operationId: rotateMerchantCredential
+      summary: Rotate the authenticated merchant's API key or webhook secret
+      description: >
+        Rotates a merchant credential and keeps the previous credential valid for
+        a short overlap window. API keys continue authenticating during that
+        window, and webhook secret rotation emits signatures for both the new
+        and previous secret so receivers can switch without downtime.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MerchantCredentialOperationRequest'
+      responses:
+        '200':
+          description: Credential rotated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Merchant'
+        default:
+          description: Error rotating merchant credential
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/me/credentials/revoke:
+    post:
+      tags: [Merchants]
+      operationId: revokeMerchantCredential
+      summary: Revoke the authenticated merchant's previous overlapping credential
+      description: >
+        Revokes the previous credential created by the most recent rotation,
+        ending the overlap window early. For webhook secrets, receivers should
+        reject signatures older than the timestamp tolerance and track a replay
+        key derived from the verified signature during that window.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MerchantCredentialOperationRequest'
+      responses:
+        '200':
+          description: Previous overlapping credential revoked successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Merchant'
+        default:
+          description: Error revoking merchant credential
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/me/payment_method_policy:
+    get:
+      tags: [Merchants]
+      operationId: getPaymentMethodPolicy
+      summary: Get the authenticated merchant's payment-method policy
+      description: >
+        Returns the merchant's current declared payment-method policy version
+        together with the live-computed eligibility for every candidate
+        identity, so a dashboard can render why a method is greyed out. A
+        merchant with no policy version yet, or a version with zero enabled
+        entries, has an empty effective policy; it never falls back to every
+        globally supported method.
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      responses:
+        '200':
+          description: Current payment-method policy state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentMethodPolicyState'
+        default:
+          description: Error fetching payment-method policy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags: [Merchants]
+      operationId: updatePaymentMethodPolicy
+      summary: Replace the authenticated merchant's payment-method policy
+      description: >
+        Accepts the merchant's full desired set of enabled chain/network/token
+        identities and writes a new immutable policy version. Every requested
+        identity is validated against the canonical registry, settlement
+        implementation, environment enablement, and certification gates; if
+        any identity fails, the whole request is rejected with 422 and no
+        version is written.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePaymentMethodPolicyRequest'
+      responses:
+        '200':
+          description: Payment-method policy updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentMethodPolicyState'
+        default:
+          description: Error updating payment-method policy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/me/webhook:
+    put:
+      tags: [Merchants]
+      operationId: updateMerchantWebhook
+      summary: Update the authenticated merchant's webhook URL
+      description: >
+        Replaces the merchant's webhook URL after SSRF validation (blocks
+        localhost/metadata/internal/private-range hosts) and audit-logs the
+        sanitized before/after URLs.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateMerchantWebhookRequest'
+      responses:
+        '200':
+          description: Webhook URL updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Merchant'
+        default:
+          description: Error updating webhook URL
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/me/webhook/test:
+    post:
+      tags: [Merchants]
+      operationId: testMerchantWebhookDelivery
+      summary: Send a test delivery to the authenticated merchant's configured webhook
+      description: >
+        Delivers a synthetic event through the same signed, SSRF-guarded
+        delivery path used for real webhook events, so the merchant can
+        confirm their endpoint receives and verifies deliveries.
+      responses:
+        '200':
+          description: Test delivery attempted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookTestDeliveryResult'
+        default:
+          description: Error sending test delivery
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /v1/me/login:
     post:
       tags: [Me]
       security: []
       operationId: userLogin
-      summary: Logs in a user and returns user details
+      summary: Logs in a user, sets an HttpOnly browser session cookie, and returns user details
+      parameters:
+        - in: header
+          name: Authorization
+          required: false
+          schema:
+            type: string
+          description: "Bearer Firebase ID token. May be used instead of the JSON body token."
       requestBody:
-        required: true
+        required: false
         content:
           application/json:
             schema:
@@ -75,7 +375,7 @@ paths:
                   description: "User auth token"
       responses:
         '200':
-          description: Successful login response with user details
+          description: Successful login response with user details. Also sets `plaidly_session` as an HttpOnly cookie.
           content:
             application/json:
               schema:
@@ -119,6 +419,9 @@ paths:
       tags: [Wallets]
       operationId: createWallet
       summary: Create a new wallet for a user
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
       requestBody:
         required: true
         content:
@@ -142,6 +445,9 @@ paths:
       tags: [Wallets]
       operationId: listWallets
       summary: List all wallets
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
       responses:
         '200':
           description: List of wallets
@@ -163,6 +469,9 @@ paths:
       tags: [Wallets]
       operationId: getWallet
       summary: Get wallet info by ID
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
       parameters:
         - name: wallet_id
           in: path
@@ -189,6 +498,9 @@ paths:
       tags: [Transactions]
       operationId: listTransactions
       summary: List transactions for a wallet
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
       parameters:
         - name: wallet_id
           in: path
@@ -217,6 +529,18 @@ paths:
       tags: [Payouts]
       operationId: requestPayout
       summary: Request a new payout
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+          description: "Unique key for replay-safe payout creation. Retrying with the same key and an identical payload within 24 hours returns the original payout with status 201; the same key with a different payload returns 409. Keys are scoped per merchant."
       requestBody:
         required: true
         content:
@@ -242,6 +566,9 @@ paths:
       tags: [Payouts]
       operationId: getPayout
       summary: Get payout status
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
       parameters:
         - name: payout_id
           in: path
@@ -263,6 +590,38 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /v1/agent-wallets/{agent_wallet_id}/spend-attempts:
+    post:
+      tags: [Agent Wallets]
+      operationId: attemptAgentWalletSpend
+      summary: Evaluate and record an outbound spend attempt for an agent wallet
+      parameters:
+        - name: agent_wallet_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Agent wallet ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentSpendAttemptRequest'
+      responses:
+        '200':
+          description: Spend attempt evaluated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentSpendAttempt'
+        default:
+          description: Error attempting spend
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /v1/payment_sessions:
     post:
       tags: [PaymentSessions]
@@ -271,6 +630,15 @@ paths:
       security:
         - bearerAuth: []
         - apiKeyAuth: []
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+          description: "Unique key for replay-safe session creation. Retrying with the same key and an identical payload within 24 hours returns the original session (same session_id and deposit address) with status 201; the same key with a different payload returns 409. Keys are scoped per merchant."
       requestBody:
         required: true
         content:
@@ -279,11 +647,11 @@ paths:
               $ref: '#/components/schemas/CreatePaymentSessionRequest'
       responses:
         '201':
-          description: Created payment session
+          description: Created payment session (or, when the request used paymentMethods, a checkout intent awaiting selection)
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaymentSession'
+                $ref: '#/components/schemas/PaymentSessionOrIntent'
         default:
           description: Error creating payment session
           content:
@@ -296,6 +664,12 @@ paths:
       tags: [PaymentSessions]
       operationId: createDemoPaymentSession
       summary: Create a new demo payment session (deposit)
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDemoSessionRequest'
       responses:
         '201':
           description: Created payment session
@@ -395,13 +769,83 @@ paths:
           description: Payment session ID
       responses:
         '200':
-          description: Payment session details
+          description: Payment session details (or, before a method has been selected, the checkout intent's candidate snapshot)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentSessionOrIntent'
+        default:
+          description: Error fetching payment session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/payment_sessions/{session_id}/select_method:
+    post:
+      tags: [PaymentSessions]
+      operationId: selectPaymentMethod
+      summary: Select one payment method from a checkout intent's approved candidate set
+      description: >
+        session_id here is the intent_id returned by POST /v1/payment_sessions
+        when the request offered paymentMethods (a candidate set) instead of a
+        single paymentMethod. Public: the payer authorizes with knowledge of
+        the intent id, the same trust model as GET /v1/payment_sessions/{id}.
+        Concurrent selections for the same intent converge to a single
+        method/address; the losing caller gets the same 200 response as the
+        winner rather than an error.
+      security: []
+      parameters:
+        - name: session_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Payment session intent ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SelectPaymentMethodRequest'
+      responses:
+        '200':
+          description: Payment method selected and bound to a materialized payment session
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaymentSession'
         default:
-          description: Error fetching payment session
+          description: Error selecting payment method
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/payment_sessions/{session_id}/webhook/retry:
+    post:
+      tags: [PaymentSessions]
+      operationId: retryWebhookDelivery
+      summary: Queue a bounded manual retry for the session webhook
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - name: session_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Payment session ID
+      responses:
+        '202':
+          description: Webhook retry accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookDeliveryStatus'
+        default:
+          description: Error queuing webhook retry
           content:
             application/json:
               schema:
@@ -458,6 +902,35 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /v1/x402/facilitator:
+    post:
+      tags: [x402]
+      operationId: validateX402Payment
+      summary: Validate an x402 payment payload
+      description: >
+        Validate whether the provided chain/network/token payload is currently
+        supported by Plaidly payment infrastructure.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/X402PaymentPayload'
+      responses:
+        '200':
+          description: Validation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/X402ValidationResult'
+        default:
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /v1/sandbox/faucets:
     get:
       tags: [PaymentSessions]
@@ -480,11 +953,42 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /v1/sandbox/faucet/fund:
+    post:
+      tags: [PaymentSessions]
+      operationId: fundSepoliaFaucet
+      summary: Send a capped amount of native Sepolia testnet ETH to an address
+      description: >-
+        Public sandbox faucet, distinct from GET /v1/sandbox/faucets (static
+        external links). Rate-limited per address, per IP, and globally over a
+        fixed 24h window. Only chain "ethereum" (Sepolia testnet) is accepted.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FundSepoliaFaucetRequest'
+      responses:
+        '200':
+          description: Faucet transfer broadcast
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FundSepoliaFaucetResponse'
+        default:
+          description: Error funding address
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /v1/payment_sessions/{session_id}/simulate:
     post:
       tags: [PaymentSessions]
       operationId: simulatePayment
-      summary: Simulate a payment for a demo/sandbox session
+      summary: Simulate a payment for a demo or owned sandbox session
+      description: Public for demo sessions. Sandbox merchant sessions require the owning authenticated principal.
       security: []
       parameters:
         - name: session_id
@@ -545,6 +1049,1013 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /v1/stores:
+    post:
+      tags: [Catalog]
+      operationId: createStore
+      summary: Create a store (merchant storefront/business profile)
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+          description: "Unique key for replay-safe store creation. Retrying with the same key and an identical payload within 24 hours returns the original store with status 201; the same key with a different payload returns 409. Keys are scoped per merchant."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateStoreRequest'
+      responses:
+        '201':
+          description: Store created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogStore'
+        default:
+          description: Error creating store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      tags: [Catalog]
+      operationId: listStores
+      summary: List the authenticated merchant's stores
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [draft, published, archived]
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: List of stores
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreListResponse'
+        default:
+          description: Error listing stores
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/stores/{store_id}:
+    get:
+      tags: [Catalog]
+      operationId: getStore
+      summary: Get a store by ID
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - name: store_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Store details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogStore'
+        default:
+          description: Error fetching store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      tags: [Catalog]
+      operationId: patchStore
+      summary: Update a store. Stores mutate in place regardless of status (no versioning).
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - name: store_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchStoreRequest'
+      responses:
+        '200':
+          description: Store updated in place
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogStore'
+        default:
+          description: Error updating store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags: [Catalog]
+      operationId: deleteStore
+      summary: Hard-delete a store. Only legal for a draft, never-published store with no archived/published children.
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - name: store_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Store deleted
+        default:
+          description: Error deleting store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/stores/{store_id}/publish:
+    post:
+      tags: [Catalog]
+      operationId: publishStore
+      summary: Publish a store so it becomes visible to buyer-agent discovery
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - name: store_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Store published
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogStore'
+        default:
+          description: Error publishing store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/stores/{store_id}/archive:
+    post:
+      tags: [Catalog]
+      operationId: archiveStore
+      summary: Archive a store. Archiving an already-archived store is a no-op 200.
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - name: store_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Store archived
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogStore'
+        default:
+          description: Error archiving store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/products:
+    post:
+      tags: [Catalog]
+      operationId: createProduct
+      summary: Create a product within a store
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+          description: "Unique key for replay-safe product creation. Retrying with the same key and an identical payload within 24 hours returns the original product with status 201; the same key with a different payload returns 409. Keys are scoped per merchant."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProductRequest'
+      responses:
+        '201':
+          description: Product created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogProduct'
+        default:
+          description: Error creating product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      tags: [Catalog]
+      operationId: listProducts
+      summary: List the authenticated merchant's products
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - name: store_id
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [draft, published, archived]
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: List of products
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductListResponse'
+        default:
+          description: Error listing products
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/products/{product_id}:
+    get:
+      tags: [Catalog]
+      operationId: getProduct
+      summary: Get a product by ID
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Product details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogProduct'
+        default:
+          description: Error fetching product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      tags: [Catalog]
+      operationId: patchProduct
+      summary: >
+        Update a product. If the target is a mutable draft (never published, no
+        checkout reference chain) it mutates in place and returns 200. If the
+        target is immutable (published, or checkout-referenced via one of its
+        plans/prices) this creates a new version instead: response is 201 with a
+        NEW resource whose id differs from the path {product_id} and whose
+        supersedes_product_id points at the old id. The old row is untouched.
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchProductRequest'
+      responses:
+        '200':
+          description: Product updated in place (was a mutable draft)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogProduct'
+        '201':
+          description: New product version created (target was immutable)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogProduct'
+        default:
+          description: Error updating product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags: [Catalog]
+      operationId: deleteProduct
+      summary: Hard-delete a product. Only legal for a draft, never-published product with no checkout reference chain.
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Product deleted
+        default:
+          description: Error deleting product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/products/{product_id}/publish:
+    post:
+      tags: [Catalog]
+      operationId: publishProduct
+      summary: Publish a draft product. Only legal from draft; otherwise 409.
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Product published
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogProduct'
+        default:
+          description: Error publishing product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/products/{product_id}/archive:
+    post:
+      tags: [Catalog]
+      operationId: archiveProduct
+      summary: Archive a product (legal from draft or published). Archiving an already-archived product is a no-op 200.
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Product archived
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogProduct'
+        default:
+          description: Error archiving product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/plans:
+    post:
+      tags: [Catalog]
+      operationId: createPlan
+      summary: Create a plan (a purchasable variant of a product)
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+          description: "Unique key for replay-safe plan creation. Retrying with the same key and an identical payload within 24 hours returns the original plan with status 201; the same key with a different payload returns 409. Keys are scoped per merchant."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePlanRequest'
+      responses:
+        '201':
+          description: Plan created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogPlan'
+        default:
+          description: Error creating plan
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      tags: [Catalog]
+      operationId: listPlans
+      summary: List the authenticated merchant's plans
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - name: product_id
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [draft, published, archived]
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: List of plans
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanListResponse'
+        default:
+          description: Error listing plans
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/plans/{plan_id}:
+    get:
+      tags: [Catalog]
+      operationId: getPlan
+      summary: Get a plan by ID
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - name: plan_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Plan details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogPlan'
+        default:
+          description: Error fetching plan
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      tags: [Catalog]
+      operationId: patchPlan
+      summary: >
+        Update a plan. If the target is a mutable draft it mutates in place and
+        returns 200. If the target is immutable (published, or
+        checkout-referenced via one of its prices) this creates a new version
+        instead: response is 201 with a NEW resource whose id differs from the
+        path {plan_id} and whose supersedes_plan_id points at the old id.
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - name: plan_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchPlanRequest'
+      responses:
+        '200':
+          description: Plan updated in place (was a mutable draft)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogPlan'
+        '201':
+          description: New plan version created (target was immutable)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogPlan'
+        default:
+          description: Error updating plan
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags: [Catalog]
+      operationId: deletePlan
+      summary: Hard-delete a plan. Only legal for a draft, never-published plan with no checkout reference chain.
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - name: plan_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Plan deleted
+        default:
+          description: Error deleting plan
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/plans/{plan_id}/publish:
+    post:
+      tags: [Catalog]
+      operationId: publishPlan
+      summary: Publish a draft plan. Only legal from draft; otherwise 409.
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - name: plan_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Plan published
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogPlan'
+        default:
+          description: Error publishing plan
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/plans/{plan_id}/archive:
+    post:
+      tags: [Catalog]
+      operationId: archivePlan
+      summary: Archive a plan (legal from draft or published). Archiving an already-archived plan is a no-op 200.
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - name: plan_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Plan archived
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogPlan'
+        default:
+          description: Error archiving plan
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/prices:
+    post:
+      tags: [Catalog]
+      operationId: createPrice
+      summary: Create a price for a plan
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+          description: "Unique key for replay-safe price creation. Retrying with the same key and an identical payload within 24 hours returns the original price with status 201; the same key with a different payload returns 409. Keys are scoped per merchant."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePriceRequest'
+      responses:
+        '201':
+          description: Price created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogPrice'
+        default:
+          description: Error creating price
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      tags: [Catalog]
+      operationId: listPrices
+      summary: List the authenticated merchant's prices
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - name: plan_id
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [draft, published, archived]
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: List of prices
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceListResponse'
+        default:
+          description: Error listing prices
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/prices/{price_id}:
+    get:
+      tags: [Catalog]
+      operationId: getPrice
+      summary: Get a price by ID
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - name: price_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Price details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogPrice'
+        default:
+          description: Error fetching price
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      tags: [Catalog]
+      operationId: patchPrice
+      summary: >
+        Update a price. If the target is a mutable draft it mutates in place
+        and returns 200. If the target is immutable (published, or
+        checkout-referenced) this creates a new version instead: response is
+        201 with a NEW resource whose id differs from the path {price_id} and
+        whose supersedes_price_id points at the old id.
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - name: price_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchPriceRequest'
+      responses:
+        '200':
+          description: Price updated in place (was a mutable draft)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogPrice'
+        '201':
+          description: New price version created (target was immutable)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogPrice'
+        default:
+          description: Error updating price
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags: [Catalog]
+      operationId: deletePrice
+      summary: Hard-delete a price. Only legal for a draft, never-published price with no checkout reference.
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - name: price_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Price deleted
+        default:
+          description: Error deleting price
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/prices/{price_id}/publish:
+    post:
+      tags: [Catalog]
+      operationId: publishPrice
+      summary: Publish a draft price. Only legal from draft; otherwise 409.
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - name: price_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Price published
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogPrice'
+        default:
+          description: Error publishing price
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/prices/{price_id}/archive:
+    post:
+      tags: [Catalog]
+      operationId: archivePrice
+      summary: Archive a price (legal from draft or published). Archiving an already-archived price is a no-op 200.
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - name: price_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Price archived
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogPrice'
+        default:
+          description: Error archiving price
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/catalog/products:
+    get:
+      tags: [CatalogDiscovery]
+      operationId: listCatalogProducts
+      summary: Public buyer-agent discovery listing of a merchant's published products (with nested published plans/prices)
+      security: []
+      parameters:
+        - name: merchant_id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: sandbox
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: q
+          in: query
+          required: false
+          schema:
+            type: string
+          description: "Free-text search over product name/description (simple ILIKE match)"
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: List of published products
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogProductListResponse'
+        default:
+          description: Error listing catalog products
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/catalog/products/{product_id}:
+    get:
+      tags: [CatalogDiscovery]
+      operationId: getCatalogProduct
+      summary: Public buyer-agent discovery detail for a single published product (with nested published plans/prices)
+      security: []
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Published product detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogDiscoveryProduct'
+        default:
+          description: Error fetching catalog product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/catalog/prices/{price_id}/checkout-intent:
+    post:
+      tags: [CatalogDiscovery]
+      operationId: createCatalogCheckoutIntent
+      summary: >
+        Resolve a published price for checkout. Validates the price and its
+        parent plan/product/store are all published and not archived, records a
+        CatalogCheckoutSnapshot (which flips the price/plan/product into
+        checkout-referenced immutability), and returns the fields a buyer agent
+        needs to build a POST /v1/payment_sessions request.
+      security: []
+      parameters:
+        - name: price_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Checkout intent created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogCheckoutIntent'
+        default:
+          description: Error creating checkout intent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
 components:
   securitySchemes:
     bearerAuth:
@@ -596,6 +2107,22 @@ components:
         message:
           type: string
           description: "Error message"
+        field:
+          type: string
+          description: "Optional: name of the request field that caused the error"
+        remediation:
+          type: string
+          description: "Optional: human-readable suggestion for how to resolve the error"
+        request_id:
+          type: string
+          description: "Optional: identifier for correlating this error with server-side logs"
+        retryable:
+          type: boolean
+          description: "Optional: whether retrying the same request may succeed"
+        retry_after_seconds:
+          type: integer
+          format: int64
+          description: "Optional: seconds to wait before retrying, present on rate-limit errors"
 
     CreateWalletRequest:
       type: object
@@ -674,12 +2201,34 @@ components:
           type: integer
           format: int64
 
+    CreateDemoSessionRequest:
+      type: object
+      description: "Optional overrides for a demo session; all fields default when omitted (solana/USDC/testnet). Demo sessions are testnet-only; mainnet is rejected."
+      properties:
+        chain:
+          type: string
+        token:
+          type: string
+        network:
+          type: string
+        amount:
+          type: number
+          format: double
+      additionalProperties: false
+
     CreatePaymentSessionRequest:
       type: object
+      description: >
+        Provide exactly one of paymentMethod (legacy: a single, immediately
+        bound method) or paymentMethods (a candidate set: the server
+        intersects it with merchant policy, environment restriction, and
+        currently enabled/certified rails, then returns a checkout intent for
+        the payer to select from via POST
+        /v1/payment_sessions/{session_id}/select_method). Supplying both, or
+        neither, is a 400.
       required:
         - amount
         - expires_in
-        - paymentMethod
       properties:
         amount:
           type: number
@@ -690,10 +2239,31 @@ components:
           description: "Duration until session expires (e.g. 15m, 1h)"
         paymentMethod:
           $ref: '#/components/schemas/PaymentMethod'
+        paymentMethods:
+          type: array
+          minItems: 1
+          maxItems: 20
+          items:
+            $ref: '#/components/schemas/PaymentMethod'
+          description: >-
+            Candidate method set for a payer-selects-one checkout. Mutually
+            exclusive with paymentMethod.
         metadata:
           type: object
           description: "Optional key-value metadata (max 4KB)"
           additionalProperties: true
+        return_url:
+          type: string
+          maxLength: 2048
+          description: "URL to redirect the payer to after checkout completes. Must be an absolute https:// URL (http:// is allowed only for localhost, for merchant dev)."
+
+    SelectPaymentMethodRequest:
+      type: object
+      required:
+        - paymentMethod
+      properties:
+        paymentMethod:
+          $ref: '#/components/schemas/PaymentMethod'
 
     PaymentMethod:
       type: object
@@ -745,6 +2315,11 @@ components:
           type: string
         status:
           type: string
+          description: >-
+            Lifecycle status of the session. The terminal settled status is
+            "completed" (emitted alongside the payment_session.completed
+            webhook). The legacy value "confirmed" is an accepted alias for the
+            same terminal state.
         currency:
           type: string
           description: "Token symbol the session is denominated in"
@@ -770,8 +2345,270 @@ components:
           type: string
         demo:
           type: boolean
+        simulated:
+          type: boolean
+          description: "true when the session was settled synthetically via /simulate; no on-chain transaction exists"
+        tx_hash:
+          type: string
+          nullable: true
+          description: "settlement transaction hash; present only after a real on-chain settlement"
+        return_url:
+          type: string
+          description: "URL to redirect the payer to after checkout completes"
+        diagnostics:
+          $ref: '#/components/schemas/PaymentSessionDiagnostics'
+        webhook_delivery:
+          $ref: '#/components/schemas/WebhookDeliveryStatus'
         paymentMethod:
           $ref: '#/components/schemas/PaymentMethod'
+        policy_version:
+          type: string
+          description: "Merchant payment-method policy snapshot version this session was evaluated against."
+        method_selected_at:
+          type: string
+          description: "Set only when the session was materialized via POST .../select_method."
+
+    PaymentSessionOrIntent:
+      type: object
+      description: >
+        Same shape as PaymentSession, except address and paymentMethod are
+        absent while status is awaiting_method_selection (a checkout intent
+        that has not had a method selected yet). Returned only by
+        createPaymentSession and getPaymentSession, the two operations whose
+        response can genuinely be either a materialized session or a
+        pre-selection intent; every other operation always returns a fully
+        materialized PaymentSession.
+      required:
+        - session_id
+        - merchant_id
+        - expected_amount
+        - received_amount
+        - status
+        - metadata
+        - expires_at
+        - created_at
+        - updated_at
+        - demo
+      properties:
+        session_id:
+          type: string
+        merchant_id:
+          type: string
+        expected_amount:
+          type: number
+          format: double
+        received_amount:
+          type: number
+          format: double
+        address:
+          type: string
+        status:
+          type: string
+          description: >-
+            Lifecycle status of the session/intent. The terminal settled
+            status is "completed" (emitted alongside the
+            payment_session.completed webhook). The legacy value "confirmed"
+            is an accepted alias for the same terminal state.
+        currency:
+          type: string
+          description: "Token symbol the session is denominated in"
+        payment_url:
+          type: string
+          description: "Hosted checkout URL for the payer"
+        qr_data:
+          type: string
+          description: "Payer payment URI for QR encoding"
+        explorer_url:
+          type: string
+          description: "Block explorer URL for the deposit address"
+        metadata:
+          type: object
+          additionalProperties: true
+        expires_at:
+          type: string
+        completed_at:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        demo:
+          type: boolean
+        simulated:
+          type: boolean
+          description: "true when the session was settled synthetically via /simulate; no on-chain transaction exists"
+        tx_hash:
+          type: string
+          nullable: true
+          description: "settlement transaction hash; present only after a real on-chain settlement"
+        return_url:
+          type: string
+          description: "URL to redirect the payer to after checkout completes"
+        diagnostics:
+          $ref: '#/components/schemas/PaymentSessionDiagnostics'
+        webhook_delivery:
+          $ref: '#/components/schemas/WebhookDeliveryStatus'
+        paymentMethod:
+          $ref: '#/components/schemas/PaymentMethod'
+        candidate_payment_methods:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentMethod'
+          description: >-
+            The merchant-policy / environment / enabled-rails intersection
+            offered to the payer. Present only while status is
+            awaiting_method_selection; the immutable snapshot computed at
+            intent-creation time, never recomputed.
+        policy_version:
+          type: string
+          description: "Merchant payment-method policy snapshot version this session (or intent) was evaluated against."
+        method_selected_at:
+          type: string
+          description: "Set only when the session was materialized via POST .../select_method."
+
+    FundSepoliaFaucetRequest:
+      type: object
+      required:
+        - chain
+        - address
+      properties:
+        chain:
+          type: string
+          description: "Only \"ethereum\" is accepted"
+        address:
+          type: string
+          description: "Recipient EVM address on Sepolia testnet"
+
+    FundSepoliaFaucetResponse:
+      type: object
+      required:
+        - tx_hash
+        - explorer_url
+        - chain
+        - network
+        - amount
+        - token_symbol
+      properties:
+        tx_hash:
+          type: string
+        explorer_url:
+          type: string
+        chain:
+          type: string
+        network:
+          type: string
+        amount:
+          type: string
+        token_symbol:
+          type: string
+
+    PaymentSessionDiagnostics:
+      type: object
+      required:
+        - risk_level
+        - summary
+        - recommended_action
+        - signals
+      properties:
+        risk_level:
+          type: string
+          enum:
+            - ok
+            - warning
+            - critical
+        summary:
+          type: string
+        recommended_action:
+          type: string
+        signals:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentSessionDiagnosticSignal'
+
+    PaymentSessionDiagnosticSignal:
+      type: object
+      required:
+        - code
+        - severity
+        - title
+        - detail
+        - recommended_action
+      properties:
+        code:
+          type: string
+          enum:
+            - underpayment
+            - overpayment
+            - wrong_token
+            - wrong_chain
+            - expired_session
+            - missing_confirmations
+            - stuck_session
+        severity:
+          type: string
+          enum:
+            - info
+            - warning
+            - critical
+        title:
+          type: string
+        detail:
+          type: string
+        recommended_action:
+          type: string
+        observed_network:
+          type: string
+        observed_token:
+          type: string
+        observed_confirmations:
+          type: integer
+          format: int64
+        required_confirmations:
+          type: integer
+          format: int64
+        observed_at:
+          type: string
+          format: date-time
+
+    WebhookDeliveryStatus:
+      type: object
+      required:
+        - status
+        - attempts
+        - manual_retry_count
+      properties:
+        status:
+          type: string
+          enum:
+            - pending
+            - delivered
+            - failed
+            - skipped
+        event_type:
+          type: string
+        attempts:
+          type: integer
+          format: int64
+        manual_retry_count:
+          type: integer
+          format: int64
+        last_attempt_at:
+          type: string
+          format: date-time
+        next_retry_at:
+          type: string
+          format: date-time
+        delivered_at:
+          type: string
+          format: date-time
+        last_error:
+          type: string
+        last_http_status:
+          type: integer
+          format: int64
+        latency_ms:
+          type: integer
+          format: int64
 
     Receipt:
       type: object
@@ -824,12 +2661,15 @@ components:
           type: number
           format: double
           description: "Amount to pay out"
+        chain:
+          type: string
+          description: "Canonical payout chain (e.g. solana, ethereum, tron). Optional for legacy clients; omitted value is inferred from token where unambiguous enough for backward compatibility."
         token_symbol:
           type: string
           description: "Token symbol (e.g. SOL, ETH)"
         network:
           type: string
-          description: "Blockchain network (e.g. solana, ethereum)"
+          description: "Settlement environment. Use mainnet or testnet; legacy aliases such as devnet/solana map to testnet and ethereum maps to mainnet."
 
     Payout:
       type: object
@@ -838,6 +2678,7 @@ components:
         - merchant_id
         - destination_address
         - amount
+        - chain
         - token_symbol
         - network
         - status
@@ -852,6 +2693,8 @@ components:
         amount:
           type: number
           format: double
+        chain:
+          type: string
         token_symbol:
           type: string
         network:
@@ -865,6 +2708,107 @@ components:
         sent_at:
           type: string
 
+    AgentSpendAttemptRequest:
+      type: object
+      required:
+        - target
+        - amount
+        - amount_subunits
+        - token_symbol
+        - chain
+        - network
+      properties:
+        target:
+          type: string
+          description: "Destination address or outbound spend target"
+        amount:
+          type: number
+          format: double
+          description: "Human-readable spend amount"
+        amount_subunits:
+          type: string
+          description: "Integer amount in token subunits"
+          minLength: 1
+          pattern: "^[1-9][0-9]*$"
+        token_symbol:
+          type: string
+          description: "Token symbol (for example USDC)"
+        chain:
+          type: string
+          description: "Target blockchain family"
+        network:
+          type: string
+          description: "Target network such as mainnet or devnet"
+        api_domain:
+          type: string
+          description: "API domain that originated the spend request"
+        reference:
+          type: string
+          description: "Caller-provided reference for tracing the attempt; printable without whitespace"
+          minLength: 1
+          maxLength: 128
+          pattern: "^[^\\s]+$"
+        metadata:
+          type: object
+          description: "Opaque caller metadata for audit and policy context"
+          additionalProperties: true
+
+    AgentSpendAttempt:
+      type: object
+      required:
+        - id
+        - agent_wallet_id
+        - status
+        - spend_reference
+        - target
+        - amount
+        - amount_subunits
+        - token_symbol
+        - chain
+        - network
+        - reason
+        - created_at
+      properties:
+        id:
+          type: string
+          description: "Trace identifier for the evaluated attempt"
+        agent_wallet_id:
+          type: string
+        ledger_entry_id:
+          type: string
+          description: "Ledger row created for pending or approval-required attempts"
+        policy_id:
+          type: string
+          description: "Spend policy that determined the outcome when present"
+        status:
+          type: string
+          enum: [pending, approval_required, denied]
+        spend_reference:
+          type: string
+        target:
+          type: string
+        amount:
+          type: number
+          format: double
+        amount_subunits:
+          type: string
+        token_symbol:
+          type: string
+        chain:
+          type: string
+        network:
+          type: string
+        api_domain:
+          type: string
+        reason:
+          type: string
+        metadata:
+          type: object
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+
     RegisterMerchantRequest:
       type: object
       required:
@@ -873,9 +2817,105 @@ components:
         name:
           type: string
           description: "Merchant display name"
+        sandbox:
+          type: boolean
+          description: "Create this merchant in sandbox mode (testnet-only sessions). Defaults to false."
         webhook_url:
           type: string
           description: "Optional webhook URL for payment notifications"
+        idempotency_key:
+          type: string
+          description: "Idempotency key for replay-safe onboarding retries"
+        registration_intent_id:
+          type: string
+          description: "Required for public/sandbox registration: the id returned by POST /v1/merchants/email-verification, after email verification and (unless invitation-exempt) proof-of-work are complete. Not used for bearer-authenticated live merchant creation."
+        proof_of_work_challenge_id:
+          type: string
+          description: "Required for public/sandbox registration unless the registration intent carries a valid invitation token: the challenge_id from POST /v1/merchants/registration-proof-of-work"
+        proof_of_work_nonce:
+          type: string
+          description: "The nonce solving the proof-of-work challenge"
+
+    RequestEmailVerificationRequest:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          description: "Email address to verify; must not belong to a disposable/temporary provider"
+        invitation_token:
+          type: string
+          description: "Optional time-limited invitation/enrollment token that satisfies the trusted-email policy on its own"
+
+    RequestEmailVerificationResponse:
+      type: object
+      required:
+        - registration_intent_id
+        - expires_at
+      properties:
+        registration_intent_id:
+          type: string
+          description: "Opaque id binding this verification, the subsequent proof-of-work challenge, and the final registration call together. Returned identically regardless of whether the email satisfies the trusted-email policy."
+        expires_at:
+          type: string
+          format: date-time
+          description: "When this registration intent (and everything bound to it) expires"
+
+    ConfirmEmailVerificationRequest:
+      type: object
+      required:
+        - registration_intent_id
+        - code
+      properties:
+        registration_intent_id:
+          type: string
+        code:
+          type: string
+          description: "The one-time verification code delivered to the email address"
+
+    ConfirmEmailVerificationResponse:
+      type: object
+      required:
+        - registration_intent_id
+        - verified
+      properties:
+        registration_intent_id:
+          type: string
+        verified:
+          type: boolean
+
+    RequestRegistrationProofOfWorkRequest:
+      type: object
+      required:
+        - registration_intent_id
+      properties:
+        registration_intent_id:
+          type: string
+
+    RequestRegistrationProofOfWorkResponse:
+      type: object
+      required:
+        - required
+      properties:
+        required:
+          type: boolean
+          description: "Whether a proof-of-work solution must be submitted with POST /v1/merchants. False only when the registration intent carries a valid invitation token."
+        challenge_id:
+          type: string
+        algorithm_version:
+          type: string
+          description: "Versioned proof-of-work algorithm identifier, e.g. sha256-leading-zero-bits-v1"
+        challenge:
+          type: string
+          description: "Random server-issued input the client must find a nonce for"
+        difficulty:
+          type: integer
+          format: int64
+          description: "Required number of leading zero bits in sha256(challenge:nonce)"
+        expires_at:
+          type: string
+          format: date-time
 
     Merchant:
       type: object
@@ -889,6 +2929,9 @@ components:
           type: string
         name:
           type: string
+        sandbox:
+          type: boolean
+          description: "Whether this merchant is currently sandbox-only"
         email:
           type: string
         api_key:
@@ -899,11 +2942,75 @@ components:
         webhook_secret:
           type: string
           description: "HMAC secret used to sign webhook deliveries (response only)"
+        previous_api_key_expires_at:
+          type: string
+          format: date-time
+          description: "When the previous API key stops authenticating after a rotation overlap"
+        previous_webhook_secret_expires_at:
+          type: string
+          format: date-time
+          description: "When the previous webhook secret stops being included in signatures after a rotation overlap"
         rate_limit_per_minute:
           type: integer
           format: int64
         created_at:
           type: string
+
+    MerchantCredentialOperationRequest:
+      type: object
+      required:
+        - credential_type
+      properties:
+        credential_type:
+          type: string
+          enum:
+            - api_key
+            - webhook_secret
+          description: "Credential kind to rotate or revoke"
+
+    MerchantCredentialStatus:
+      type: object
+      required:
+        - api_key_prefix
+        - sandbox
+        - webhook_secret_configured
+        - created_at
+      properties:
+        api_key_prefix:
+          type: string
+          description: "Masked API key, e.g. plaidly_sk_live_...a1b2"
+        api_key_created_at:
+          type: string
+          format: date-time
+          description: "When the merchant (and its initial API key) was created"
+        api_key_last_rotated_at:
+          type: string
+          format: date-time
+          description: "When the API key was last rotated, absent if never rotated"
+        previous_api_key_expires_at:
+          type: string
+          format: date-time
+          description: "Present only while a previous API key is still valid in its rotation-overlap grace period"
+        webhook_secret_configured:
+          type: boolean
+          description: "Whether a webhook secret has been generated for this merchant"
+        webhook_secret_mask:
+          type: string
+          description: "Masked webhook secret, e.g. plaidly_whsec_...a1b2. Absent if no webhook secret is configured"
+        webhook_secret_last_rotated_at:
+          type: string
+          format: date-time
+          description: "When the webhook secret was last rotated, absent if never rotated"
+        previous_webhook_secret_expires_at:
+          type: string
+          format: date-time
+          description: "Present only while a previous webhook secret is still valid in its rotation-overlap grace period"
+        sandbox:
+          type: boolean
+          description: "Whether this merchant is currently sandbox-only"
+        created_at:
+          type: string
+          format: date-time
 
     PaymentMethodInfo:
       type: object
@@ -933,6 +3040,115 @@ components:
           type: number
           format: double
 
+    PaymentMethodPolicyIdentity:
+      type: object
+      required:
+        - chain
+        - network
+        - token
+      properties:
+        chain:
+          type: string
+        network:
+          type: string
+        token:
+          type: string
+          description: "Canonical token symbol, resolved server-side against the registry entry for this chain/network"
+
+    PaymentMethodPolicyEntry:
+      type: object
+      required:
+        - chain
+        - network
+        - token
+        - kind
+        - enabled
+        - eligible
+        - effective
+      properties:
+        chain:
+          type: string
+        network:
+          type: string
+        token:
+          type: string
+        kind:
+          type: string
+          description: "native, erc20, trc20, spl, jetton"
+        contract:
+          type: string
+          description: "Contract or mint address, resolved from the canonical registry. Absent for native tokens."
+        decimals:
+          type: integer
+          format: int64
+        enabled:
+          type: boolean
+          description: "The merchant's raw declared intent from the current policy version"
+        eligible:
+          type: boolean
+          description: "Whether this identity currently passes registry/settlement/environment/certification eligibility"
+        eligibility_reason:
+          type: string
+          description: "Present when eligible is false; explains why the dashboard should grey this option out"
+        effective:
+          type: boolean
+          description: "enabled && eligible, recomputed live. This is what checkout session creation will see."
+
+    PaymentMethodPolicyState:
+      type: object
+      required:
+        - version
+        - environment
+        - entries
+      properties:
+        version:
+          type: integer
+          format: int64
+          description: "0 when the merchant has never written a policy version"
+        environment:
+          type: string
+          description: "live or sandbox, derived from the merchant's own sandbox flag"
+        updated_at:
+          type: string
+          format: date-time
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentMethodPolicyEntry'
+
+    UpdatePaymentMethodPolicyRequest:
+      type: object
+      required:
+        - enabled
+      properties:
+        enabled:
+          type: array
+          description: "The merchant's full desired set of enabled identities. Identities not listed are disabled. An empty array disables every method."
+          items:
+            $ref: '#/components/schemas/PaymentMethodPolicyIdentity'
+
+    UpdateMerchantWebhookRequest:
+      type: object
+      required:
+        - webhook_url
+      properties:
+        webhook_url:
+          type: string
+          description: "New webhook URL. Validated against the same SSRF rules enforced at merchant registration."
+
+    WebhookTestDeliveryResult:
+      type: object
+      required:
+        - delivered
+      properties:
+        delivered:
+          type: boolean
+        status_code:
+          type: integer
+          format: int64
+        message:
+          type: string
+
     RateInfo:
       type: object
       required:
@@ -947,6 +3163,45 @@ components:
           format: double
         updated_at:
           type: string
+
+    X402PaymentPayload:
+      type: object
+      required:
+        - chain
+        - network
+        - token
+      additionalProperties: false
+      properties:
+        chain:
+          type: string
+          description: Payment chain slug (e.g. solana, ethereum)
+        network:
+          type: string
+          description: Network alias (e.g. testnet, mainnet, sepolia, holesky)
+        token:
+          type: string
+          description: Token symbol (e.g. USDC, USDT)
+
+    X402ValidationResult:
+      type: object
+      required:
+        - supported
+        - outcome
+      properties:
+        supported:
+          type: boolean
+          description: Whether the payload is supported for payment
+        outcome:
+          type: string
+          description: >
+            Classifier for downstream handling:
+            terminal for hard/definitive result, retryable for transient issues.
+          enum:
+            - retryable
+            - terminal
+        reason:
+          type: string
+          description: Human-readable reason for the outcome
 
     SendRequest:
       type: object
@@ -974,6 +3229,585 @@ components:
         tx_hash:
           type: string
 
+    CatalogStore:
+      type: object
+      description: A merchant's storefront/business profile. Does not version; mutates in place regardless of status.
+      required:
+        - id
+        - merchant_id
+        - sandbox
+        - name
+        - slug
+        - status
+        - metadata
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+        merchant_id:
+          type: string
+        sandbox:
+          type: boolean
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          enum: [draft, published, archived]
+        metadata:
+          type: object
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        published_at:
+          type: string
+          format: date-time
+        archived_at:
+          type: string
+          format: date-time
+
+    CreateStoreRequest:
+      type: object
+      required:
+        - name
+        - slug
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        metadata:
+          type: object
+          additionalProperties: true
+
+    PatchStoreRequest:
+      type: object
+      description: "All fields optional; only fields present are applied."
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        metadata:
+          type: object
+          additionalProperties: true
+
+    StoreListResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogStore'
+        next_cursor:
+          type: string
+          description: "Opaque cursor for the next page. Absent when there is no further page."
+
+    CatalogProduct:
+      type: object
+      description: A product belonging to a store. Immutable once published or checkout-referenced (directly, or transitively via one of its plans/prices).
+      required:
+        - id
+        - store_id
+        - merchant_id
+        - sandbox
+        - name
+        - slug
+        - fulfillment_type
+        - status
+        - version
+        - metadata
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+        store_id:
+          type: string
+        merchant_id:
+          type: string
+        sandbox:
+          type: boolean
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        fulfillment_type:
+          type: string
+          enum: [one_time, subscription, metered, service]
+        status:
+          type: string
+          enum: [draft, published, archived]
+        version:
+          type: integer
+          format: int64
+        supersedes_product_id:
+          type: string
+        metadata:
+          type: object
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        published_at:
+          type: string
+          format: date-time
+        archived_at:
+          type: string
+          format: date-time
+
+    CreateProductRequest:
+      type: object
+      required:
+        - store_id
+        - name
+        - slug
+        - fulfillment_type
+      properties:
+        store_id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        fulfillment_type:
+          type: string
+          enum: [one_time, subscription, metered, service]
+        metadata:
+          type: object
+          additionalProperties: true
+
+    PatchProductRequest:
+      type: object
+      description: "All fields optional; only fields present are applied. The store_id relationship cannot be changed via PATCH."
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        fulfillment_type:
+          type: string
+          enum: [one_time, subscription, metered, service]
+        metadata:
+          type: object
+          additionalProperties: true
+
+    ProductListResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogProduct'
+        next_cursor:
+          type: string
+
+    CatalogPlan:
+      type: object
+      description: A purchasable variant of a product (e.g. "monthly"). Immutable once published or checkout-referenced (directly, or transitively via one of its prices).
+      required:
+        - id
+        - product_id
+        - merchant_id
+        - sandbox
+        - name
+        - slug
+        - status
+        - version
+        - metadata
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+        product_id:
+          type: string
+        merchant_id:
+          type: string
+        sandbox:
+          type: boolean
+        name:
+          type: string
+        slug:
+          type: string
+        status:
+          type: string
+          enum: [draft, published, archived]
+        version:
+          type: integer
+          format: int64
+        supersedes_plan_id:
+          type: string
+        entitlement:
+          type: object
+          description: "Freeform catalog metadata describing what the buyer gets (quota/seats/duration etc). Not a runtime entitlement-tracking system."
+          additionalProperties: true
+        metadata:
+          type: object
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        published_at:
+          type: string
+          format: date-time
+        archived_at:
+          type: string
+          format: date-time
+
+    CreatePlanRequest:
+      type: object
+      required:
+        - product_id
+        - name
+        - slug
+      properties:
+        product_id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        entitlement:
+          type: object
+          additionalProperties: true
+        metadata:
+          type: object
+          additionalProperties: true
+
+    PatchPlanRequest:
+      type: object
+      description: "All fields optional; only fields present are applied. The product_id relationship cannot be changed via PATCH."
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        entitlement:
+          type: object
+          additionalProperties: true
+        metadata:
+          type: object
+          additionalProperties: true
+
+    PlanListResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogPlan'
+        next_cursor:
+          type: string
+
+    CatalogPrice:
+      type: object
+      description: A price belonging to a plan. Immutable once published or checkout-referenced.
+      required:
+        - id
+        - plan_id
+        - merchant_id
+        - sandbox
+        - amount_subunits
+        - currency_or_token
+        - status
+        - version
+        - metadata
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+        plan_id:
+          type: string
+        merchant_id:
+          type: string
+        sandbox:
+          type: boolean
+        amount_subunits:
+          type: string
+          description: "Integer amount in smallest token/currency subunits"
+        currency_or_token:
+          type: string
+          description: "The token/currency symbol this price is denominated in, e.g. USDC"
+        status:
+          type: string
+          enum: [draft, published, archived]
+        version:
+          type: integer
+          format: int64
+        supersedes_price_id:
+          type: string
+        allowed_payment_methods:
+          type: array
+          description: "Canonical chain:network:token identity strings (e.g. solana:mainnet:USDC). Null/absent means no restriction; defer to merchant-wide payment policy."
+          items:
+            type: string
+        metadata:
+          type: object
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        published_at:
+          type: string
+          format: date-time
+        archived_at:
+          type: string
+          format: date-time
+
+    CreatePriceRequest:
+      type: object
+      required:
+        - plan_id
+        - amount_subunits
+        - currency_or_token
+      properties:
+        plan_id:
+          type: string
+        amount_subunits:
+          type: string
+          minLength: 1
+          pattern: "^[0-9]+$"
+        currency_or_token:
+          type: string
+        allowed_payment_methods:
+          type: array
+          items:
+            type: string
+        metadata:
+          type: object
+          additionalProperties: true
+
+    PatchPriceRequest:
+      type: object
+      description: "All fields optional; only fields present are applied. The plan_id relationship cannot be changed via PATCH."
+      properties:
+        amount_subunits:
+          type: string
+          minLength: 1
+          pattern: "^[0-9]+$"
+        currency_or_token:
+          type: string
+        allowed_payment_methods:
+          type: array
+          items:
+            type: string
+        metadata:
+          type: object
+          additionalProperties: true
+
+    PriceListResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogPrice'
+        next_cursor:
+          type: string
+
+    CatalogDiscoveryPlan:
+      type: object
+      description: A published plan nested inside a discovery product response, with its published prices inlined.
+      required:
+        - id
+        - product_id
+        - merchant_id
+        - sandbox
+        - name
+        - slug
+        - status
+        - version
+        - metadata
+        - created_at
+        - updated_at
+        - prices
+      properties:
+        id:
+          type: string
+        product_id:
+          type: string
+        merchant_id:
+          type: string
+        sandbox:
+          type: boolean
+        name:
+          type: string
+        slug:
+          type: string
+        status:
+          type: string
+          enum: [draft, published, archived]
+        version:
+          type: integer
+          format: int64
+        entitlement:
+          type: object
+          additionalProperties: true
+        metadata:
+          type: object
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        published_at:
+          type: string
+          format: date-time
+        prices:
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogPrice'
+
+    CatalogDiscoveryProduct:
+      type: object
+      description: A published product returned by buyer-agent discovery, with its published plans (and their published prices) inlined so a buyer agent needs only one round trip.
+      required:
+        - id
+        - store_id
+        - merchant_id
+        - sandbox
+        - name
+        - slug
+        - fulfillment_type
+        - status
+        - version
+        - metadata
+        - created_at
+        - updated_at
+        - plans
+      properties:
+        id:
+          type: string
+        store_id:
+          type: string
+        merchant_id:
+          type: string
+        sandbox:
+          type: boolean
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        fulfillment_type:
+          type: string
+          enum: [one_time, subscription, metered, service]
+        status:
+          type: string
+          enum: [draft, published, archived]
+        version:
+          type: integer
+          format: int64
+        metadata:
+          type: object
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        published_at:
+          type: string
+          format: date-time
+        plans:
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogDiscoveryPlan'
+
+    CatalogProductListResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogDiscoveryProduct'
+        next_cursor:
+          type: string
+
+    CatalogCheckoutIntent:
+      type: object
+      description: >
+        Result of resolving a published price for checkout. A buyer agent uses
+        these fields to build a POST /v1/payment_sessions request, placing
+        checkout_reference_id into that request's free-form metadata object.
+      required:
+        - checkout_reference_id
+        - price_id
+        - plan_id
+        - product_id
+        - store_id
+        - merchant_id
+        - amount_subunits
+        - currency_or_token
+        - expires_at
+      properties:
+        checkout_reference_id:
+          type: string
+        price_id:
+          type: string
+        plan_id:
+          type: string
+        product_id:
+          type: string
+        store_id:
+          type: string
+        merchant_id:
+          type: string
+        amount_subunits:
+          type: string
+        currency_or_token:
+          type: string
+        allowed_payment_methods:
+          type: array
+          items:
+            type: string
+        expires_at:
+          type: string
+          format: date-time
+
 tags:
   - name: Merchants
   - name: Receipts
@@ -982,3 +3816,6 @@ tags:
   - name: Transactions
   - name: PaymentSessions
   - name: Payouts
+  - name: x402
+  - name: Catalog
+  - name: CatalogDiscovery

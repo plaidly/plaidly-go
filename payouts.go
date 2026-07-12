@@ -12,7 +12,7 @@ func (c *Client) RequestPayout(ctx context.Context, req RequestPayoutRequest, op
 	ro := buildRequestOptions(opts)
 	var out Payout
 	err := c.doJSON(ctx, func(ctx context.Context) (*http.Response, error) {
-		return c.raw.RequestPayout(ctx, req, ro.toEditors()...)
+		return c.raw.RequestPayout(ctx, nil, req, ro.toEditors()...)
 	}, &out)
 	if err != nil {
 		return nil, err

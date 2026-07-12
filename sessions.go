@@ -17,7 +17,7 @@ func (c *Client) CreatePaymentSession(ctx context.Context, req CreatePaymentSess
 	ro := buildRequestOptions(opts)
 	var out PaymentSession
 	err := c.doJSON(ctx, func(ctx context.Context) (*http.Response, error) {
-		return c.raw.CreatePaymentSession(ctx, req, ro.toEditors()...)
+		return c.raw.CreatePaymentSession(ctx, nil, req, ro.toEditors()...)
 	}, &out)
 	if err != nil {
 		return nil, err
@@ -31,7 +31,7 @@ func (c *Client) CreatePaymentSession(ctx context.Context, req CreatePaymentSess
 func (c *Client) CreateDemoPaymentSession(ctx context.Context) (*PaymentSession, error) {
 	var out PaymentSession
 	err := c.doJSON(ctx, func(ctx context.Context) (*http.Response, error) {
-		return c.raw.CreateDemoPaymentSession(ctx)
+		return c.raw.CreateDemoPaymentSession(ctx, plaidlyapi.CreateDemoSessionRequest{})
 	}, &out)
 	if err != nil {
 		return nil, err
